@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">JourneyJournal</string>
+
+    <!-- Visual Elements -->
+    <string name="active_journeys">Active Journeys:</string>
+    <string name="complete_journeys">Complete Journeys:</string>
+    <string name="entries">Entries</string>
+    <string name="forecasts">Forecasts</string>
+    <string name="home_title">Journey Journal</string>
+    <string name="map">Map</string>
+    <string name="settings">Settings</string>
+    <string name="stats">Stats</string>
+
+    <!-- Content Descriptions -->
+    <string name="add_journey">Add Journey</string>
+
+</resources>

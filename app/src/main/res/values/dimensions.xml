@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Standard Padding Values -->
+    <dimen name="padding_none">0dp</dimen>
+    <dimen name="padding_micro">2dp</dimen>
+    <dimen name="padding_tiny">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">12dp</dimen>
+    <dimen name="padding_normal">16dp</dimen>
+    <dimen name="padding_large">20dp</dimen>
+    <dimen name="padding_extra_large">24dp</dimen>
+    <dimen name="padding_huge">32dp</dimen>
+    <dimen name="padding_massive">48dp</dimen>
+    <dimen name="padding_giant">64dp</dimen>
+
+    <!-- Content Padding -->
+    <dimen name="content_padding">16dp</dimen>
+    <dimen name="content_padding_horizontal">16dp</dimen>
+    <dimen name="content_padding_vertical">12dp</dimen>
+
+    <!-- Screen Edge Padding -->
+    <dimen name="screen_edge_padding">16dp</dimen>
+    <dimen name="screen_edge_padding_small">12dp</dimen>
+    <dimen name="screen_edge_padding_large">20dp</dimen>
+
+    <!-- Card Padding -->
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_padding_small">12dp</dimen>
+    <dimen name="card_padding_large">20dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
+    <dimen name="card_margin_large">16dp</dimen>
+
+    <!-- List Item Padding -->
+    <dimen name="list_item_padding">16dp</dimen>
+    <dimen name="list_item_padding_vertical">12dp</dimen>
+    <dimen name="list_item_padding_horizontal">16dp</dimen>
+
+    <!-- Button Padding -->
+    <dimen name="button_padding">16dp</dimen>
+    <dimen name="button_padding_horizontal">24dp</dimen>
+    <dimen name="button_padding_vertical">12dp</dimen>
+    <dimen name="button_margin">8dp</dimen>
+
+    <!-- Text Padding -->
+    <dimen name="text_padding">8dp</dimen>
+    <dimen name="text_padding_small">4dp</dimen>
+    <dimen name="text_margin">8dp</dimen>
+    <dimen name="text_margin_small">4dp</dimen>
+
+    <!-- Input Field Padding -->
+    <dimen name="input_padding">16dp</dimen>
+    <dimen name="input_padding_horizontal">16dp</dimen>
+    <dimen name="input_padding_vertical">12dp</dimen>
+    <dimen name="input_margin">8dp</dimen>
+
+    <!-- Dialog Padding -->
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="dialog_margin">16dp</dimen>
+
+    <!-- Toolbar/AppBar Padding -->
+    <dimen name="toolbar_padding">16dp</dimen>
+    <dimen name="toolbar_content_inset">16dp</dimen>
+
+    <!-- Section Spacing -->
+    <dimen name="section_margin">24dp</dimen>
+    <dimen name="section_margin_small">16dp</dimen>
+    <dimen name="section_margin_large">32dp</dimen>
+
+    <!-- Element Spacing -->
+    <dimen name="element_spacing">16dp</dimen>
+    <dimen name="element_spacing_small">8dp</dimen>
+    <dimen name="element_spacing_large">24dp</dimen>
+
+    <!-- Bottom Navigation Padding -->
+    <dimen name="bottom_nav_padding">8dp</dimen>
+
+    <!-- FAB Margin -->
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Divider Spacing -->
+    <dimen name="divider_margin">16dp</dimen>
+    <dimen name="divider_margin_small">8dp</dimen>
+
+    <!-- Image Padding -->
+    <dimen name="image_padding">8dp</dimen>
+    <dimen name="image_margin">8dp</dimen>
+
+    <!-- Tab Padding -->
+    <dimen name="tab_padding">16dp</dimen>
+    <dimen name="tab_padding_horizontal">24dp</dimen>
+
+    <!-- Chip Padding -->
+    <dimen name="chip_padding">12dp</dimen>
+    <dimen name="chip_margin">4dp</dimen>
+
+    <!-- Status Bar Height -->
+    <dimen name="status_bar_height">24dp</dimen>
+
+    <!-- Navigation Bar Height -->
+    <dimen name="navigation_bar_height">48dp</dimen>
+
+    <!-- Material Design Recommended Values -->
+    <dimen name="material_baseline_grid">8dp</dimen>
+    <dimen name="material_increment">56dp</dimen>
+    <dimen name="material_keyline_1">16dp</dimen>
+    <dimen name="material_keyline_2">72dp</dimen>
+
+    <!-- Touch Target Size -->
+    <dimen name="touch_target_size">48dp</dimen>
+    <dimen name="touch_target_size_small">40dp</dimen>
+
+    <!-- Button Sizes -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_mini">32dp</dimen>
+    <dimen name="button_internal_padding_zero">0dp</dimen>
+    
+    <!-- Lazy list Sizes-->
+    <dimen name="lazy_list_height">300dp</dimen>"
+</resources>
