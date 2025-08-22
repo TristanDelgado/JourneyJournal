@@ -10,8 +10,10 @@
     <string name="map">Map</string>
     <string name="settings">Settings</string>
     <string name="stats">Stats</string>
+    <string name="journey_name">Journey Name</string>
 
     <!-- Content Descriptions -->
     <string name="add_journey">Add Journey</string>
+
 
 </resources>

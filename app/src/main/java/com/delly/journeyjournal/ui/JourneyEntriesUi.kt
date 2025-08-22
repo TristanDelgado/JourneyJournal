@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,24 +21,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Typography
 import com.delly.journeyjournal.R as localR
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
-    Column(modifier = Modifier.padding(dimensionResource(id = localR.dimen.screen_edge_padding))) {
+fun JourneyEntriesUi(){
+    Column() {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(id = localR.string.home_title),
+                text = "Journey Name",
                 style = Typography.headlineLarge
             )
         }
@@ -56,7 +50,7 @@ fun HomeScreen(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { navController.navigate("createJourney") },
+                onClick = { },
                 modifier = Modifier
                     .height(dimensionResource(id = localR.dimen.button_height_mini))
                     .width(dimensionResource(id = localR.dimen.button_height_mini)),
@@ -69,36 +63,20 @@ fun HomeScreen(navController: NavController) {
                 )
             }
             Text(
-                stringResource(id = localR.string.active_journeys),
+                text = "Entries",
                 style = Typography.titleMedium,
             )
         }
         // Display a list of active journeys
-        LazyColumn (
-            modifier = Modifier.heightIn(min = 100.dp, max = dimensionResource(id = localR.dimen.lazy_list_height))
-        ){
+        LazyColumn(
+            modifier = Modifier.heightIn(
+                min = 100.dp,
+                max = dimensionResource(id = localR.dimen.lazy_list_height)
+            )
+        ) {
             items(4) { item ->
                 JourneyOverviewBox()
             }
         }
-
-        // Display a list of complete journeys
-        Text(stringResource(id = localR.string.complete_journeys))
-        LazyColumn {
-            items(9) { item ->
-                JourneyOverviewBox()
-            }
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun HomeScreenPreview() {
-    // Create a mock NavController for preview
-    val mockNavController = rememberNavController()
-
-    JourneyJournalTheme {
-        HomeScreen(navController = mockNavController)
     }
 }
