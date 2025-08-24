@@ -33,12 +33,32 @@ enum class Destination(
     val route: String,
     val label: String,
     val icon: ImageVector,
-    val contentDescription: String
+    val contentDescription: String,
 ) {
-    ENTRIES("entries", "Entries", Icons.Filled.Home, "entries"),
-    MAP("map", "Map", Icons.Filled.Person, "map"),
-    STATS("stats", "Stats", Icons.Filled.Settings, "stats"),
-    FORECASTS("forecasts", "Forecasts", Icons.Filled.Build, "forecasts")
+    ENTRIES(
+        "entries",
+        "Entries",
+        Icons.Filled.Home,
+        "entries"
+    ),
+    MAP(
+        "map",
+        "Map",
+        Icons.Filled.Person,
+        "map"
+    ),
+    STATS(
+        "stats",
+        "Stats",
+        Icons.Filled.Settings,
+        "stats"
+    ),
+    FORECASTS(
+        "forecasts",
+        "Forecasts",
+        Icons.Filled.Build,
+        "forecasts"
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,6 +68,9 @@ fun JourneyViewScaffoldUi(mainNavController: NavController) {
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
+//        topBar = {
+//            Button(onClick = )
+//        },
         bottomBar = {
             NavigationBar {
                 Destination.entries.forEachIndexed { index, destination ->
@@ -76,7 +99,7 @@ fun JourneyViewScaffoldUi(mainNavController: NavController) {
             }
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(dimensionResource(localR.dimen.padding_normal))){
+        Box(modifier = Modifier.padding(dimensionResource(localR.dimen.padding_normal))) {
             NavHost(
                 navController = localNavController,
                 startDestination = Destination.ENTRIES.route, // Use the actual first destination route
@@ -86,18 +109,16 @@ fun JourneyViewScaffoldUi(mainNavController: NavController) {
                     composable(destination.route) {
                         when (destination) {
                             Destination.ENTRIES -> JourneyEntriesUi()
-                            Destination.MAP -> JourneyEntriesUi()
-                            Destination.STATS -> JourneyEntriesUi()
-                            Destination.FORECASTS -> JourneyEntriesUi()
+                            Destination.MAP -> UnderConstructionScreen("Map")
+                            Destination.STATS -> UnderConstructionScreen("Travel Stats")
+                            Destination.FORECASTS -> UnderConstructionScreen("Forecasts")
                         }
                     }
                 }
             }
         }
-
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)

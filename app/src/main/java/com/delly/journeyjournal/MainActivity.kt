@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.delly.journeyjournal.ui.CreateJourneyUI
+import com.delly.journeyjournal.ui.CreateJourneyUi
 import com.delly.journeyjournal.ui.HomeScreen
 import com.delly.journeyjournal.ui.JourneyEntriesUi
 import com.delly.journeyjournal.ui.JourneyViewScaffoldUi
@@ -37,10 +37,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NavHost() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(
+        navController = navController,
+        startDestination = "home"
+    ) {
         composable("home") { HomeScreen(navController) }
         composable("journeyView") { JourneyViewScaffoldUi(navController) }
-        composable("createJourney") { CreateJourneyUI(navController) }
+        composable("createJourney") { CreateJourneyUi(navController) }
         composable("journeyEntries") { JourneyEntriesUi() }
         // Add other destinations
     }

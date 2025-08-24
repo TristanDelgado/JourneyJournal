@@ -74,9 +74,12 @@ fun HomeScreen(navController: NavController) {
             )
         }
         // Display a list of active journeys
-        LazyColumn (
-            modifier = Modifier.heightIn(min = 100.dp, max = dimensionResource(id = localR.dimen.lazy_list_height))
-        ){
+        LazyColumn(
+            modifier = Modifier.heightIn(
+                min = 100.dp,
+                max = dimensionResource(id = localR.dimen.lazy_list_height)
+            )
+        ) {
             items(4) { item ->
                 JourneyOverviewBox()
             }

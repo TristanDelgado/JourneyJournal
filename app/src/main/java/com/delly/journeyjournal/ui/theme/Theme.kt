@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun JourneyJournalTheme(
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colorScheme = colorScheme,

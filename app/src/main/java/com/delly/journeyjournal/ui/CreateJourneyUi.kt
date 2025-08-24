@@ -51,7 +51,7 @@ import com.delly.journeyjournal.R as localR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateJourneyUI(navController: NavController) {
+fun CreateJourneyUi(navController: NavController) {
     Column(
         modifier = Modifier
             .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
@@ -125,7 +125,7 @@ fun CreateJourneyUI(navController: NavController) {
                 singleLine = false
             )
 
-            Row() {
+            Row {
                 Button(
                     onClick = { navController.navigate("home") }
                 ) {
@@ -150,7 +150,7 @@ fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
 ) {
     TextField(
         modifier = Modifier.fillMaxWidth(),
@@ -168,8 +168,13 @@ fun DatePickerButton() {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
 
     Button(onClick = { showRangeModal = true }) {
-        Text(selectedDate?.let { SimpleDateFormat("MM/dd/yyyy", Locale.US).format(Date(it)) }
-            ?: "Start Date")
+        Text(selectedDate?.let {
+            SimpleDateFormat(
+                "MM/dd/yyyy",
+                Locale.US
+            ).format(Date(it))
+        }
+                 ?: "Start Date")
     }
 
     if (showRangeModal) {
@@ -208,7 +213,10 @@ fun DatePickerBox() {
     ) {
         Text(
             text = selectedDate?.let {
-                SimpleDateFormat("MM/dd/yyyy", Locale.US).format(Date(it))
+                SimpleDateFormat(
+                    "MM/dd/yyyy",
+                    Locale.US
+                ).format(Date(it))
             } ?: "Select Date",
             color = if (selectedDate != null) {
                 MaterialTheme.colorScheme.onSurface
@@ -233,7 +241,12 @@ fun DatePickerBox() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransportationMethodDropdownMenu() {
-    val options = listOf("On foot", "Bicycle", "Car", "")
+    val options = listOf(
+        "On foot",
+        "Bicycle",
+        "Car",
+        ""
+    )
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(options[0]) }
 
@@ -273,7 +286,7 @@ fun TransportationMethodDropdownMenu() {
 @Composable
 fun DatePickerModal(
     onDateSelected: (Long?) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val datePickerState = rememberDatePickerState()
 
@@ -294,14 +307,13 @@ fun DatePickerModal(
     }
 }
 
-
 @Composable
 @Preview(showBackground = true)
-fun CreateJourneyUIPreview() {
+fun CreateJourneyUiPreview() {
 
     val mockNavController = rememberNavController()
 
     JourneyJournalTheme {
-        CreateJourneyUI(navController = mockNavController)
+        CreateJourneyUi(navController = mockNavController)
     }
 }

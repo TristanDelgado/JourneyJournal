@@ -15,7 +15,6 @@ import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Shapes
 import com.delly.journeyjournal.R as localR
 
-
 /**
  * A box that displays basic overall information about a journey.
  */

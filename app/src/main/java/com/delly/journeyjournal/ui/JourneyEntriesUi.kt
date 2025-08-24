@@ -26,7 +26,7 @@ import com.delly.journeyjournal.ui.theme.Typography
 import com.delly.journeyjournal.R as localR
 
 @Composable
-fun JourneyEntriesUi(){
+fun JourneyEntriesUi() {
     Column() {
         Row(
             modifier = Modifier.fillMaxWidth(),
