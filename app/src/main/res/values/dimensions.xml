@@ -93,11 +93,8 @@
     <dimen name="chip_padding">12dp</dimen>
     <dimen name="chip_margin">4dp</dimen>
 
-    <!-- Status Bar Height -->
-    <dimen name="status_bar_height">24dp</dimen>
-
-    <!-- Navigation Bar Height -->
-    <dimen name="navigation_bar_height">48dp</dimen>
+    <!-- Title Bar Height -->
+    <dimen name="status_bar_height">96dp</dimen>
 
     <!-- Material Design Recommended Values -->
     <dimen name="material_baseline_grid">8dp</dimen>
@@ -110,6 +107,7 @@
     <dimen name="touch_target_size_small">40dp</dimen>
 
     <!-- Button Sizes -->
+    <dimen name="large_button_height">96dp</dimen>
     <dimen name="button_height">48dp</dimen>
     <dimen name="button_height_mini">32dp</dimen>
     <dimen name="button_internal_padding_zero">0dp</dimen>

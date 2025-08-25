@@ -27,17 +27,7 @@ import com.delly.journeyjournal.R as localR
 
 @Composable
 fun JourneyEntriesUi() {
-    Column() {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Journey Name",
-                style = Typography.headlineLarge
-            )
-        }
-
+    Column {
         // Add a button to add a new journey
         Row(
             modifier = Modifier
