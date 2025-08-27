@@ -1,19 +1,14 @@
 package com.delly.journeyjournal.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -41,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Shapes
 import com.delly.journeyjournal.ui.theme.Typography
@@ -168,13 +164,13 @@ fun DatePickerButton() {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
 
     Button(onClick = { showRangeModal = true }) {
-        Text(selectedDate?.let {
+        Text(selectedDate?.let { date ->
             SimpleDateFormat(
                 "MM/dd/yyyy",
                 Locale.US
-            ).format(Date(it))
+            ).format(Date(date))
         }
-                 ?: "Start Date")
+            ?: "Start Date")
     }
 
     if (showRangeModal) {
@@ -191,20 +187,15 @@ fun DatePickerButton() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransportationMethodDropdownMenu() {
-    val options = listOf(
-        "On foot",
-        "Bicycle",
-        "Car"
-    )
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(options[0]) }
+    var selectedOption by remember { mutableStateOf(value = TransportationMethods.ON_FOOT) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
-            value = selectedOption,
+            value = selectedOption.value,
             onValueChange = {},
             readOnly = true,
             label = { Text("Choose one") },
@@ -218,11 +209,11 @@ fun TransportationMethodDropdownMenu() {
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            options.forEach { option ->
+            TransportationMethods.entries.forEach { method ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(method.value) },
                     onClick = {
-                        selectedOption = option
+                        selectedOption = method
                         expanded = false
                     }
                 )
