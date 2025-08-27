@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -27,7 +28,7 @@ import com.delly.journeyjournal.R as localR
 
 @Composable
 fun JourneyEntriesUi() {
-    Column {
+    Column(modifier = Modifier.fillMaxHeight()) {
         // Add a button to add a new journey
         Row(
             modifier = Modifier
@@ -58,13 +59,8 @@ fun JourneyEntriesUi() {
             )
         }
         // Display a list of active journeys
-        LazyColumn(
-            modifier = Modifier.heightIn(
-                min = 100.dp,
-                max = dimensionResource(id = localR.dimen.lazy_list_height)
-            )
-        ) {
-            items(4) { item ->
+        LazyColumn() {
+            items(count = 10) { item ->
                 JourneyOverviewBox()
             }
         }

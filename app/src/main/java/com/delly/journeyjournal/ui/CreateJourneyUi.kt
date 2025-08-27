@@ -188,64 +188,13 @@ fun DatePickerButton() {
     }
 }
 
-@Composable
-fun DatePickerBox() {
-    var showRangeModal by remember { mutableStateOf(false) }
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
-
-    // Text box styled button
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline,
-                shape = RoundedCornerShape(4.dp)
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(4.dp)
-            )
-            .clickable { showRangeModal = true }
-            .padding(horizontal = 16.dp),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Text(
-            text = selectedDate?.let {
-                SimpleDateFormat(
-                    "MM/dd/yyyy",
-                    Locale.US
-                ).format(Date(it))
-            } ?: "Select Date",
-            color = if (selectedDate != null) {
-                MaterialTheme.colorScheme.onSurface
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            },
-            style = MaterialTheme.typography.bodyLarge
-        )
-    }
-
-    if (showRangeModal) {
-        DatePickerModal(
-            onDateSelected = {
-                selectedDate = it
-                showRangeModal = false
-            },
-            onDismiss = { showRangeModal = false }
-        )
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransportationMethodDropdownMenu() {
     val options = listOf(
         "On foot",
         "Bicycle",
-        "Car",
-        ""
+        "Car"
     )
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(options[0]) }

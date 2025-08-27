@@ -87,85 +87,91 @@ fun JourneyViewScaffoldUi(mainNavController: NavController) {
     val localNavController = rememberNavController()
     var selectedIndex by remember { mutableIntStateOf(0) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    var titleOfPage by remember { mutableStateOf("Journey Name") }
+    var titleOfPage by remember { mutableStateOf(value = "Journey Name") }
+    val journalName by remember { mutableStateOf(value = "Journey 2.0") }
     val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(
-        topBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(dimensionResource(localR.dimen.status_bar_height))
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 0.dp,
-                            topEnd = 0.dp,
-                            bottomStart = 16.dp,
-                            bottomEnd = 16.dp
-                        )
-                    )
-                    .background(color = MaterialTheme.colorScheme.primary)
-                    .padding(dimensionResource(localR.dimen.padding_normal)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Menu button on the left
-                IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
-                    Icon(
-                        modifier = Modifier
-                            .padding(dimensionResource(localR.dimen.padding_small))
-                            .size(dimensionResource(localR.dimen.large_button_height)),
-                        imageVector = Icons.Filled.Menu,
-                        contentDescription = "Menu to open drawer",
-                    )
-                }
-
-                // Title centered - takes up remaining space and centers text
-                Text(
-                    text = titleOfPage,
-                    style = Typography.headlineLarge,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 48.dp), // Compensate for menu button width
-                    textAlign = TextAlign.Center
-                )
-            }
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            SideMenuUi(title = journalName, globalNavigator = mainNavController)
         },
-        bottomBar = {
-            NavigationBar {
-                Destination.entries.forEachIndexed { index, destination ->
-                    NavigationBarItem(
-                        selected = selectedIndex == index,
-                        onClick = {
-                            selectedIndex = index
-                            localNavController.navigate(route = destination.route) {
-                                // Clear back stack and navigate to single destination
-                                popUpTo(localNavController.graph.startDestinationId) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = destination.icon,
-                                contentDescription = destination.contentDescription
+    )
+    {
+        Scaffold(
+            topBar = {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(dimensionResource(localR.dimen.status_bar_height))
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 0.dp,
+                                topEnd = 0.dp,
+                                bottomStart = 16.dp,
+                                bottomEnd = 16.dp
                             )
-                        },
-                        label = { Text(destination.label) }
+                        )
+                        .background(color = MaterialTheme.colorScheme.primary)
+                        .padding(dimensionResource(localR.dimen.padding_normal)),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Menu button on the left
+                    IconButton(onClick = {
+                        coroutineScope.launch {
+                            if (drawerState.isClosed) {
+                                drawerState.open()
+                            } else {
+                                drawerState.close()
+                            }
+                        }
+                    }) {
+                        Icon(
+                            modifier = Modifier
+                                .padding(dimensionResource(localR.dimen.padding_small))
+                                .size(dimensionResource(localR.dimen.large_button_height)),
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Menu to open drawer",
+                        )
+                    }
+
+                    // Title centered - takes up remaining space and centers text
+                    Text(
+                        text = titleOfPage,
+                        style = Typography.headlineLarge,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 48.dp), // Compensate for menu button width
+                        textAlign = TextAlign.Center
                     )
                 }
+            },
+            bottomBar = {
+                NavigationBar {
+                    Destination.entries.forEachIndexed { index, destination ->
+                        NavigationBarItem(
+                            selected = selectedIndex == index,
+                            onClick = {
+                                selectedIndex = index
+                                localNavController.navigate(route = destination.route) {
+                                    // Clear back stack and navigate to single destination
+                                    popUpTo(localNavController.graph.startDestinationId)
+                                }
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = destination.icon,
+                                    contentDescription = destination.contentDescription
+                                )
+                            },
+                            label = { Text(destination.label) }
+                        )
+                    }
+                }
             }
-        }
-    ) { paddingValues ->
-        Box(modifier = Modifier.padding(dimensionResource(localR.dimen.padding_normal))) {
-            ModalNavigationDrawer(
-                drawerState = drawerState,
-                drawerContent = {
-                    SideMenuUi()
-                },
-            )
-            {
+        ) { paddingValues ->
+            Box(modifier = Modifier.padding(dimensionResource(localR.dimen.padding_normal))) {
+
                 NavHost(
                     navController = localNavController,
                     startDestination = Destination.ENTRIES.route, // Use the actual first destination route
@@ -176,7 +182,7 @@ fun JourneyViewScaffoldUi(mainNavController: NavController) {
                             when (destination) {
                                 Destination.ENTRIES -> {
                                     JourneyEntriesUi()
-                                    titleOfPage = "Journey Name"
+                                    titleOfPage = journalName
                                 }
 
                                 Destination.MAP -> {
