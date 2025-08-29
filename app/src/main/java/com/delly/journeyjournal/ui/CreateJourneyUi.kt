@@ -36,10 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Shapes
 import com.delly.journeyjournal.ui.theme.Typography
+import com.delly.journeyjournal.ui.viewmodels.CreateJourneyViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -47,7 +49,11 @@ import com.delly.journeyjournal.R as localR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateJourneyUi(navController: NavController) {
+fun CreateJourneyUi(
+    navController: NavController,
+    repository: JournalRepository?,
+    viewModel: CreateJourneyViewModel? = null
+    ) {
     Column(
         modifier = Modifier
             .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
@@ -254,6 +260,6 @@ fun CreateJourneyUiPreview() {
     val mockNavController = rememberNavController()
 
     JourneyJournalTheme {
-        CreateJourneyUi(navController = mockNavController)
+        CreateJourneyUi(navController = mockNavController, repository = null)
     }
 }

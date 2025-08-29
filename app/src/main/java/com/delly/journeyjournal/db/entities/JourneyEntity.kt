@@ -15,10 +15,9 @@ import com.delly.journeyjournal.enums.TransportationMethods
  * @property transportationMethod The transportation method used on the journey.
  * @property description The description of the journey.
  */
-@Entity(tableName = "journeyEntities")
+@Entity(tableName = "JourneyEntity")
 data class JourneyEntity(
-    @PrimaryKey(autoGenerate = true)
-    val journalName: String = "",
+    @PrimaryKey val journalName: String,
     val journeymanName: String,
     val courseName: String,
     val courseRegion: String,

@@ -9,11 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,46 +39,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.delly.journeyjournal.db.JournalRepository
+import com.delly.journeyjournal.enums.Destinations
 import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Typography
 import kotlinx.coroutines.launch
 import com.delly.journeyjournal.R as localR
 
-enum class Destination(
-    val route: String,
-    val label: String,
-    val icon: ImageVector,
-    val contentDescription: String,
-) {
-    ENTRIES(
-        "entries",
-        "Entries",
-        Icons.Filled.Home,
-        "entries"
-    ),
-    MAP(
-        "map",
-        "Map",
-        Icons.Filled.Person,
-        "map"
-    ),
-    STATS(
-        "stats",
-        "Stats",
-        Icons.Filled.Settings,
-        "stats"
-    ),
-    FORECASTS(
-        "forecasts",
-        "Forecasts",
-        Icons.Filled.Build,
-        "forecasts"
-    )
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JourneyViewScaffoldUi(mainNavController: NavController) {
+fun JourneyViewScaffoldUi(mainNavController: NavController, repository: JournalRepository?) {
     val localNavController = rememberNavController()
     var selectedIndex by remember { mutableIntStateOf(0) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -148,7 +113,7 @@ fun JourneyViewScaffoldUi(mainNavController: NavController) {
             },
             bottomBar = {
                 NavigationBar {
-                    Destination.entries.forEachIndexed { index, destination ->
+                    Destinations.entries.forEachIndexed { index, destination ->
                         NavigationBarItem(
                             selected = selectedIndex == index,
                             onClick = {
@@ -174,28 +139,28 @@ fun JourneyViewScaffoldUi(mainNavController: NavController) {
 
                 NavHost(
                     navController = localNavController,
-                    startDestination = Destination.ENTRIES.route, // Use the actual first destination route
+                    startDestination = Destinations.ENTRIES.route, // Use the actual first destination route
                     modifier = Modifier.padding(paddingValues)
                 ) {
-                    Destination.entries.forEach { destination ->
+                    Destinations.entries.forEach { destination ->
                         composable(destination.route) {
                             when (destination) {
-                                Destination.ENTRIES -> {
+                                Destinations.ENTRIES -> {
                                     JourneyEntriesUi()
                                     titleOfPage = journalName
                                 }
 
-                                Destination.MAP -> {
+                                Destinations.MAP -> {
                                     UnderConstructionScreen()
                                     titleOfPage = "Map"
                                 }
 
-                                Destination.STATS -> {
+                                Destinations.STATS -> {
                                     UnderConstructionScreen()
                                     titleOfPage = "Travel Stats"
                                 }
 
-                                Destination.FORECASTS -> {
+                                Destinations.FORECASTS -> {
                                     UnderConstructionScreen()
                                     titleOfPage = "Forecasts"
                                 }
@@ -215,6 +180,6 @@ fun JourneyViewUiPreview() {
     val mockNavController = rememberNavController()
 
     JourneyJournalTheme {
-        JourneyViewScaffoldUi(mockNavController)
+        JourneyViewScaffoldUi(mainNavController = mockNavController, repository = null)
     }
 }
