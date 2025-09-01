@@ -22,6 +22,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,16 +33,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.TransportationMethods
-import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Shapes
 import com.delly.journeyjournal.ui.theme.Typography
 import com.delly.journeyjournal.ui.viewmodels.CreateJourneyViewModel
+import com.delly.journeyjournal.ui.viewmodels.CreateJourneyViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -51,9 +51,17 @@ import com.delly.journeyjournal.R as localR
 @Composable
 fun CreateJourneyUi(
     navController: NavController,
-    repository: JournalRepository?,
-    viewModel: CreateJourneyViewModel? = null
-    ) {
+    repository: JournalRepository,
+) {
+    //Initialize the viewmodel
+    val viewModel: CreateJourneyViewModel = viewModel(
+        factory = CreateJourneyViewModelFactory(
+            navController = navController,
+            repository = repository
+        )
+    )
+
+    // Start of UI
     Column(
         modifier = Modifier
             .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
@@ -67,13 +75,13 @@ fun CreateJourneyUi(
             textAlign = TextAlign.Center
         )
 
-        var journeyName by remember { mutableStateOf("") }
-        var journeymanName by remember { mutableStateOf("") }
-        var courseName by remember { mutableStateOf("") }
-        var courseRegion by remember { mutableStateOf("") }
-        var authorName by remember { mutableStateOf("") }
-        var descriptionPurpose by remember { mutableStateOf("") }
-        // Card-like container
+        // Start of form
+        val journeyName = viewModel.journeyName.collectAsState()
+        val journeymanName = viewModel.journeymanName.collectAsState()
+        val courseName = viewModel.courseName.collectAsState()
+        val courseRegion = viewModel.courseRegion.collectAsState()
+        val descriptionPurpose = viewModel.description.collectAsState()
+
         Column(
             modifier = Modifier
                 .clip(Shapes.large)
@@ -82,26 +90,26 @@ fun CreateJourneyUi(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = localR.dimen.content_padding))
         ) {
             CustomTextField(
-                value = journeyName,
-                onValueChange = { journeyName = it },
+                value = journeyName.value,
+                onValueChange = { viewModel.updateJourneyName(newName = it) },
                 label = stringResource(id = localR.string.journey_name)
             )
 
             CustomTextField(
-                value = journeymanName,
-                onValueChange = { journeymanName = it },
+                value = journeymanName.value,
+                onValueChange = { viewModel.updateJourneymanName(newName = it) },
                 label = "Journeyman Name"
             )
 
             CustomTextField(
-                value = courseName,
-                onValueChange = { courseName = it },
+                value = courseName.value,
+                onValueChange = { viewModel.updateCourseName(newName = it) },
                 label = "Course Name"
             )
 
             CustomTextField(
-                value = courseRegion,
-                onValueChange = { courseRegion = it },
+                value = courseRegion.value,
+                onValueChange = { viewModel.updateCourseRegion(newRegion = it) },
                 label = "Course Region"
             )
 
@@ -109,27 +117,22 @@ fun CreateJourneyUi(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                DatePickerButton()
+                DatePickerButton(viewModel = viewModel)
                 Spacer(Modifier.weight(1f))
-                TransportationMethodDropdownMenu()
+                TransportationMethodDropdownMenu(viewModel = viewModel)
             }
 
             CustomTextField(
-                value = authorName,
-                onValueChange = { authorName = it },
-                label = "Author Name"
-            )
-
-            CustomTextField(
-                value = descriptionPurpose,
-                onValueChange = { descriptionPurpose = it },
+                value = descriptionPurpose.value,
+                onValueChange = { viewModel.updateDescription(newDescription = it) },
                 label = "Description / Purpose",
                 singleLine = false
             )
 
+            // Save and Cancel buttons
             Row {
                 Button(
-                    onClick = { navController.navigate("home") }
+                    onClick = { viewModel.cancelJourney() }
                 ) {
                     Text("Cancel")
                 }
@@ -137,7 +140,7 @@ fun CreateJourneyUi(
                 Spacer(Modifier.weight(1f))
 
                 Button(
-                    onClick = { navController.navigate("journeyView") }
+                    onClick = { viewModel.saveJourney() }
                 )
                 {
                     Text("Save")
@@ -165,24 +168,24 @@ fun CustomTextField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerButton() {
+fun DatePickerButton(viewModel: CreateJourneyViewModel) {
     var showRangeModal by remember { mutableStateOf(false) }
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
+    val selectedDate = viewModel.selectedDate.collectAsState()
 
     Button(onClick = { showRangeModal = true }) {
-        Text(selectedDate?.let { date ->
+        Text(selectedDate.value?.let { date ->
             SimpleDateFormat(
                 "MM/dd/yyyy",
                 Locale.US
             ).format(Date(date))
         }
-            ?: "Start Date")
+                 ?: "Start Date")
     }
 
     if (showRangeModal) {
         DatePickerModal(
             onDateSelected = {
-                selectedDate = it
+                viewModel.updateSelectedDate(newDate = it)
                 showRangeModal = false
             },
             onDismiss = { showRangeModal = false }
@@ -192,16 +195,16 @@ fun DatePickerButton() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransportationMethodDropdownMenu() {
+fun TransportationMethodDropdownMenu(viewModel: CreateJourneyViewModel) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(value = TransportationMethods.ON_FOOT) }
+    val selectedOption = viewModel.selectedTransportationMethod.collectAsState()
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
-            value = selectedOption.value,
+            value = selectedOption.value.stringValue,
             onValueChange = {},
             readOnly = true,
             label = { Text("Choose one") },
@@ -217,9 +220,9 @@ fun TransportationMethodDropdownMenu() {
         ) {
             TransportationMethods.entries.forEach { method ->
                 DropdownMenuItem(
-                    text = { Text(method.value) },
+                    text = { Text(text = method.stringValue) },
                     onClick = {
-                        selectedOption = method
+                        viewModel.updateTransportationMethod(transportationMethod = method)
                         expanded = false
                     }
                 )
@@ -253,13 +256,15 @@ fun DatePickerModal(
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun CreateJourneyUiPreview() {
-
-    val mockNavController = rememberNavController()
-
-    JourneyJournalTheme {
-        CreateJourneyUi(navController = mockNavController, repository = null)
-    }
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun CreateJourneyUiPreview() {
+//
+//
+//    JourneyJournalTheme {
+//        CreateJourneyUi(
+//            navController = mockNavController,
+//            repository = null
+//        )
+//    }
+//}

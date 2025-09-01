@@ -9,8 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.delly.journeyjournal.db.entities.JourneyEntity
+import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Shapes
 import com.delly.journeyjournal.R as localR
@@ -19,20 +22,21 @@ import com.delly.journeyjournal.R as localR
  * A box that displays basic overall information about a journey.
  */
 @Composable
-fun JourneyOverviewBox() {
+fun JourneyOverviewBox(journeyEntity: JourneyEntity) {
     Column(
         modifier = Modifier
             .padding(
                 dimensionResource(id = localR.dimen.padding_tiny)
             )
             .clip(Shapes.large)
-            .background(color = androidx.compose.ui.graphics.Color.LightGray)
+            .background(color = Color.LightGray)
             .padding(
                 dimensionResource(id = localR.dimen.padding_small)
             )
             .fillMaxWidth()
     ) {
-        Text("Big Rock Trail)")
+        // Title
+        Text(journeyEntity.journeyName)
         Row {
             Text("Mi: 25)")
             Text("Entries: 3)")
@@ -44,7 +48,17 @@ fun JourneyOverviewBox() {
 @Composable
 @Preview(showBackground = true)
 fun JourneyOverviewBoxPreview() {
+    val journeyEntity = JourneyEntity(
+        journeyName = "Test",
+        journeymanName = "Test",
+        courseName = "Test",
+        courseRegion = "Test",
+        startDate = 101010,
+        transportationMethod = TransportationMethods.ON_FOOT,
+        description = "Test"
+    )
+
     JourneyJournalTheme {
-        JourneyOverviewBox()
+        JourneyOverviewBox(journeyEntity = journeyEntity)
     }
 }

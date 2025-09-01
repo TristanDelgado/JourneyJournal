@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.annotationProcessor
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -51,6 +49,7 @@ dependencies {
     // UI & Material Design
     implementation(libs.material)
     implementation(libs.material3)
+    implementation(libs.lifecycle.viewmodel.compose)
 
     // Jetpack Compose
     implementation(libs.androidx.compose.ui)

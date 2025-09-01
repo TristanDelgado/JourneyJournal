@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -22,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.delly.journeyjournal.ui.theme.Typography
 import com.delly.journeyjournal.R as localR
 
@@ -58,11 +55,11 @@ fun JourneyEntriesUi() {
                 style = Typography.titleMedium,
             )
         }
-        // Display a list of active journeys
-        LazyColumn() {
-            items(count = 10) { item ->
-                JourneyOverviewBox()
-            }
-        }
+//        // Display a list of active journeys
+//        LazyColumn() {
+//            items(count = 10) { item ->
+//                JourneyOverviewBox()
+//            }
+//        }
     }
 }

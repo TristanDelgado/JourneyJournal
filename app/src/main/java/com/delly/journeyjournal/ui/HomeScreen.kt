@@ -90,7 +90,7 @@ fun HomeScreen(navController: NavController, repository: JournalRepository?) {
         ) {
             allJourneys?.let { list ->
                 items(list.value) { journey ->
-                    JourneyOverviewBox()
+                    JourneyOverviewBox(journeyEntity = journey)
                 }
             }
         }
@@ -100,7 +100,7 @@ fun HomeScreen(navController: NavController, repository: JournalRepository?) {
         LazyColumn {
             allJourneys?.let { list ->
                 items(list.value) { journey ->
-                    JourneyOverviewBox()
+                    JourneyOverviewBox(journeyEntity = journey)
                 }
             }
         }
