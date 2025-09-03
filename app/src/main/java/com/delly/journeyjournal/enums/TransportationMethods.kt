@@ -9,5 +9,6 @@ package com.delly.journeyjournal.enums
 enum class TransportationMethods(val stringValue: String) {
     ON_FOOT("On foot"),
     BICYCLE("Bicycle"),
-    CAR("Car")
+    CAR("Car"),
+    ANIMAL("Animal")
 }

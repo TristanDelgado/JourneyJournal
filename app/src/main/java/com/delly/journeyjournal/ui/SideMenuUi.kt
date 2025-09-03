@@ -20,14 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 
 @Composable
 fun SideMenuUi(
     title: String,
-    globalNavigator: NavController
+    navigateHome: () -> Unit,
 ) {
     ModalDrawerSheet {
         Column(
@@ -48,11 +46,7 @@ fun SideMenuUi(
                 modifier = Modifier
                     .padding(16.dp)
                     .clickable {
-                        globalNavigator.navigate(route = "home") {
-                            // Clear back stack and navigate to single destination
-                            popUpTo(globalNavigator.graph.startDestinationId)
-                            launchSingleTop = true
-                        }
+                        navigateHome()
                     },
                 style = MaterialTheme.typography.titleMedium
             )
@@ -126,10 +120,7 @@ fun SideMenuUi(
 @Preview
 @Composable
 fun SideMenuPreview() {
-    val title = "Preview Journey"
-    val mockNavController = rememberNavController()
-
     JourneyJournalTheme {
-        SideMenuUi(title, mockNavController)
+        SideMenuUi(title = "Preview Journey", navigateHome = { null })
     }
 }

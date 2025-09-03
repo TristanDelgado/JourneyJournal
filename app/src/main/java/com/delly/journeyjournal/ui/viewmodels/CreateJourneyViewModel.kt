@@ -2,7 +2,6 @@ package com.delly.journeyjournal.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JourneyEntity
 import com.delly.journeyjournal.enums.TransportationMethods
@@ -12,7 +11,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CreateJourneyViewModel(
-    private val navController: NavController,
+    private val navigateHome: () -> Unit,
+    private val navigateToJourney: (String) -> Unit,
     private val repository: JournalRepository,
 ) : ViewModel() {
 
@@ -72,7 +72,7 @@ class CreateJourneyViewModel(
 
     // Cancel the creation of a new journey
     fun cancelJourney() {
-        navController.popBackStack()
+        navigateHome()
     }
 
     // Adds the new journey to the database
@@ -92,7 +92,7 @@ class CreateJourneyViewModel(
 
             try {
                 repository.insertJourney(journeyEntity = newJourney)
-                navController.navigate(route = "journeyView")
+                navigateToJourney(newJourney.journeyName)
             } catch (e: Exception) {
                 // Handle error
             }

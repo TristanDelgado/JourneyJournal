@@ -35,7 +35,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -48,18 +47,25 @@ import com.delly.journeyjournal.R as localR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JourneyViewScaffoldUi(mainNavController: NavController, repository: JournalRepository?) {
+fun JourneyViewScaffoldUi(
+    navigateHome: () -> Unit,
+    repository: JournalRepository?,
+    currentJournalName: String
+) {
     val localNavController = rememberNavController()
     var selectedIndex by remember { mutableIntStateOf(0) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    var titleOfPage by remember { mutableStateOf(value = "Journey Name") }
-    val journalName by remember { mutableStateOf(value = "Journey 2.0") }
+    var titleOfPage by remember { mutableStateOf(value = currentJournalName) }
+    val journalName by remember { mutableStateOf(value = currentJournalName) }
     val coroutineScope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            SideMenuUi(title = journalName, globalNavigator = mainNavController)
+            SideMenuUi(
+                title = journalName,
+                navigateHome = navigateHome
+            )
         },
     )
     {
@@ -176,10 +182,11 @@ fun JourneyViewScaffoldUi(mainNavController: NavController, repository: JournalR
 @Composable
 @Preview(showBackground = true)
 fun JourneyViewUiPreview() {
-
-    val mockNavController = rememberNavController()
-
     JourneyJournalTheme {
-        JourneyViewScaffoldUi(mainNavController = mockNavController, repository = null)
+        JourneyViewScaffoldUi(
+            navigateHome = { null },
+            repository = null,
+            currentJournalName = "Journey Name"
+        )
     }
 }

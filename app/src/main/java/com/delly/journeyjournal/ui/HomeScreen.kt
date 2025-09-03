@@ -27,8 +27,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Typography
@@ -36,7 +34,7 @@ import com.delly.journeyjournal.R as localR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, repository: JournalRepository?) {
+fun HomeScreen(navToCreateJourneyScreen: () -> Unit, repository: JournalRepository?) {
     val allJourneys = repository?.getAllJourneys()?.collectAsState(initial = emptyList())
 
     Column(modifier = Modifier.padding(dimensionResource(id = localR.dimen.screen_edge_padding))) {
@@ -64,7 +62,7 @@ fun HomeScreen(navController: NavController, repository: JournalRepository?) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
-                onClick = { navController.navigate("createJourney") },
+                onClick = { navToCreateJourneyScreen() },
                 modifier = Modifier
                     .height(dimensionResource(id = localR.dimen.button_height_mini))
                     .width(dimensionResource(id = localR.dimen.button_height_mini)),
@@ -110,10 +108,7 @@ fun HomeScreen(navController: NavController, repository: JournalRepository?) {
 @Composable
 @Preview(showBackground = true)
 fun HomeScreenPreview() {
-    // Create a mock NavController for preview
-    val mockNavController = rememberNavController()
-
     JourneyJournalTheme {
-        HomeScreen(navController = mockNavController, repository = null)
+        HomeScreen(navToCreateJourneyScreen = { null }, repository = null)
     }
 }

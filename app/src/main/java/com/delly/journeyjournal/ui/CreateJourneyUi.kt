@@ -35,7 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.ui.theme.Shapes
@@ -50,13 +49,15 @@ import com.delly.journeyjournal.R as localR
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateJourneyUi(
-    navController: NavController,
+    navigateHome: () -> Unit,
+    navigateToJourney: (String) -> Unit,
     repository: JournalRepository,
 ) {
     //Initialize the viewmodel
     val viewModel: CreateJourneyViewModel = viewModel(
         factory = CreateJourneyViewModelFactory(
-            navController = navController,
+            navigateHome = navigateHome,
+            navigateToJourney = navigateToJourney,
             repository = repository
         )
     )
@@ -179,7 +180,7 @@ fun DatePickerButton(viewModel: CreateJourneyViewModel) {
                 Locale.US
             ).format(Date(date))
         }
-                 ?: "Start Date")
+            ?: "Start Date")
     }
 
     if (showRangeModal) {
