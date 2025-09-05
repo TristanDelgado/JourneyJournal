@@ -38,6 +38,13 @@ fun NavHost(
         composable<Home> {
             HomeScreen(
                 navToCreateJourneyScreen = { navController.navigate(route = CreateJourney) },
+                navigateToJourney = { selectedJourney ->
+                    navController.navigate(
+                        route = SelectedJourney(
+                            name = selectedJourney
+                        )
+                    )
+                },
                 repository = repository
             )
         }

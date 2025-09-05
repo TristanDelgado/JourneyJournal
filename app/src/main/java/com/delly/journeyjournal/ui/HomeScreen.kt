@@ -34,7 +34,11 @@ import com.delly.journeyjournal.R as localR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navToCreateJourneyScreen: () -> Unit, repository: JournalRepository?) {
+fun HomeScreen(
+    navToCreateJourneyScreen: () -> Unit,
+    navigateToJourney: (String) -> Unit,
+    repository: JournalRepository?
+) {
     val allJourneys = repository?.getAllJourneys()?.collectAsState(initial = emptyList())
 
     Column(modifier = Modifier.padding(dimensionResource(id = localR.dimen.screen_edge_padding))) {
@@ -88,7 +92,11 @@ fun HomeScreen(navToCreateJourneyScreen: () -> Unit, repository: JournalReposito
         ) {
             allJourneys?.let { list ->
                 items(list.value) { journey ->
-                    JourneyOverviewBox(journeyEntity = journey)
+                    JourneyOverviewBox(
+                        journeyEntity = journey,
+                        navigateToJourney = navigateToJourney,
+                        repository = repository
+                    )
                 }
             }
         }
@@ -98,7 +106,11 @@ fun HomeScreen(navToCreateJourneyScreen: () -> Unit, repository: JournalReposito
         LazyColumn {
             allJourneys?.let { list ->
                 items(list.value) { journey ->
-                    JourneyOverviewBox(journeyEntity = journey)
+                    JourneyOverviewBox(
+                        journeyEntity = journey,
+                        navigateToJourney = navigateToJourney,
+                        repository = repository
+                    )
                 }
             }
         }
@@ -109,6 +121,10 @@ fun HomeScreen(navToCreateJourneyScreen: () -> Unit, repository: JournalReposito
 @Preview(showBackground = true)
 fun HomeScreenPreview() {
     JourneyJournalTheme {
-        HomeScreen(navToCreateJourneyScreen = { null }, repository = null)
+        HomeScreen(
+            navToCreateJourneyScreen = { null },
+            navigateToJourney = { null },
+            repository = null
+        )
     }
 }

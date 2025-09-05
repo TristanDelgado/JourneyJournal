@@ -119,7 +119,7 @@ fun CreateJourneyUi(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 DatePickerButton(viewModel = viewModel)
-                Spacer(Modifier.weight(1f))
+                Spacer(Modifier.weight(weight = 1f))
                 TransportationMethodDropdownMenu(viewModel = viewModel)
             }
 
