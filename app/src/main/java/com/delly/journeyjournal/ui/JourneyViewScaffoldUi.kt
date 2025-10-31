@@ -45,6 +45,15 @@ import com.delly.journeyjournal.ui.theme.Typography
 import kotlinx.coroutines.launch
 import com.delly.journeyjournal.R as localR
 
+/**
+ * This composable is the main UI for viewing a journey. It sets up a `ModalNavigationDrawer` with a
+ * `Scaffold`. The `Scaffold` has a top bar, a bottom navigation bar, and the main content area which
+ * is a `NavHost`.
+ *
+ * @param navigateHome A lambda to navigate back to the home screen.
+ * @param repository The repository to get journal data from.
+ * @param currentJournalName The name of the currently selected journal.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JourneyViewScaffoldUi(
@@ -179,6 +188,9 @@ fun JourneyViewScaffoldUi(
     }
 }
 
+/**
+ * This is a preview for the `JourneyViewScaffoldUi`.
+ */
 @Composable
 @Preview(showBackground = true)
 fun JourneyViewUiPreview() {

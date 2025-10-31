@@ -34,7 +34,6 @@ fun NavHost(
         startDestination = Home
     ) {
         // HomeScreen is the initial load in screen where all Journals are displayed
-        //composable(route = "home") { HomeScreen(navController, repository) }
         composable<Home> {
             HomeScreen(
                 navToCreateJourneyScreen = { navController.navigate(route = CreateJourney) },
@@ -50,7 +49,6 @@ fun NavHost(
         }
 
         // CreateJourneyUi is used to create a new journey
-        //composable(route = "createJourney", arguments = ) { CreateJourneyUi(navController, repository) }
         composable<CreateJourney> {
             CreateJourneyUi(
                 navigateHome = { navController.navigate(route = Home) },
@@ -65,14 +63,7 @@ fun NavHost(
             )
         }
 
-        // JourneyViewScaffoldUi is used to view a specific Journal
-//        composable(route = "journeyView") {
-//            JourneyViewScaffoldUi(
-//                mainNavController = navController,
-//                repository = repository,
-//                currentJourney = journeyName
-//            )
-//        }
+        // JourneyViewScaffoldUi is used to view the data for an existing journey
         composable<SelectedJourney> { selectedJourney ->
             val selectedJourneyName: SelectedJourney = selectedJourney.toRoute()
 
