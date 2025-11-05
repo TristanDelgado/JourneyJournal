@@ -15,5 +15,17 @@
     <!-- Content Descriptions -->
     <string name="add_journey">Add Journey</string>
 
-
+    <!-- Create Journey Entry -->
+    <string name="new_entry_title">New Entry</string>
+    <string name="day_number">Day #</string>
+    <string name="start_location">Start Location</string>
+    <string name="end_location">End Location</string>
+    <string name="distance_hiked">Distance Hiked (mi/km)</string>
+    <string name="trail_conditions">Trail Conditions</string>
+    <string name="wildlife_sightings">Wildlife Sightings</string>
+    <string name="resupply_notes">Resupply / Water Notes</string>
+    <string name="journal_notes">Notes &amp; Reflections</string>
+    <string name="add_photos">Add Photos</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>

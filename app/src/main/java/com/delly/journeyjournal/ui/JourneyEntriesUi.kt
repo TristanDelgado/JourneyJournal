@@ -26,7 +26,7 @@ import com.delly.journeyjournal.R as localR
 @Composable
 fun JourneyEntriesUi() {
     Column(modifier = Modifier.fillMaxHeight()) {
-        // Add a button to add a new journey
+        // TODO: Add a button to add a new journey
         Row(
             modifier = Modifier
                 .fillMaxWidth()

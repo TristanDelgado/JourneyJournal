@@ -21,3 +21,17 @@ class CreateJourneyViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+
+class CreateEntryViewModelFactory(
+    private val navigateBack: () -> Unit,
+    private val repository: JournalRepository,
+    private val journeyId: String
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CreateEntryViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return CreateEntryViewModel(navigateBack, repository, journeyId) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
