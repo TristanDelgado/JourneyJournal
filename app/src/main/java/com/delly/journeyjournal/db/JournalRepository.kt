@@ -1,12 +1,14 @@
 package com.delly.journeyjournal.db
 
 import com.delly.journeyjournal.db.dataAccessObjects.JourneyEntityDao
+import com.delly.journeyjournal.db.dataAccessObjects.JourneyEntryEntityDao
 import com.delly.journeyjournal.db.entities.JourneyEntity
 import com.delly.journeyjournal.db.entities.JourneyEntryEntity
 import kotlinx.coroutines.flow.Flow
 
-class JournalRepository(private val journeyEntityDao: JourneyEntityDao) {
+class JournalRepository(private val journeyEntityDao: JourneyEntityDao, private val journeyEntryEntityDao: JourneyEntryEntityDao) {
 
+    // Journal Specific Operations
     fun getAllJourneys(): Flow<List<JourneyEntity>> = journeyEntityDao.getAllJournals()
 
     suspend fun getJourneyByName(name: String): JourneyEntity? =
@@ -30,4 +32,21 @@ class JournalRepository(private val journeyEntityDao: JourneyEntityDao) {
     suspend fun deleteJourneyByName(name: String) = journeyEntityDao.deleteJournalByName(name)
 
     suspend fun deleteAllJourneys() = journeyEntityDao.deleteAllJournals()
+
+    // Entry Specific Operations
+
+    suspend fun getEntryById(id: Int): JourneyEntryEntity? =
+        journeyEntryEntityDao.getEntryById(id)
+
+    suspend fun getEntriesByIds(ids: List<Long>): List<JourneyEntryEntity> =
+        journeyEntryEntityDao.getEntriesByIds(ids)
+
+    suspend fun insertEntry(entry: JourneyEntryEntity): Long =
+        journeyEntryEntityDao.insertEntry(entry)
+
+    suspend fun updateEntry(entry: JourneyEntryEntity) =
+        journeyEntryEntityDao.updateEntry(entry)
+
+    suspend fun deleteEntry(entry: JourneyEntryEntity) =
+        journeyEntryEntityDao.deleteEntry(entry)
 }

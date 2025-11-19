@@ -19,7 +19,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +29,7 @@ import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.ui.theme.Typography
 import kotlinx.coroutines.launch
 import com.delly.journeyjournal.R as localR
+import com.delly.journeyjournal.db.entities.JourneyEntryEntity
 
 /**
  * This composable displays a list of journey entries.
@@ -45,7 +45,7 @@ fun JourneyEntriesUi(
     journeyName: String,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val journeyEntries: JourneyEntry? = null
+    val journeyEntries: JourneyEntryEntity? = null
 
     Column(
         modifier = Modifier
@@ -89,16 +89,32 @@ fun JourneyEntriesUi(
             )
         ) {
             coroutineScope.launch {
-                val entries = repository.getJourneyByName(name = journeyName)?.entries;
+                val entryKeys = repository.getJourneyByName(name = journeyName)?.entryKeys
 
-                entries?.let { entry ->
-                    items(entry) { journey ->
-                        JourneyOverviewBox(
-                            journeyEntity = journey,
-                            navigateToJourney = navigateToJourney,
-                            repository = repository
+                if (entryKeys != null) {
+                    val entries = repository.getEntriesByIds(ids = entryKeys)
+
+                    items(entries) { singleEntry ->
+                        JourneyEntryOverviewBox(
+                            entry = singleEntry
                         )
                     }
+                }
+                else {
+                    val exampleEntry = JourneyEntryEntity(
+                        id = 0,
+                        dayNumber = "1",
+                        startLocation = "Valley",
+                        endLocation = "Mountain",
+                        distanceHiked = "2",
+                        trailConditions = "Rough",
+                        wildlifeSightings = "None",
+                        resupplyNotes = "None",
+                        notes = "Example"
+                    )
+                    JourneyEntryOverviewBox(
+                        entry = exampleEntry
+                    )
                 }
             }
         }

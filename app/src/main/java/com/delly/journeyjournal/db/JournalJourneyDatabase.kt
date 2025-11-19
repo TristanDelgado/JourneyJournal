@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import android.content.Context
 import androidx.room.TypeConverters
 import com.delly.journeyjournal.db.dataAccessObjects.JourneyEntityDao
+import com.delly.journeyjournal.db.dataAccessObjects.JourneyEntryEntityDao
 import com.delly.journeyjournal.db.entities.JourneyEntity
 
 @Database(
@@ -17,6 +18,7 @@ import com.delly.journeyjournal.db.entities.JourneyEntity
 abstract class JournalJourneyDatabase : RoomDatabase() {
 
     abstract fun journeyEntityDao(): JourneyEntityDao
+    abstract fun journeyEntryEntityDao(): JourneyEntryEntityDao
 
     companion object {
         @Volatile
