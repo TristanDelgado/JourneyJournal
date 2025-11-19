@@ -16,7 +16,7 @@ object CreateJourneyEntryDestination
 @Composable
 fun JourneyEntriesNav(
     repository: JournalRepository,
-    journalName: String
+    journeyName: String
 ) {
     val navController = rememberNavController()
 
@@ -27,7 +27,9 @@ fun JourneyEntriesNav(
         // JourneyEntriesUi is the initial load in screen where all entries are displayed
         composable<JourneyEntriesDestination> {
             JourneyEntriesUi(
-                navigateToCreateEntry = { navController.navigate(CreateJourneyEntryDestination) }
+                navigateToCreateEntry = { navController.navigate(CreateJourneyEntryDestination) },
+                repository = repository,
+                journeyName = journeyName
             )
         }
 
@@ -36,7 +38,7 @@ fun JourneyEntriesNav(
             CreateJourneyEntryUi(
                 navigateBack = { navController.popBackStack() },
                 repository = repository,
-                journalName = journalName,
+                journeyId = journeyName,
             )
         }
     }

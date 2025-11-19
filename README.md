@@ -1,6 +1,7 @@
 TODO:
 - Add viewmodels to the JourneyEntriesUI file
 - Create an entry overview box similar to the journey overview box
+- Figure out how to have the EntryEntities list or somehow keep entries inside the journal entity itself.
 
 # Journey Journal
 An android application.
