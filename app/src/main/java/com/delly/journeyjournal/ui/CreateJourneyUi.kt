@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.TransportationMethods
+import com.delly.journeyjournal.ui.genericUi.CustomTextField
 import com.delly.journeyjournal.ui.theme.Shapes
 import com.delly.journeyjournal.ui.theme.Typography
 import com.delly.journeyjournal.ui.viewmodels.CreateJourneyViewModel
@@ -149,22 +150,6 @@ fun CreateJourneyUi(
             }
         }
     }
-}
-
-@Composable
-fun CustomTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    singleLine: Boolean = true,
-) {
-    TextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        singleLine = singleLine
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

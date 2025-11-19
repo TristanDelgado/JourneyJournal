@@ -32,14 +32,22 @@ import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Typography
 import com.delly.journeyjournal.R as localR
 
+/**
+ * The main screen of the application. It displays a title, a button to create a new journey,
+ * and two lists of journeys: active and complete.
+ *
+ * @param navToCreateJourneyScreen A lambda function to be invoked when the user clicks the button to create a new journey.
+ * @param navigateToJourney A lambda function that takes a journey name as a string and navigates to that journey's screen.
+ * @param repository The repository to fetch journey data from.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navToCreateJourneyScreen: () -> Unit,
     navigateToJourney: (String) -> Unit,
-    repository: JournalRepository?
+    repository: JournalRepository
 ) {
-    val allJourneys = repository?.getAllJourneys()?.collectAsState(initial = emptyList())
+    val allJourneys = repository.getAllJourneys().collectAsState(initial = emptyList())
 
     Column(modifier = Modifier.padding(dimensionResource(id = localR.dimen.screen_edge_padding))) {
         Row(
@@ -117,14 +125,18 @@ fun HomeScreen(
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun HomeScreenPreview() {
-    JourneyJournalTheme {
-        HomeScreen(
-            navToCreateJourneyScreen = { null },
-            navigateToJourney = { null },
-            repository = null
-        )
-    }
-}
+// TODO: Add the ability to pass in an empty repository
+///**
+// * A preview composable for the `HomeScreen`.
+// */
+//@Composable
+//@Preview(showBackground = true)
+//fun HomeScreenPreview() {
+//    JourneyJournalTheme {
+//        HomeScreen(
+//            navToCreateJourneyScreen = { null },
+//            navigateToJourney = { null },
+//            repository = null
+//        )
+//    }
+//}

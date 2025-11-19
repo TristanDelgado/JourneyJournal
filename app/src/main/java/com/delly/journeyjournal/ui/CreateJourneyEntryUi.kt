@@ -26,51 +26,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
+import com.delly.journeyjournal.ui.genericUi.CustomTextField
 import com.delly.journeyjournal.ui.genericUi.DatePickerButtonUi
 import com.delly.journeyjournal.ui.viewmodels.CreateEntryViewModel
 import com.delly.journeyjournal.ui.viewmodels.CreateEntryViewModelFactory
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import com.delly.journeyjournal.R as localR
 
-// --- Placeholders for your existing code/resources ---
+// --- Placeholders  ---
 
 // TODO: Replace with your actual repository
 //interface JournalRepository {
 //    // Define methods for adding entries, etc.
-//}
-
-// TODO: Replace with your actual CustomTextField
-//@Composable
-//fun CustomTextField(
-//    value: String,
-//    onValueChange: (String) -> Unit,
-//    label: String,
-//    singleLine: Boolean = true,
-//    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
-//) {
-//    TextField(
-//        value = value,
-//        onValueChange = onValueChange,
-//        label = { Text(label) },
-//        singleLine = singleLine,
-//        modifier = Modifier.fillMaxWidth(),
-//        keyboardOptions = keyboardOptions
-//    )
-//}
-
-// TODO: Replace with your actual DatePickerButton
-//@Composable
-//fun DatePickerButton(viewModel: CreateEntryViewModel) {
-//    Button(onClick = { /* TODO: Show Date Picker Dialog */ }) {
-//        Text(viewModel.entryDate.collectAsState().value.ifEmpty { "Select Date" })
-//    }
 //}
 
 // TODO: Create and implement this Weather Dropdown
@@ -95,17 +63,17 @@ fun RatingDropdownMenu(viewModel: CreateEntryViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateEntryUi(
+fun CreateJourneyEntryUi(
     navigateBack: () -> Unit,
     repository: JournalRepository,
-    journeyId: String
+    journalName: String
 ) {
     //Initialize the viewmodel
     val viewModel: CreateEntryViewModel = viewModel(
         factory = CreateEntryViewModelFactory(
             navigateBack = navigateBack,
             repository = repository,
-            journeyId = journeyId
+            journalName = journalName
         )
     )
 
@@ -229,7 +197,12 @@ fun CreateEntryUi(
                 onValueChange = { viewModel.updateNotes(it) },
                 label = stringResource(id = localR.string.journal_notes),
                 singleLine = false,
-                modifier = Modifier.fillMaxWidth().weight(1f, fill = false) // Allow notes to expand
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(
+                        1f,
+                        fill = false
+                    ) // Allow notes to expand
             )
 
             // Save and Cancel buttons

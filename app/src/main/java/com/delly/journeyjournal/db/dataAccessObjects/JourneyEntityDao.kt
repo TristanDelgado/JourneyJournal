@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.delly.journeyjournal.db.entities.JourneyEntity
+import com.delly.journeyjournal.db.entities.JourneyEntryEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -39,7 +40,7 @@ interface JourneyEntityDao {
     suspend fun getJournalByName(journeyName: String): JourneyEntity?
 
     /**
-     * Inserts a new journal entry into the database.
+     * Inserts a new journal into the database.
      *
      * If a journal with the same primary key already exists, it will be replaced
      * due to the REPLACE conflict strategy.
@@ -49,6 +50,16 @@ interface JourneyEntityDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertJourney(journeyEntity: JourneyEntity): Long
+
+    /**
+     * Inserts a new journal entry into the database.
+     *
+     * @param journeyName The name of the journal to insert the entry into
+     * @param journalEntry The JourneyEntryEntity to insert
+     * @return Boolean indicating whether the insertion was successful
+     */
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertEntry(journeyName: String, journalEntry: JourneyEntryEntity): Boolean
 
     /**
      * Inserts multiple journal entries into the database in a single transaction.

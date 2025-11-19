@@ -2,16 +2,21 @@ package com.delly.journeyjournal.db
 
 import com.delly.journeyjournal.db.dataAccessObjects.JourneyEntityDao
 import com.delly.journeyjournal.db.entities.JourneyEntity
+import com.delly.journeyjournal.db.entities.JourneyEntryEntity
 import kotlinx.coroutines.flow.Flow
 
 class JournalRepository(private val journeyEntityDao: JourneyEntityDao) {
 
     fun getAllJourneys(): Flow<List<JourneyEntity>> = journeyEntityDao.getAllJournals()
 
-    suspend fun getJourneyByName(name: String): JourneyEntity? = journeyEntityDao.getJournalByName(name)
+    suspend fun getJourneyByName(name: String): JourneyEntity? =
+        journeyEntityDao.getJournalByName(name)
 
     suspend fun insertJourney(journeyEntity: JourneyEntity): Long =
         journeyEntityDao.insertJourney(journeyEntity)
+
+    suspend fun insertEntry(journeyName: String, journalEntry: JourneyEntryEntity): Boolean =
+        journeyEntityDao.insertEntry(journeyName, journalEntry)
 
     suspend fun insertJourneys(journeyEntity: List<JourneyEntity>) =
         journeyEntityDao.insertJournals(journeyEntity)
