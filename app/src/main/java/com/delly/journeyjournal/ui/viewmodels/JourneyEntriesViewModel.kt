@@ -1,0 +1,39 @@
+package com.delly.journeyjournal.ui.viewmodels
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.delly.journeyjournal.db.JournalRepository
+import com.delly.journeyjournal.db.entities.JourneyWithEntries
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+
+/**
+ * Journey entries view model
+ *
+ * @property repository
+ * @property journeyName
+ * @constructor Create empty Journey entries view model
+ */
+class JourneyEntriesViewModel(
+    private val repository: JournalRepository,
+    private val journeyName: String
+) : ViewModel() {
+
+    /**
+     * _journey with entries
+     */
+    private val _journeyWithEntries = MutableStateFlow<JourneyWithEntries?>(null)
+    val journeyWithEntries: StateFlow<JourneyWithEntries?> = _journeyWithEntries.asStateFlow()
+
+    init {
+        loadEntries()
+    }
+
+    private fun loadEntries() {
+        viewModelScope.launch {
+            _journeyWithEntries.value = repository.getJourneyWithEntries(journeyName)
+        }
+    }
+}

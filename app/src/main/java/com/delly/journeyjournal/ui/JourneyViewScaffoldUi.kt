@@ -39,7 +39,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.enums.Destinations
+import com.delly.journeyjournal.enums.JourneyViewDestinations
 import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
 import com.delly.journeyjournal.ui.theme.Typography
 import kotlinx.coroutines.launch
@@ -58,7 +58,7 @@ import com.delly.journeyjournal.R as localR
 @Composable
 fun JourneyViewScaffoldUi(
     navigateHome: () -> Unit,
-    repository: JournalRepository?,
+    repository: JournalRepository,
     currentJournalName: String
 ) {
     val localNavController = rememberNavController()
@@ -128,7 +128,7 @@ fun JourneyViewScaffoldUi(
             },
             bottomBar = {
                 NavigationBar {
-                    Destinations.entries.forEachIndexed { index, destination ->
+                    JourneyViewDestinations.entries.forEachIndexed { index, destination ->
                         NavigationBarItem(
                             selected = selectedIndex == index,
                             onClick = {
@@ -154,28 +154,28 @@ fun JourneyViewScaffoldUi(
 
                 NavHost(
                     navController = localNavController,
-                    startDestination = Destinations.ENTRIES.route, // Use the actual first destination route
+                    startDestination = JourneyViewDestinations.ENTRIES.route, // Use the actual first destination route
                     modifier = Modifier.padding(paddingValues)
                 ) {
-                    Destinations.entries.forEach { destination ->
+                    JourneyViewDestinations.entries.forEach { destination ->
                         composable(destination.route) {
                             when (destination) {
-                                Destinations.ENTRIES -> {
-                                    JourneyEntriesUi()
+                                JourneyViewDestinations.ENTRIES -> {
+                                    JourneyEntriesNav(repository, journalName)
                                     titleOfPage = journalName
                                 }
 
-                                Destinations.MAP -> {
+                                JourneyViewDestinations.MAP -> {
                                     UnderConstructionScreen()
                                     titleOfPage = "Map"
                                 }
 
-                                Destinations.STATS -> {
+                                JourneyViewDestinations.STATS -> {
                                     UnderConstructionScreen()
                                     titleOfPage = "Travel Stats"
                                 }
 
-                                Destinations.FORECASTS -> {
+                                JourneyViewDestinations.FORECASTS -> {
                                     UnderConstructionScreen()
                                     titleOfPage = "Forecasts"
                                 }
@@ -188,17 +188,15 @@ fun JourneyViewScaffoldUi(
     }
 }
 
-/**
- * This is a preview for the `JourneyViewScaffoldUi`.
- */
-@Composable
-@Preview(showBackground = true)
-fun JourneyViewUiPreview() {
-    JourneyJournalTheme {
-        JourneyViewScaffoldUi(
-            navigateHome = { null },
-            repository = null,
-            currentJournalName = "Journey Name"
-        )
-    }
-}
+// TODO - Make this preview available by passing a repository into it.
+//@Composable
+//@Preview(showBackground = true)
+//fun JourneyViewUiPreview() {
+//    JourneyJournalTheme {
+//        JourneyViewScaffoldUi(
+//            navigateHome = { null },
+//            repository = null,
+//            currentJournalName = "Journey Name"
+//        )
+//    }
+//}

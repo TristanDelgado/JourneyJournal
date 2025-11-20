@@ -4,29 +4,63 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.delly.journeyjournal.db.JournalRepository
+import com.delly.journeyjournal.db.entities.JourneyEntryEntity
 import com.delly.journeyjournal.ui.theme.Typography
+import com.delly.journeyjournal.ui.viewmodels.JourneyEntriesViewModel
+import com.delly.journeyjournal.ui.viewmodels.JourneyEntriesViewModelFactory
 import com.delly.journeyjournal.R as localR
 
+/**
+ * This composable displays a list of journey entries.
+ * It also includes a button to create a new entry.
+ *
+ * @param navigateToCreateEntry A lambda to navigate to the create entry screen.
+ * @param repository The repository to fetch data.
+ * @param journeyName The name of the journey to fetch entries for.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JourneyEntriesUi() {
-    Column(modifier = Modifier.fillMaxHeight()) {
-        // TODO: Add a button to add a new journey
+fun JourneyEntriesUi(
+    navigateToCreateEntry: () -> Unit,
+    repository: JournalRepository,
+    journeyName: String,
+) {
+    // Initialize the viewmodel
+    val viewModel: JourneyEntriesViewModel = viewModel(
+        factory = JourneyEntriesViewModelFactory(
+            repository,
+            journeyName
+        )
+    )
+
+    // Start of UI
+    Column(
+        modifier = Modifier
+            .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -37,8 +71,9 @@ fun JourneyEntriesUi() {
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Button to create a new entry
             Button(
-                onClick = { },
+                onClick = { navigateToCreateEntry() },
                 modifier = Modifier
                     .height(dimensionResource(id = localR.dimen.button_height_mini))
                     .width(dimensionResource(id = localR.dimen.button_height_mini)),
@@ -51,15 +86,45 @@ fun JourneyEntriesUi() {
                 )
             }
             Text(
-                text = "Entries",
+                stringResource(id = localR.string.entries),
                 style = Typography.titleMedium,
+                modifier = Modifier.padding(start = 8.dp)
             )
         }
-//        // Display a list of active journeys
-//        LazyColumn() {
-//            items(count = 10) { item ->
-//                JourneyOverviewBox()
-//            }
-//        }
+
+        val journeyWithEntries = viewModel.journeyWithEntries.collectAsState()
+
+        // Display a list of entries
+        LazyColumn(
+            modifier = Modifier.heightIn(
+                min = 100.dp,
+                max = dimensionResource(id = localR.dimen.lazy_list_height)
+            )
+        ) {
+
+            // Check if we have valid data AND the list is not empty
+            if (!journeyWithEntries.value?.entries.isNullOrEmpty()) {
+                items(items = journeyWithEntries.value!!.entries) { entry ->
+                    JourneyEntryOverviewBox(entry = entry)
+                }
+            } else {
+                // Fallback: Show example entry if data is loading (null) or empty
+                val exampleEntry = JourneyEntryEntity(
+                    id = 0,
+                    ownerId = "ownerId",
+                    dayNumber = "1",
+                    startLocation = "Valley",
+                    endLocation = "Mountain",
+                    distanceHiked = "2",
+                    trailConditions = "Rough",
+                    wildlifeSightings = "None",
+                    resupplyNotes = "None",
+                    notes = "Example"
+                )
+                item {
+                    JourneyEntryOverviewBox(entry = exampleEntry)
+                }
+            }
+        }
     }
 }

@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * @property contentDescription
  * @constructor Create empty Destinations
  */
-enum class Destinations(
+enum class JourneyViewDestinations(
     val route: String,
     val label: String,
     val icon: ImageVector,
@@ -48,5 +48,5 @@ enum class Destinations(
         "Forecasts",
         Icons.Filled.Build,
         "forecasts"
-    )
+    ),
 }
