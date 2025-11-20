@@ -41,7 +41,11 @@ import com.delly.journeyjournal.R as localR
 //    // Define methods for adding entries, etc.
 //}
 
-// TODO: Create and implement this Weather Dropdown
+/**
+ * Weather dropdown menu
+ *
+ * @param viewModel
+ */// TODO: Create and implement this Weather Dropdown
 @Composable
 fun WeatherDropdownMenu(viewModel: CreateEntryViewModel) {
     // Placeholder - Implement a dropdown for weather options
@@ -50,7 +54,11 @@ fun WeatherDropdownMenu(viewModel: CreateEntryViewModel) {
     }
 }
 
-// TODO: Create and implement this Rating Dropdown
+/**
+ * Rating dropdown menu
+ *
+ * @param viewModel
+ */// TODO: Create and implement this Rating Dropdown
 @Composable
 fun RatingDropdownMenu(viewModel: CreateEntryViewModel) {
     // Placeholder - Implement a dropdown for 1-5 rating
@@ -61,6 +69,16 @@ fun RatingDropdownMenu(viewModel: CreateEntryViewModel) {
 // --- End of Placeholders ---
 
 
+/**
+ * Create journey entry UI.
+ *
+ * Still under construction.
+ *
+ * @param navigateBack Cancels creating a new journey
+ * @param repository The repository to save data to
+ * @param journalName The journal to create the new entry in
+ * @receiver
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateJourneyEntryUi(

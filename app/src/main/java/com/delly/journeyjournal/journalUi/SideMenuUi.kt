@@ -22,6 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.delly.journeyjournal.theme.JourneyJournalTheme
 
+/**
+ * Side menu ui used for navigation inside of a journal.
+ *
+ * @param title The title of the journal
+ * @param navigateHome Navigates the user to the home screen to view all journals
+ * @receiver
+ */
 @Composable
 fun SideMenuUi(
     title: String,
@@ -117,6 +124,9 @@ fun SideMenuUi(
     }
 }
 
+/**
+ * Side menu preview
+ */
 @Preview
 @Composable
 fun SideMenuPreview() {

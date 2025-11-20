@@ -17,6 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.delly.journeyjournal.db.entities.JourneyEntryEntity
 
+/**
+ * Journey entry overview box used to see the general overview of an entry in a journal.
+ *
+ * @param entry The entry to display
+ * @param modifier
+ */
 @Composable
 fun JourneyEntryOverviewBox(
     entry: JourneyEntryEntity,

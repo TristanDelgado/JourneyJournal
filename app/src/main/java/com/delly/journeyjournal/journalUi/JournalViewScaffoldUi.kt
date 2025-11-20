@@ -159,7 +159,7 @@ fun JourneyViewScaffoldUi(
                         composable(destination.route) {
                             when (destination) {
                                 JourneyViewDestinations.ENTRIES -> {
-                                    JourneyEntriesNav(
+                                    JournalEntriesNav(
                                         repository,
                                         journalName
                                     )

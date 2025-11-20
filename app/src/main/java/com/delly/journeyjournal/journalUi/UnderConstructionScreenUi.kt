@@ -8,6 +8,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.delly.journeyjournal.theme.Typography
 
+/**
+ * Under construction screen used as a placeholder.
+ */
 @Composable
 fun UnderConstructionScreen() {
     Box(

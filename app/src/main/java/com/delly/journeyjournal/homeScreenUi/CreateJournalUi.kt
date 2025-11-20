@@ -47,6 +47,15 @@ import java.util.Date
 import java.util.Locale
 import com.delly.journeyjournal.R as localR
 
+/**
+ * Create journey ui
+ *
+ * @param navigateHome
+ * @param navigateToJourney
+ * @param repository
+ * @receiver
+ * @receiver
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateJourneyUi(
@@ -152,6 +161,11 @@ fun CreateJourneyUi(
     }
 }
 
+/**
+ * Date picker button
+ *
+ * @param viewModel
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerButton(viewModel: CreateJournalViewModel) {
@@ -179,6 +193,11 @@ fun DatePickerButton(viewModel: CreateJournalViewModel) {
     }
 }
 
+/**
+ * Transportation method dropdown menu
+ *
+ * @param viewModel
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransportationMethodDropdownMenu(viewModel: CreateJournalViewModel) {
@@ -217,6 +236,14 @@ fun TransportationMethodDropdownMenu(viewModel: CreateJournalViewModel) {
     }
 }
 
+/**
+ * Date picker modal
+ *
+ * @param onDateSelected
+ * @param onDismiss
+ * @receiver
+ * @receiver
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerModal(

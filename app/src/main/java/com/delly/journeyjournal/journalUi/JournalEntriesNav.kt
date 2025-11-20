@@ -13,10 +13,16 @@ object JourneyEntriesDestination
 @Serializable
 object CreateJourneyEntryDestination
 
+/**
+ * Used to navigate viewing, creating and editing journal entries.
+ *
+ * @param repository The repository to get data from
+ * @param journalName The name journal being viewed
+ */
 @Composable
-fun JourneyEntriesNav(
+fun JournalEntriesNav(
     repository: JournalRepository,
-    journeyName: String
+    journalName: String
 ) {
     val navController = rememberNavController()
 
@@ -29,7 +35,7 @@ fun JourneyEntriesNav(
             JourneyEntriesUi(
                 navigateToCreateEntry = { navController.navigate(CreateJourneyEntryDestination) },
                 repository = repository,
-                journeyName = journeyName
+                journeyName = journalName
             )
         }
 
@@ -38,7 +44,7 @@ fun JourneyEntriesNav(
             CreateJourneyEntryUi(
                 navigateBack = { navController.popBackStack() },
                 repository = repository,
-                journalName = journeyName,
+                journalName = journalName,
             )
         }
     }
