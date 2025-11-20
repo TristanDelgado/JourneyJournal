@@ -72,6 +72,7 @@ class CreateEntryViewModel(
             // TODO: Validate input
 
             val newEntry = JourneyEntryEntity(
+                ownerId = journalName,
                 dayNumber = _dayNumber.value,
                 startLocation = _startLocation.value,
                 endLocation = _endLocation.value,
@@ -83,7 +84,7 @@ class CreateEntryViewModel(
             )
 
             try {
-                repository.insertEntry(journeyName = journalName, journalEntry = newEntry)
+                repository.insertJourneyEntry(entry = newEntry)
                 navigateBack()
             } catch (e: Exception) {
                 // Handle error

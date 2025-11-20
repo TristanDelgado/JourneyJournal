@@ -24,5 +24,4 @@ data class JourneyEntity(
     val startDate: Long?,
     val transportationMethod: TransportationMethods,
     val description: String,
-    val entryKeys: List<Long> = emptyList(),
 )

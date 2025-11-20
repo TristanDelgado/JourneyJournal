@@ -52,16 +52,6 @@ interface JourneyEntityDao {
     suspend fun insertJourney(journeyEntity: JourneyEntity): Long
 
     /**
-     * Inserts a new journal entry into the database.
-     *
-     * @param journeyName The name of the journal to insert the entry into
-     * @param journalEntry The JourneyEntryEntity to insert
-     * @return Boolean indicating whether the insertion was successful
-     */
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertEntry(journeyName: String, journalEntry: JourneyEntryEntity): Boolean
-
-    /**
      * Inserts multiple journal entries into the database in a single transaction.
      *
      * If any journals with the same primary keys already exist, they will be replaced

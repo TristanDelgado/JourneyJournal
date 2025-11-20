@@ -38,7 +38,7 @@ fun JourneyEntriesNav(
             CreateJourneyEntryUi(
                 navigateBack = { navController.popBackStack() },
                 repository = repository,
-                journeyId = journeyName,
+                journalName = journeyName,
             )
         }
     }

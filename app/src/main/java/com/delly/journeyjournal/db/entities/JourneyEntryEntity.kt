@@ -1,6 +1,7 @@
 package com.delly.journeyjournal.db.entities
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 /**
@@ -16,10 +17,20 @@ import androidx.room.PrimaryKey
  * @property resupplyNotes Notes on resupply or water during the journey entry.
  * @property notes General notes and reflections for the journey entry.
  */
-@Entity(tableName = "JourneyEntryEntity")
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            entity = JourneyEntity::class,
+            parentColumns = ["journeyName"],
+            childColumns = ["ownerId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class JourneyEntryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+    val ownerId: String,
     val dayNumber: String,
     val startLocation: String,
     val endLocation: String,

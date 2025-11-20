@@ -1,6 +1,5 @@
 package com.delly.journeyjournal.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,15 +15,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -60,9 +55,8 @@ fun JourneyEntriesUi(
             journeyName
         )
     )
-    
-    val entryList by viewModel.entryList.collectAsState()
 
+    // Start of UI
     Column(
         modifier = Modifier
             .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
@@ -98,6 +92,8 @@ fun JourneyEntriesUi(
             )
         }
 
+        val journeyWithEntries = viewModel.journeyWithEntries.collectAsState()
+
         // Display a list of entries
         LazyColumn(
             modifier = Modifier.heightIn(
@@ -105,8 +101,29 @@ fun JourneyEntriesUi(
                 max = dimensionResource(id = localR.dimen.lazy_list_height)
             )
         ) {
-            items(entryList) { entry ->
-                JourneyEntryOverviewBox(entry = entry)
+
+            // Check if we have valid data AND the list is not empty
+            if (!journeyWithEntries.value?.entries.isNullOrEmpty()) {
+                items(items = journeyWithEntries.value!!.entries) { entry ->
+                    JourneyEntryOverviewBox(entry = entry)
+                }
+            } else {
+                // Fallback: Show example entry if data is loading (null) or empty
+                val exampleEntry = JourneyEntryEntity(
+                    id = 0,
+                    ownerId = "ownerId",
+                    dayNumber = "1",
+                    startLocation = "Valley",
+                    endLocation = "Mountain",
+                    distanceHiked = "2",
+                    trailConditions = "Rough",
+                    wildlifeSightings = "None",
+                    resupplyNotes = "None",
+                    notes = "Example"
+                )
+                item {
+                    JourneyEntryOverviewBox(entry = exampleEntry)
+                }
             }
         }
     }

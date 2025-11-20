@@ -18,7 +18,12 @@ class MainActivity : ComponentActivity() {
         val database = JournalJourneyDatabase.getDatabase(context = this)
         val journeyEntityDao = database.journeyEntityDao()
         val journeyEntryEntityDao = database.journeyEntryEntityDao()
-        val repository = JournalRepository(journeyEntityDao = journeyEntityDao, journeyEntryEntityDao = journeyEntryEntityDao)
+        val journeyDao = database.journeyDao()
+        val repository = JournalRepository(
+            journeyEntityDao = journeyEntityDao,
+            journeyEntryEntityDao = journeyEntryEntityDao,
+            journeyDao = journeyDao
+        )
 
         setContent {
             JourneyJournalTheme {

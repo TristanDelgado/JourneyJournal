@@ -17,23 +17,23 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface JourneyEntryEntityDao {
-    /**
-     * Retrieves a specific entry by its unique ID.
-     *
-     * @param id The unique identifier of the entry.
-     * @return The JourneyEntryEntity, or null if not found.
-     */
-    @Query("SELECT * FROM JourneyEntryEntity WHERE id = :id")
-    suspend fun getEntryById(id: Int): JourneyEntryEntity?
+//    /**
+//     * Retrieves a specific entry by its unique ID.
+//     *
+//     * @param id The unique identifier of the entry.
+//     * @return The JourneyEntryEntity, or null if not found.
+//     */
+//    @Query("SELECT * FROM JourneyEntryEntity WHERE id = :id")
+//    suspend fun getEntryById(id: Int): JourneyEntryEntity?
 
-    /**
-     * Retrieves a list of entries that match a provided list of IDs.
-     *
-     * @param ids A list of unique identifiers to fetch.
-     * @return A list of matching JourneyEntryEntity objects.
-     */
-    @Query("SELECT * FROM JourneyEntryEntity WHERE id IN (:ids)")
-    suspend fun getEntriesByIds(ids: List<Long>): List<JourneyEntryEntity>
+//    /**
+//     * Retrieves a list of entries that match a provided list of IDs.
+//     *
+//     * @param ids A list of unique identifiers to fetch.
+//     * @return A list of matching JourneyEntryEntity objects.
+//     */
+//    @Query("SELECT * FROM JourneyEntryEntity WHERE id IN (:ids)")
+//    suspend fun getEntriesByIds(ids: List<Long>): List<JourneyEntryEntity>
 
     /**
      * Inserts a new journey entry into the database.
@@ -44,7 +44,7 @@ interface JourneyEntryEntityDao {
      * @return The row ID of the newly inserted entry.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertEntry(entry: JourneyEntryEntity): Long
+    suspend fun insertJourneyEntry(entry: JourneyEntryEntity): Long
 
     /**
      * Updates an existing journey entry in the database.
