@@ -7,33 +7,20 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.delly.journeyjournal.db.entities.JourneyEntryEntity
-import kotlinx.coroutines.flow.Flow
 
 /**
- * Data Access Object (DAO) for performing CRUD operations on the journeyEntryEntities table.
- *
- * This interface defines all database operations for JourneyEntryEntity objects, including
- * querying, inserting, updating, and deleting individual journal entries.
+ * Data Access Object (DAO) for the journeyEntryEntities table.
  */
 @Dao
-interface JourneyEntryEntityDao {
-//    /**
-//     * Retrieves a specific entry by its unique ID.
-//     *
-//     * @param id The unique identifier of the entry.
-//     * @return The JourneyEntryEntity, or null if not found.
-//     */
-//    @Query("SELECT * FROM JourneyEntryEntity WHERE id = :id")
-//    suspend fun getEntryById(id: Int): JourneyEntryEntity?
-
-//    /**
-//     * Retrieves a list of entries that match a provided list of IDs.
-//     *
-//     * @param ids A list of unique identifiers to fetch.
-//     * @return A list of matching JourneyEntryEntity objects.
-//     */
-//    @Query("SELECT * FROM JourneyEntryEntity WHERE id IN (:ids)")
-//    suspend fun getEntriesByIds(ids: List<Long>): List<JourneyEntryEntity>
+interface JournalEntryEntityDao {
+    /**
+     * Retrieves a specific entry by its unique ID.
+     *
+     * @param id The unique identifier of the entry.
+     * @return The JourneyEntryEntity, or null if not found.
+     */
+    @Query("SELECT * FROM JourneyEntryEntity WHERE id = :id")
+    suspend fun getEntryById(id: Int): JourneyEntryEntity?
 
     /**
      * Inserts a new journey entry into the database.

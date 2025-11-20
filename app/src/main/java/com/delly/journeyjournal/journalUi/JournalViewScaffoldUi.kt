@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui
+package com.delly.journeyjournal.journalUi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -33,15 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.JourneyViewDestinations
-import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
-import com.delly.journeyjournal.ui.theme.Typography
+import com.delly.journeyjournal.theme.Typography
 import kotlinx.coroutines.launch
 import com.delly.journeyjournal.R as localR
 
@@ -161,7 +159,10 @@ fun JourneyViewScaffoldUi(
                         composable(destination.route) {
                             when (destination) {
                                 JourneyViewDestinations.ENTRIES -> {
-                                    JourneyEntriesNav(repository, journalName)
+                                    JourneyEntriesNav(
+                                        repository,
+                                        journalName
+                                    )
                                     titleOfPage = journalName
                                 }
 

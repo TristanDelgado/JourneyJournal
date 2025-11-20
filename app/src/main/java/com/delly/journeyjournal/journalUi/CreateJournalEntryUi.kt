@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui
+package com.delly.journeyjournal.journalUi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,10 +28,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.ui.genericUi.CustomTextField
-import com.delly.journeyjournal.ui.genericUi.DatePickerButtonUi
-import com.delly.journeyjournal.ui.viewmodels.CreateEntryViewModel
-import com.delly.journeyjournal.ui.viewmodels.CreateEntryViewModelFactory
+import com.delly.journeyjournal.genericUi.CustomTextField
+import com.delly.journeyjournal.genericUi.DatePickerButtonUi
+import com.delly.journeyjournal.viewmodels.CreateEntryViewModel
+import com.delly.journeyjournal.viewmodels.CreateEntryViewModelFactory
 import com.delly.journeyjournal.R as localR
 
 // --- Placeholders  ---
@@ -118,7 +118,7 @@ fun CreateJourneyEntryUi(
             ) {
                 DatePickerButtonUi(
                     selectedDate = viewModel.entryDate.collectAsState().value,
-                    onDateChanged = { viewModel.updateEntryDate(newDate = it) }
+                    onDateSelected = { viewModel.updateEntryDate(newDate = it) }
                 )
                 Spacer(Modifier.weight(1f))
                 CustomTextField(

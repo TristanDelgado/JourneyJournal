@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui.viewmodels
+package com.delly.journeyjournal.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

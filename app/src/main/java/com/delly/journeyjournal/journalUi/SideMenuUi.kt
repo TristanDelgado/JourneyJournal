@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui
+package com.delly.journeyjournal.journalUi
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
+import com.delly.journeyjournal.theme.JourneyJournalTheme
 
 @Composable
 fun SideMenuUi(

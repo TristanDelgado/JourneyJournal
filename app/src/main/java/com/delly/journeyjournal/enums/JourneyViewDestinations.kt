@@ -23,30 +23,30 @@ enum class JourneyViewDestinations(
     val contentDescription: String,
 ) {
     ENTRIES(
-        "entries",
-        "Entries",
+        route = "entries",
+        label = "Entries",
         Icons.Filled.Home,
-        "entries"
+        contentDescription = "entries"
     ),
 
     MAP(
-        "map",
-        "Map",
+        route = "map",
+        label = "Map",
         Icons.Filled.Person,
-        "map"
+        contentDescription = "map"
     ),
 
     STATS(
-        "stats",
-        "Stats",
+        route = "stats",
+        label = "Stats",
         Icons.Filled.Settings,
-        "stats"
+        contentDescription = "stats"
     ),
 
     FORECASTS(
-        "forecasts",
-        "Forecasts",
+        route = "forecasts",
+        label = "Forecasts",
         Icons.Filled.Build,
-        "forecasts"
+        contentDescription = "forecasts"
     ),
 }

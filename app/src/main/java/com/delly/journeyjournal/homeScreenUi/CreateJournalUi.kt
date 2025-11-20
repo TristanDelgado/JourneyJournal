@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui
+package com.delly.journeyjournal.homeScreenUi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,11 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.TransportationMethods
-import com.delly.journeyjournal.ui.genericUi.CustomTextField
-import com.delly.journeyjournal.ui.theme.Shapes
-import com.delly.journeyjournal.ui.theme.Typography
-import com.delly.journeyjournal.ui.viewmodels.CreateJourneyViewModel
-import com.delly.journeyjournal.ui.viewmodels.CreateJourneyViewModelFactory
+import com.delly.journeyjournal.genericUi.CustomTextField
+import com.delly.journeyjournal.theme.Shapes
+import com.delly.journeyjournal.theme.Typography
+import com.delly.journeyjournal.viewmodels.CreateJournalViewModel
+import com.delly.journeyjournal.viewmodels.CreateJourneyViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -55,7 +55,7 @@ fun CreateJourneyUi(
     repository: JournalRepository,
 ) {
     //Initialize the viewmodel
-    val viewModel: CreateJourneyViewModel = viewModel(
+    val viewModel: CreateJournalViewModel = viewModel(
         factory = CreateJourneyViewModelFactory(
             navigateHome = navigateHome,
             navigateToJourney = navigateToJourney,
@@ -154,7 +154,7 @@ fun CreateJourneyUi(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerButton(viewModel: CreateJourneyViewModel) {
+fun DatePickerButton(viewModel: CreateJournalViewModel) {
     var showRangeModal by remember { mutableStateOf(false) }
     val selectedDate = viewModel.selectedDate.collectAsState()
 
@@ -181,7 +181,7 @@ fun DatePickerButton(viewModel: CreateJourneyViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransportationMethodDropdownMenu(viewModel: CreateJourneyViewModel) {
+fun TransportationMethodDropdownMenu(viewModel: CreateJournalViewModel) {
     var expanded by remember { mutableStateOf(false) }
     val selectedOption = viewModel.selectedTransportationMethod.collectAsState()
 

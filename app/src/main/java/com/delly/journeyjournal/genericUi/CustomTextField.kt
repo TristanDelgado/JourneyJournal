@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui.genericUi
+package com.delly.journeyjournal.genericUi
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
  * @param label The label to be displayed inside the text field.
  * @param modifier The modifier to be applied to the text field.
  * @param singleLine When set to true, this text field becomes a single horizontally scrolling text field instead of a vertically scrolling one.
- * @param keyboardOptions software keyboard options that contains configuration such as [KeyboardType] and [ImeAction].
+ * @param keyboardOptions software keyboard options such as a number-pad or regular keyboard.
  */
 @Composable
 fun CustomTextField(
@@ -30,7 +30,7 @@ fun CustomTextField(
         modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label) },
+        label = { Text(text = label) },
         singleLine = singleLine,
         keyboardOptions = keyboardOptions,
     )

@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui.viewmodels
+package com.delly.journeyjournal.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +8,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * Create entry view model
+ *
+ * @property navigateBack Call back to cancel creating a new entry in the current journal
+ * @property repository The repository to store the entry in
+ * @property journalName The journal name to associate the entry with
+ * @constructor Create empty "Create entry view model"
+ */
 class CreateEntryViewModel(
     private val navigateBack: () -> Unit,
     private val repository: JournalRepository,
@@ -15,7 +23,7 @@ class CreateEntryViewModel(
 ) : ViewModel() {
 
     // --- StateFlows for all fields ---
-    private val _entryDate = MutableStateFlow(Long.MIN_VALUE)
+    private val _entryDate = MutableStateFlow(value = System.currentTimeMillis())
     val entryDate: StateFlow<Long> = _entryDate
 
     private val _dayNumber = MutableStateFlow("")

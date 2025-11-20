@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui.viewmodels
+package com.delly.journeyjournal.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,11 +10,11 @@ class CreateJourneyViewModelFactory(
     private val repository: JournalRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CreateJourneyViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(CreateJournalViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return CreateJourneyViewModel(
+            return CreateJournalViewModel(
                 navigateHome = navigateHome,
-                navigateToJourney = navigateToJourney,
+                createAndNavigateToJournal = navigateToJourney,
                 repository = repository
             ) as T
         }

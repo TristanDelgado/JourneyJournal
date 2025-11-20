@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui
+package com.delly.journeyjournal.journalUi
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

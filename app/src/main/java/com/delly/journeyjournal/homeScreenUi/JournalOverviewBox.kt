@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui
+package com.delly.journeyjournal.homeScreenUi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,8 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JourneyEntity
 import com.delly.journeyjournal.enums.TransportationMethods
-import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
-import com.delly.journeyjournal.ui.theme.Shapes
+import com.delly.journeyjournal.theme.JourneyJournalTheme
+import com.delly.journeyjournal.theme.Shapes
 import kotlinx.coroutines.launch
 import com.delly.journeyjournal.R as localR
 
@@ -71,7 +71,7 @@ fun JourneyOverviewBox(
             Button(
                 onClick = {
                     coroutineScope.launch {
-                        repository?.deleteJourneyByName(name = journeyEntity.journeyName)
+                        repository?.deleteJournal(journeyEntity = journeyEntity)
                     }
                 },
                 content = {

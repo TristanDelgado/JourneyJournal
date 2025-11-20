@@ -6,9 +6,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.ui.CreateJourneyUi
-import com.delly.journeyjournal.ui.HomeScreen
-import com.delly.journeyjournal.ui.JourneyViewScaffoldUi
+import com.delly.journeyjournal.homeScreenUi.CreateJourneyUi
+import com.delly.journeyjournal.homeScreenUi.HomeScreen
+import com.delly.journeyjournal.journalUi.JourneyViewScaffoldUi
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui
+package com.delly.journeyjournal.journalUi
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost

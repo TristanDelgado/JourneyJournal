@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui
+package com.delly.journeyjournal.homeScreenUi
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,11 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.ui.theme.JourneyJournalTheme
-import com.delly.journeyjournal.ui.theme.Typography
+import com.delly.journeyjournal.theme.Typography
 import com.delly.journeyjournal.R as localR
 
 /**
@@ -47,7 +45,7 @@ fun HomeScreen(
     navigateToJourney: (String) -> Unit,
     repository: JournalRepository
 ) {
-    val allJourneys = repository.getAllJourneys().collectAsState(initial = emptyList())
+    val allJourneys = repository.getAllJournals().collectAsState(initial = emptyList())
 
     Column(modifier = Modifier.padding(dimensionResource(id = localR.dimen.screen_edge_padding))) {
         Row(

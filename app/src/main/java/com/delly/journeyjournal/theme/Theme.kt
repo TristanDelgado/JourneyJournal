@@ -1,9 +1,14 @@
-package com.delly.journeyjournal.ui.theme
+package com.delly.journeyjournal.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 
+/**
+ * Journey journal theme
+ *
+ * @param content The content to apply the theme to.
+ */
 @Composable
 fun JourneyJournalTheme(
     content: @Composable () -> Unit,

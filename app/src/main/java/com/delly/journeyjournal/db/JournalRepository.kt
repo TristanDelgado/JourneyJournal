@@ -1,58 +1,120 @@
 package com.delly.journeyjournal.db
 
-import com.delly.journeyjournal.db.dataAccessObjects.JourneyDao
-import com.delly.journeyjournal.db.dataAccessObjects.JourneyEntityDao
-import com.delly.journeyjournal.db.dataAccessObjects.JourneyEntryEntityDao
-//import com.delly.journeyjournal.db.dataAccessObjects.JourneyEntryEntityDao
+import com.delly.journeyjournal.db.dataAccessObjects.JournalWithEntriesDao
+import com.delly.journeyjournal.db.dataAccessObjects.JournalEntityDao
+import com.delly.journeyjournal.db.dataAccessObjects.JournalEntryEntityDao
 import com.delly.journeyjournal.db.entities.JourneyEntity
 import com.delly.journeyjournal.db.entities.JourneyEntryEntity
 import com.delly.journeyjournal.db.entities.JourneyWithEntries
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository class that abstracts access to multiple data sources.
+ * It acts as a mediator between the domain/UI layer and the data layer (DAOs).
+ *
+ * @property journeyEntityDao DAO for [JourneyEntity] operations.
+ * @property journeyEntryEntityDao DAO for [JourneyEntryEntity] operations.
+ * @property journeyDao DAO for composite operations like [JourneyWithEntries].
+ */
 class JournalRepository(
-    private val journeyEntityDao: JourneyEntityDao,
-    private val journeyEntryEntityDao: JourneyEntryEntityDao,
-    private val journeyDao: JourneyDao
+    private val journeyEntityDao: JournalEntityDao,
+    private val journeyEntryEntityDao: JournalEntryEntityDao,
+    private val journeyDao: JournalWithEntriesDao
 ) {
     // Journal Specific Operations
-    fun getAllJourneys(): Flow<List<JourneyEntity>> = journeyEntityDao.getAllJournals()
 
-    suspend fun getJourneyByName(name: String): JourneyEntity? =
-        journeyEntityDao.getJournalByName(name)
+    /**
+     * Retrieves all journeys as a Flow.
+     *
+     * @return A [Flow] emitting a list of [JourneyEntity] objects.
+     */
+    fun getAllJournals(): Flow<List<JourneyEntity>> =
+        journeyEntityDao.getAllJournals()
 
-    suspend fun insertJourney(journeyEntity: JourneyEntity): Long =
-        journeyEntityDao.insertJourney(journeyEntity)
+    /**
+     * Retrieves a specific journey by its name.
+     *
+     * @param name The name of the journey.
+     * @return The [JourneyEntity] if found, null otherwise.
+     */
+    suspend fun getJournalByName(name: String): JourneyEntity? =
+        journeyEntityDao.getJournalByName(journeyName = name)
 
-    suspend fun insertJourneys(journeyEntity: List<JourneyEntity>) =
-        journeyEntityDao.insertJournals(journeyEntity)
+    /**
+     * Inserts a new journal into the database.
+     *
+     * @param journeyEntity The [JourneyEntity] to insert.
+     * @return The row ID of the inserted journey.
+     */
+    suspend fun insertJournal(journeyEntity: JourneyEntity): Long =
+        journeyEntityDao.insertJournal(journeyEntity)
 
-    suspend fun updateJourney(journeyEntity: JourneyEntity) =
+    /**
+     * Updates an existing journal.
+     *
+     * @param journeyEntity The [JourneyEntity] with updated values.
+     */
+    suspend fun updateJournal(journeyEntity: JourneyEntity) =
         journeyEntityDao.updateJournal(journeyEntity)
 
-    suspend fun deleteUser(journeyEntity: JourneyEntity) =
+    /**
+     * Deletes a specific journey.
+     *
+     * @param journeyEntity The [JourneyEntity] to delete.
+     */
+    suspend fun deleteJournal(journeyEntity: JourneyEntity) =
         journeyEntityDao.deleteJournal(journeyEntity)
 
-    suspend fun deleteJourneyByName(name: String) = journeyEntityDao.deleteJournalByName(name)
+    /**
+     * Deletes all journeys from the database.
+     */
+    suspend fun deleteAllJournals() =
+        journeyEntityDao.deleteAllJournals()
 
-    suspend fun deleteAllJourneys() = journeyEntityDao.deleteAllJournals()
+    // Entry Entity Specific Operations
 
-    // Entry Specific Operations
-//    suspend fun getEntryById(id: Int): JourneyEntryEntity? =
-//        journeyEntryEntityDao.getEntryById(id)
-//
-//    suspend fun getEntriesByIds(ids: List<Long>): List<JourneyEntryEntity> =
-//        journeyEntryEntityDao.getEntriesByIds(ids)
-//
+    /**
+     * Get entry by id
+     *
+     * @param id The id of the entry to return
+     * @return The [JourneyEntryEntity] if found, null otherwise
+     */
+    suspend fun getEntryById(id: Int): JourneyEntryEntity? =
+        journeyEntryEntityDao.getEntryById(id = id)
+
+    /**
+     * Inserts a new journey entry.
+     *
+     * @param entry The [JourneyEntryEntity] to insert.
+     * @return The row ID of the inserted entry.
+     */
     suspend fun insertJourneyEntry(entry: JourneyEntryEntity): Long =
         journeyEntryEntityDao.insertJourneyEntry(entry)
-//
-//    suspend fun updateEntry(entry: JourneyEntryEntity) =
-//        journeyEntryEntityDao.updateEntry(entry)
-//
-//    suspend fun deleteEntry(entry: JourneyEntryEntity) =
-//        journeyEntryEntityDao.deleteEntry(entry)
+
+    /**
+     * Update an existing journey entry
+     *
+     * @param entry The [JourneyEntryEntity] with updated values
+     */
+    suspend fun updateEntry(entry: JourneyEntryEntity) =
+        journeyEntryEntityDao.updateEntry(entry)
+
+    /**
+     * Delete entry
+     *
+     * @param entry The [JourneyEntryEntity] to delete found via its primary key
+     */
+    suspend fun deleteEntry(entry: JourneyEntryEntity) =
+        journeyEntryEntityDao.deleteEntry(entry)
 
     // Getting a coupled Journal and its related entries
+
+    /**
+     * Retrieves a journey along with its associated entries.
+     *
+     * @param journeyName The name of the journey.
+     * @return A [JourneyWithEntries] object containing the journey and its entries.
+     */
     suspend fun getJourneyWithEntries(journeyName: String): JourneyWithEntries =
         journeyDao.getJourneyWithEntries(journeyName)
 }

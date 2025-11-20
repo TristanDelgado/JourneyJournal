@@ -7,8 +7,11 @@ package com.delly.journeyjournal.enums
  * @property stringValue The string representation of the transportation method.
  */
 enum class TransportationMethods(val stringValue: String) {
-    ON_FOOT("On foot"),
-    BICYCLE("Bicycle"),
-    CAR("Car"),
-    ANIMAL("Animal")
+    ON_FOOT(stringValue = "On foot"),
+
+    BICYCLE(stringValue = "Bicycle"),
+
+    CAR(stringValue = "Car"),
+
+    ANIMAL(stringValue = "Animal")
 }

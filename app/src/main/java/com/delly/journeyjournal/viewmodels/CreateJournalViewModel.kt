@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.ui.viewmodels
+package com.delly.journeyjournal.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,9 +10,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class CreateJourneyViewModel(
+/**
+ * Create journey view model
+ *
+ * @property navigateHome Cancel creating a new journey
+ * @property createAndNavigateToJournal Navigate to the journal after creating it
+ * @property repository The repository to store the journal in
+ * @constructor Create empty Create journey view model
+ */
+class CreateJournalViewModel(
     private val navigateHome: () -> Unit,
-    private val navigateToJourney: (String) -> Unit,
+    private val createAndNavigateToJournal: (String) -> Unit,
     private val repository: JournalRepository,
 ) : ViewModel() {
 
@@ -91,8 +99,8 @@ class CreateJourneyViewModel(
             )
 
             try {
-                repository.insertJourney(journeyEntity = newJourney)
-                navigateToJourney(newJourney.journeyName)
+                repository.insertJournal(journeyEntity = newJourney)
+                createAndNavigateToJournal(newJourney.journeyName)
             } catch (e: Exception) {
                 // Handle error
             }
