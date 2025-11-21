@@ -20,14 +20,14 @@ import androidx.room.PrimaryKey
 @Entity(
     foreignKeys = [
         ForeignKey(
-            entity = JourneyEntity::class,
-            parentColumns = ["journeyName"],
+            entity = JournalEntity::class,
+            parentColumns = ["journalName"],
             childColumns = ["ownerId"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
-data class JourneyEntryEntity(
+data class JournalEntryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val ownerId: String,

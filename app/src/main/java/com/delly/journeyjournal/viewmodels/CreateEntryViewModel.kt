@@ -3,7 +3,7 @@ package com.delly.journeyjournal.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.db.entities.JourneyEntryEntity
+import com.delly.journeyjournal.db.entities.JournalEntryEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -79,7 +79,7 @@ class CreateEntryViewModel(
         viewModelScope.launch {
             // TODO: Validate input
 
-            val newEntry = JourneyEntryEntity(
+            val newEntry = JournalEntryEntity(
                 ownerId = journalName,
                 dayNumber = _dayNumber.value,
                 startLocation = _startLocation.value,

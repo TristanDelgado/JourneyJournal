@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.delly.journeyjournal.db.entities.JourneyEntryEntity
+import com.delly.journeyjournal.db.entities.JournalEntryEntity
 
 /**
  * Journey entry overview box used to see the general overview of an entry in a journal.
@@ -25,7 +25,7 @@ import com.delly.journeyjournal.db.entities.JourneyEntryEntity
  */
 @Composable
 fun JourneyEntryOverviewBox(
-    entry: JourneyEntryEntity,
+    entry: JournalEntryEntity,
     modifier: Modifier = Modifier
 ) {
     Card(

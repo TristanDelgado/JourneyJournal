@@ -8,8 +8,8 @@ import androidx.room.TypeConverters
 import com.delly.journeyjournal.db.dataAccessObjects.JournalWithEntriesDao
 import com.delly.journeyjournal.db.dataAccessObjects.JournalEntityDao
 import com.delly.journeyjournal.db.dataAccessObjects.JournalEntryEntityDao
-import com.delly.journeyjournal.db.entities.JourneyEntity
-import com.delly.journeyjournal.db.entities.JourneyEntryEntity
+import com.delly.journeyjournal.db.entities.JournalEntity
+import com.delly.journeyjournal.db.entities.JournalEntryEntity
 
 /**
  * The Room Database that contains the Journey and JourneyEntry tables.
@@ -22,7 +22,7 @@ import com.delly.journeyjournal.db.entities.JourneyEntryEntity
  * @property journeyDao Returns the [JournalWithEntriesDao] for composite queries.
  */
 @Database(
-    entities = [JourneyEntity::class, JourneyEntryEntity::class],
+    entities = [JournalEntity::class, JournalEntryEntity::class],
     version = 1,
     exportSchema = false
 )

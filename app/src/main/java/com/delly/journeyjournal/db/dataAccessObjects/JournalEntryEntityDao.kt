@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.delly.journeyjournal.db.entities.JourneyEntryEntity
+import com.delly.journeyjournal.db.entities.JournalEntryEntity
 
 /**
  * Data Access Object (DAO) for the journeyEntryEntities table.
@@ -19,8 +19,8 @@ interface JournalEntryEntityDao {
      * @param id The unique identifier of the entry.
      * @return The JourneyEntryEntity, or null if not found.
      */
-    @Query("SELECT * FROM JourneyEntryEntity WHERE id = :id")
-    suspend fun getEntryById(id: Int): JourneyEntryEntity?
+    @Query("SELECT * FROM JournalEntryEntity WHERE id = :id")
+    suspend fun getEntryById(id: Int): JournalEntryEntity?
 
     /**
      * Inserts a new journey entry into the database.
@@ -31,7 +31,7 @@ interface JournalEntryEntityDao {
      * @return The row ID of the newly inserted entry.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertJourneyEntry(entry: JourneyEntryEntity): Long
+    suspend fun insertJourneyEntry(entry: JournalEntryEntity): Long
 
     /**
      * Updates an existing journey entry in the database.
@@ -39,7 +39,7 @@ interface JournalEntryEntityDao {
      * @param entry The JourneyEntryEntity with updated values.
      */
     @Update
-    suspend fun updateEntry(entry: JourneyEntryEntity)
+    suspend fun updateEntry(entry: JournalEntryEntity)
 
     /**
      * Deletes a specific journey entry.
@@ -47,5 +47,5 @@ interface JournalEntryEntityDao {
      * @param entry The JourneyEntryEntity to delete.
      */
     @Delete
-    suspend fun deleteEntry(entry: JourneyEntryEntity)
+    suspend fun deleteEntry(entry: JournalEntryEntity)
 }

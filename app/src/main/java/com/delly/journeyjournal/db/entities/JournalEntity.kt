@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 import com.delly.journeyjournal.enums.TransportationMethods
 
 /**
- * Represents a journey entity in the database.
+ * Represents a journal entity in the database.
  *
- * @property journeyName The name of the journey.
+ * @property journalName The name of the journal.
  * @property journeymanName The name of the journeyman.
  * @property courseName The name of the course.
  * @property courseRegion The region of the course.
@@ -15,9 +15,9 @@ import com.delly.journeyjournal.enums.TransportationMethods
  * @property transportationMethod The transportation method used on the journey.
  * @property description The description of the journey.
  */
-@Entity(tableName = "JourneyEntity")
-data class JourneyEntity(
-    @PrimaryKey val journeyName: String,
+@Entity(tableName = "JournalEntity")
+data class JournalEntity(
+    @PrimaryKey val journalName: String,
     val journeymanName: String,
     val courseName: String,
     val courseRegion: String,

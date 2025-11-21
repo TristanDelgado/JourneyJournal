@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.db.entities.JourneyEntryEntity
+import com.delly.journeyjournal.db.entities.JournalEntryEntity
 import com.delly.journeyjournal.theme.Typography
 import com.delly.journeyjournal.viewmodels.JourneyEntriesViewModel
 import com.delly.journeyjournal.viewmodels.JourneyEntriesViewModelFactory
@@ -109,7 +109,7 @@ fun JourneyEntriesUi(
                 }
             } else {
                 // Fallback: Show example entry if data is loading (null) or empty
-                val exampleEntry = JourneyEntryEntity(
+                val exampleEntry = JournalEntryEntity(
                     id = 0,
                     ownerId = "ownerId",
                     dayNumber = "1",

@@ -99,7 +99,7 @@ fun HomeScreen(
             allJourneys?.let { list ->
                 items(list.value) { journey ->
                     JourneyOverviewBox(
-                        journeyEntity = journey,
+                        journalEntity = journey,
                         navigateToJourney = navigateToJourney,
                         repository = repository
                     )
@@ -113,7 +113,7 @@ fun HomeScreen(
             allJourneys?.let { list ->
                 items(list.value) { journey ->
                     JourneyOverviewBox(
-                        journeyEntity = journey,
+                        journalEntity = journey,
                         navigateToJourney = navigateToJourney,
                         repository = repository
                     )

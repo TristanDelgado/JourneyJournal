@@ -3,7 +3,7 @@ package com.delly.journeyjournal.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.db.entities.JourneyEntity
+import com.delly.journeyjournal.db.entities.JournalEntity
 import com.delly.journeyjournal.enums.TransportationMethods
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -88,8 +88,8 @@ class CreateJournalViewModel(
     fun saveJourney() {
         viewModelScope.launch {
             // Create a Journey Entity
-            val newJourney = JourneyEntity(
-                journeyName = _journeyName.value,
+            val newJourney = JournalEntity(
+                journalName = _journeyName.value,
                 journeymanName = _journeymanName.value,
                 courseName = _courseName.value,
                 courseRegion = _courseRegion.value,
@@ -99,8 +99,8 @@ class CreateJournalViewModel(
             )
 
             try {
-                repository.insertJournal(journeyEntity = newJourney)
-                createAndNavigateToJournal(newJourney.journeyName)
+                repository.insertJournal(journalEntity = newJourney)
+                createAndNavigateToJournal(newJourney.journalName)
             } catch (e: Exception) {
                 // Handle error
             }

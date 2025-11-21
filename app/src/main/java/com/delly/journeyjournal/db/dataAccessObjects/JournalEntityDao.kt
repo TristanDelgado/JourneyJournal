@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.delly.journeyjournal.db.entities.JourneyEntity
+import com.delly.journeyjournal.db.entities.JournalEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -20,8 +20,8 @@ interface JournalEntityDao {
      *
      * @return A Flow of all JourneyEntity objects, sorted alphabetically by journalName
      */
-    @Query("SELECT * FROM JourneyEntity ORDER BY journeyName ASC")
-    fun getAllJournals(): Flow<List<JourneyEntity>>
+    @Query("SELECT * FROM JournalEntity ORDER BY journalName ASC")
+    fun getAllJournals(): Flow<List<JournalEntity>>
 
     /**
      * Retrieves a specific journal entry by its name.
@@ -29,8 +29,8 @@ interface JournalEntityDao {
      * @param journeyName The name of the journal to retrieve
      * @return The JourneyEntity with the specified name, or null if not found
      */
-    @Query("SELECT * FROM JourneyEntity WHERE journeyName = :journeyName")
-    suspend fun getJournalByName(journeyName: String): JourneyEntity?
+    @Query("SELECT * FROM JournalEntity WHERE journalName = :journeyName")
+    suspend fun getJournalByName(journeyName: String): JournalEntity?
 
     /**
      * Inserts a new journal into the database.
@@ -42,7 +42,7 @@ interface JournalEntityDao {
      * @return The row ID of the newly inserted journal entry
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertJournal(journeyEntity: JourneyEntity): Long
+    suspend fun insertJournal(journeyEntity: JournalEntity): Long
 
     /**
      * Updates an existing journal entry in the database.
@@ -53,7 +53,7 @@ interface JournalEntityDao {
      * @param journeyEntity The JourneyEntity with updated values
      */
     @Update
-    suspend fun updateJournal(journeyEntity: JourneyEntity)
+    suspend fun updateJournal(journeyEntity: JournalEntity)
 
     /**
      * Deletes a journal entry from the database.
@@ -63,11 +63,11 @@ interface JournalEntityDao {
      * @param journeyEntity The JourneyEntity to delete
      */
     @Delete
-    suspend fun deleteJournal(journeyEntity: JourneyEntity)
+    suspend fun deleteJournal(journeyEntity: JournalEntity)
 
     /**
      * Deletes all journey entries from the database.
      */
-    @Query("DELETE FROM JourneyEntity")
+    @Query("DELETE FROM JournalEntity")
     suspend fun deleteAllJournals()
 }

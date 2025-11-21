@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.db.entities.JourneyEntity
+import com.delly.journeyjournal.db.entities.JournalEntity
 import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.theme.JourneyJournalTheme
 import com.delly.journeyjournal.theme.Shapes
@@ -34,7 +34,7 @@ import com.delly.journeyjournal.R as localR
  */
 @Composable
 fun JourneyOverviewBox(
-    journeyEntity: JourneyEntity,
+    journalEntity: JournalEntity,
     navigateToJourney: (String) -> Unit,
     repository: JournalRepository?
 ) {
@@ -52,12 +52,12 @@ fun JourneyOverviewBox(
             )
             .fillMaxWidth()
             .clickable(
-                onClick = { navigateToJourney(journeyEntity.journeyName) }
+                onClick = { navigateToJourney(journalEntity.journalName) }
             )
     ) {
         Row() {
             // Title
-            Text(journeyEntity.journeyName)
+            Text(journalEntity.journalName)
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = {  },
@@ -71,7 +71,7 @@ fun JourneyOverviewBox(
             Button(
                 onClick = {
                     coroutineScope.launch {
-                        repository?.deleteJournal(journeyEntity = journeyEntity)
+                        repository?.deleteJournal(journalEntity = journalEntity)
                     }
                 },
                 content = {
@@ -103,8 +103,8 @@ fun JourneyOverviewBox(
 @Composable
 @Preview(showBackground = true)
 fun JourneyOverviewBoxPreview() {
-    val journeyEntity = JourneyEntity(
-        journeyName = "Test",
+    val journalEntity = JournalEntity(
+        journalName = "Test",
         journeymanName = "Test",
         courseName = "Test",
         courseRegion = "Test",
@@ -115,7 +115,7 @@ fun JourneyOverviewBoxPreview() {
 
     JourneyJournalTheme {
         JourneyOverviewBox(
-            journeyEntity = journeyEntity,
+            journalEntity = journalEntity,
             navigateToJourney = { null },
             repository = null
         )

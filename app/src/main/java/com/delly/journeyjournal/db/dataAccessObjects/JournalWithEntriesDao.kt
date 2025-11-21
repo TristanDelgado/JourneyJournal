@@ -3,7 +3,7 @@ package com.delly.journeyjournal.db.dataAccessObjects
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.delly.journeyjournal.db.entities.JourneyWithEntries
+import com.delly.journeyjournal.db.entities.JournalWithEntries
 
 /**
  * Data Access Object (DAO) for composite operations involving Journeys.
@@ -20,9 +20,9 @@ interface JournalWithEntriesDao {
      * 2. Selects the Entries where the foreign key matches.
      *
      * @param journeyName The unique name of the journey to retrieve.
-     * @return A [JourneyWithEntries] object containing the journey and its entries.
+     * @return A [JournalWithEntries] object containing the journey and its entries.
      */
     @Transaction
-    @Query(value = "SELECT * FROM JourneyEntity WHERE journeyName = :journeyName")
-    suspend fun getJourneyWithEntries(journeyName: String): JourneyWithEntries
+    @Query(value = "SELECT * FROM JournalEntity WHERE journalName = :journeyName")
+    suspend fun getJourneyWithEntries(journeyName: String): JournalWithEntries
 }
