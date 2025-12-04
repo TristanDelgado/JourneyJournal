@@ -35,9 +35,9 @@ import com.delly.journeyjournal.R as localR
 @Composable
 fun JourneyOverviewBox(
     journalEntity: JournalEntity,
-    navigateToJourney: (String) -> Unit,
+    navigateToJourney: (Int) -> Unit,
     repository: JournalRepository?,
-    onEditClick: (String) -> Unit
+    onEditClick: (Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -53,7 +53,7 @@ fun JourneyOverviewBox(
             )
             .fillMaxWidth()
             .clickable(
-                onClick = { navigateToJourney(journalEntity.journalName) }
+                onClick = { navigateToJourney(journalEntity.id) }
             )
     ) {
         Row() {
@@ -61,7 +61,7 @@ fun JourneyOverviewBox(
             Text(journalEntity.journalName)
             Spacer(Modifier.weight(1f))
             Button(
-                onClick = { onEditClick(journalEntity.journalName) },
+                onClick = { onEditClick(journalEntity.id) },
                 content = {
                     Icon(
                         imageVector = Icons.Default.Edit,

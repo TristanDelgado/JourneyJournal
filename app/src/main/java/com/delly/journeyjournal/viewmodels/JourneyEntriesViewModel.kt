@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
  * Journey entries view model
  *
  * @property repository
- * @property journeyName
+ * @property journeyId
  * @constructor Create empty Journey entries view model
  */
 class JourneyEntriesViewModel(
     private val repository: JournalRepository,
-    private val journeyName: String
+    private val journeyId: Int
 ) : ViewModel() {
 
     /**
@@ -33,7 +33,7 @@ class JourneyEntriesViewModel(
 
     private fun loadEntries() {
         viewModelScope.launch {
-            _journeyWithEntries.value = repository.getJourneyWithEntries(journeyName)
+            _journeyWithEntries.value = repository.getJourneyWithEntries(journeyId)
         }
     }
 }

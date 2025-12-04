@@ -32,13 +32,13 @@ class JournalRepository(
         journeyEntityDao.getAllJournals()
 
     /**
-     * Retrieves a specific journey by its name.
+     * Retrieves a specific journal by its id.
      *
-     * @param name The name of the journey.
+     * @param id The id of the journal.
      * @return The [JournalEntity] if found, null otherwise.
      */
-    suspend fun getJournalByName(name: String): JournalEntity? =
-        journeyEntityDao.getJournalByName(journeyName = name)
+    suspend fun getJournalById(id: Int): JournalEntity? =
+        journeyEntityDao.getJournalById(journalId = id)
 
     /**
      * Inserts a new journal into the database.
@@ -112,9 +112,9 @@ class JournalRepository(
     /**
      * Retrieves a journey along with its associated entries.
      *
-     * @param journeyName The name of the journey.
+     * @param journalId The id of the journey.
      * @return A [JournalWithEntries] object containing the journey and its entries.
      */
-    suspend fun getJourneyWithEntries(journeyName: String): JournalWithEntries =
-        journeyDao.getJourneyWithEntries(journeyName)
+    suspend fun getJourneyWithEntries(journalId: Int): JournalWithEntries =
+        journeyDao.getJourneyWithEntries(journalId)
 }

@@ -76,7 +76,7 @@ fun RatingDropdownMenu(viewModel: CreateEntryViewModel) {
  *
  * @param navigateBack Cancels creating a new journey
  * @param repository The repository to save data to
- * @param journalName The journal to create the new entry in
+ * @param journalId The journal id to create the new entry in
  * @receiver
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,14 +84,14 @@ fun RatingDropdownMenu(viewModel: CreateEntryViewModel) {
 fun CreateJourneyEntryUi(
     navigateBack: () -> Unit,
     repository: JournalRepository,
-    journalName: String
+    journalId: Int
 ) {
     //Initialize the viewmodel
     val viewModel: CreateEntryViewModel = viewModel(
         factory = CreateEntryViewModelFactory(
             navigateBack = navigateBack,
             repository = repository,
-            journalName = journalName
+            journalId = journalId
         )
     )
 

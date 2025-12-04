@@ -39,20 +39,20 @@ import com.delly.journeyjournal.R as localR
  *
  * @param navigateToCreateEntry A lambda to navigate to the create entry screen.
  * @param repository The repository to fetch data.
- * @param journeyName The name of the journey to fetch entries for.
+ * @param journeyId The id of the journey to fetch entries for.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JourneyEntriesUi(
     navigateToCreateEntry: () -> Unit,
     repository: JournalRepository,
-    journeyName: String,
+    journeyId: Int,
 ) {
     // Initialize the viewmodel
     val viewModel: JourneyEntriesViewModel = viewModel(
         factory = JourneyEntriesViewModelFactory(
             repository,
-            journeyName
+            journeyId
         )
     )
 
@@ -111,7 +111,7 @@ fun JourneyEntriesUi(
                 // Fallback: Show example entry if data is loading (null) or empty
                 val exampleEntry = JournalEntryEntity(
                     id = 0,
-                    ownerId = "ownerId",
+                    ownerId = 0,
                     dayNumber = "1",
                     startLocation = "Valley",
                     endLocation = "Mountain",

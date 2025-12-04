@@ -6,9 +6,9 @@ import com.delly.journeyjournal.db.JournalRepository
 
 class CreateJourneyViewModelFactory(
     private val navigateHome: () -> Unit,
-    private val navigateToJourney: (String) -> Unit,
+    private val navigateToJourney: (Int) -> Unit,
     private val repository: JournalRepository,
-    private val journalToEditName: String?,
+    private val journalToEditId: Int?,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CreateEditJournalViewModel::class.java)) {
@@ -17,7 +17,7 @@ class CreateJourneyViewModelFactory(
                 navigateHome = navigateHome,
                 createAndNavigateToJournal = navigateToJourney,
                 repository = repository,
-                journalToEditName = journalToEditName
+                journalToEditId = journalToEditId
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
@@ -27,7 +27,7 @@ class CreateJourneyViewModelFactory(
 class CreateEntryViewModelFactory(
     private val navigateBack: () -> Unit,
     private val repository: JournalRepository,
-    private val journalName: String,
+    private val journalId: Int,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CreateEntryViewModel::class.java)) {
@@ -35,7 +35,7 @@ class CreateEntryViewModelFactory(
             return CreateEntryViewModel(
                 navigateBack,
                 repository,
-                journalName
+                journalId
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
@@ -44,14 +44,14 @@ class CreateEntryViewModelFactory(
 
 class JourneyEntriesViewModelFactory(
     private val repository: JournalRepository,
-    private val journeyName: String,
+    private val journeyId: Int,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(JourneyEntriesViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return JourneyEntriesViewModel(
                 repository,
-                journeyName
+                journeyId
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

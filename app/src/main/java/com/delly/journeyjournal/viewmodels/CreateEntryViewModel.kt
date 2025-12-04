@@ -13,13 +13,13 @@ import kotlinx.coroutines.launch
  *
  * @property navigateBack Call back to cancel creating a new entry in the current journal
  * @property repository The repository to store the entry in
- * @property journalName The journal name to associate the entry with
+ * @property journalId The journal id to associate the entry with
  * @constructor Create empty "Create entry view model"
  */
 class CreateEntryViewModel(
     private val navigateBack: () -> Unit,
     private val repository: JournalRepository,
-    private val journalName: String,
+    private val journalId: Int,
 ) : ViewModel() {
 
     // --- StateFlows for all fields ---
@@ -80,7 +80,7 @@ class CreateEntryViewModel(
             // TODO: Validate input
 
             val newEntry = JournalEntryEntity(
-                ownerId = journalName,
+                ownerId = journalId,
                 dayNumber = _dayNumber.value,
                 startLocation = _startLocation.value,
                 endLocation = _endLocation.value,
