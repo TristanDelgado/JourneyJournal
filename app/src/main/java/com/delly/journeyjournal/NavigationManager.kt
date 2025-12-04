@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.homeScreenUi.CreateJourneyUi
+import com.delly.journeyjournal.homeScreenUi.CreateEditJourneyUi
 import com.delly.journeyjournal.homeScreenUi.HomeScreen
 import com.delly.journeyjournal.journalUi.JourneyViewScaffoldUi
 import kotlinx.serialization.Serializable
@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 object Home
 
 @Serializable
-object CreateJourney
+data class CreateEditJourney(val journalName: String? = null)
 
 @Serializable
 data class SelectedJourney(val name: String)
@@ -25,7 +25,7 @@ data class SelectedJourney(val name: String)
  */
 @Composable
 fun NavHost(
-    repository: JournalRepository
+    repository: JournalRepository,
 ) {
     val navController = rememberNavController()
 
@@ -36,7 +36,9 @@ fun NavHost(
         // HomeScreen is the initial load in screen where all Journals are displayed
         composable<Home> {
             HomeScreen(
-                navToCreateJourneyScreen = { navController.navigate(route = CreateJourney) },
+                navToCreateEditJourneyScreen = { journalToEditName ->
+                    navController.navigate(route = CreateEditJourney(journalName = journalToEditName))
+                },
                 navigateToJourney = { selectedJourney ->
                     navController.navigate(
                         route = SelectedJourney(
@@ -49,8 +51,9 @@ fun NavHost(
         }
 
         // CreateJourneyUi is used to create a new journey
-        composable<CreateJourney> {
-            CreateJourneyUi(
+        composable<CreateEditJourney> { backStackEntry ->
+            val createJourney: CreateEditJourney = backStackEntry.toRoute()
+            CreateEditJourneyUi(
                 navigateHome = { navController.navigate(route = Home) },
                 navigateToJourney = { selectedJourney ->
                     navController.navigate(
@@ -59,7 +62,8 @@ fun NavHost(
                         )
                     )
                 },
-                repository = repository
+                repository = repository,
+                journalToEditName = createJourney.journalName
             )
         }
 

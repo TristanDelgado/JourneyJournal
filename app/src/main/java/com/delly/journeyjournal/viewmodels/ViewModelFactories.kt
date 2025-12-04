@@ -7,15 +7,17 @@ import com.delly.journeyjournal.db.JournalRepository
 class CreateJourneyViewModelFactory(
     private val navigateHome: () -> Unit,
     private val navigateToJourney: (String) -> Unit,
-    private val repository: JournalRepository
+    private val repository: JournalRepository,
+    private val journalToEditName: String?,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CreateJournalViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(CreateEditJournalViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return CreateJournalViewModel(
+            return CreateEditJournalViewModel(
                 navigateHome = navigateHome,
                 createAndNavigateToJournal = navigateToJourney,
-                repository = repository
+                repository = repository,
+                journalToEditName = journalToEditName
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
@@ -25,12 +27,16 @@ class CreateJourneyViewModelFactory(
 class CreateEntryViewModelFactory(
     private val navigateBack: () -> Unit,
     private val repository: JournalRepository,
-    private val journalName: String
+    private val journalName: String,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CreateEntryViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return CreateEntryViewModel(navigateBack, repository, journalName) as T
+            return CreateEntryViewModel(
+                navigateBack,
+                repository,
+                journalName
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
@@ -38,12 +44,15 @@ class CreateEntryViewModelFactory(
 
 class JourneyEntriesViewModelFactory(
     private val repository: JournalRepository,
-    private val journeyName: String
+    private val journeyName: String,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(JourneyEntriesViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return JourneyEntriesViewModel(repository, journeyName) as T
+            return JourneyEntriesViewModel(
+                repository,
+                journeyName
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

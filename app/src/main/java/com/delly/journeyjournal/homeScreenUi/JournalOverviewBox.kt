@@ -36,7 +36,8 @@ import com.delly.journeyjournal.R as localR
 fun JourneyOverviewBox(
     journalEntity: JournalEntity,
     navigateToJourney: (String) -> Unit,
-    repository: JournalRepository?
+    repository: JournalRepository?,
+    onEditClick: (String) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -60,7 +61,7 @@ fun JourneyOverviewBox(
             Text(journalEntity.journalName)
             Spacer(Modifier.weight(1f))
             Button(
-                onClick = {  },
+                onClick = { onEditClick(journalEntity.journalName) },
                 content = {
                     Icon(
                         imageVector = Icons.Default.Edit,
@@ -86,7 +87,7 @@ fun JourneyOverviewBox(
                 content = {
                     Icon(
                         imageVector = Icons.Default.Settings,
-                        contentDescription = "Delete Journey",
+                        contentDescription = "Journey Settings",
                     )
                 }
             )
@@ -117,7 +118,8 @@ fun JourneyOverviewBoxPreview() {
         JourneyOverviewBox(
             journalEntity = journalEntity,
             navigateToJourney = { null },
-            repository = null
+            repository = null,
+            onEditClick = { }
         )
     }
 }

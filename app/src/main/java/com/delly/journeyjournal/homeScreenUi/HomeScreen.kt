@@ -34,16 +34,16 @@ import com.delly.journeyjournal.R as localR
  * The main screen of the application. It displays a title, a button to create a new journey,
  * and two lists of journeys: active and complete.
  *
- * @param navToCreateJourneyScreen A lambda function to be invoked when the user clicks the button to create a new journey.
+ * @param navToCreateEditJourneyScreen A lambda function to be invoked when the user clicks the button to create a new journey.
  * @param navigateToJourney A lambda function that takes a journey name as a string and navigates to that journey's screen.
  * @param repository The repository to fetch journey data from.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navToCreateJourneyScreen: () -> Unit,
+    navToCreateEditJourneyScreen: (String?) -> Unit,
     navigateToJourney: (String) -> Unit,
-    repository: JournalRepository
+    repository: JournalRepository,
 ) {
     val allJourneys = repository.getAllJournals().collectAsState(initial = emptyList())
 
@@ -71,8 +71,9 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Create a new journal button
             Button(
-                onClick = { navToCreateJourneyScreen() },
+                onClick = { navToCreateEditJourneyScreen(null) },
                 modifier = Modifier
                     .height(dimensionResource(id = localR.dimen.button_height_mini))
                     .width(dimensionResource(id = localR.dimen.button_height_mini)),
@@ -101,7 +102,8 @@ fun HomeScreen(
                     JourneyOverviewBox(
                         journalEntity = journey,
                         navigateToJourney = navigateToJourney,
-                        repository = repository
+                        repository = repository,
+                        onEditClick = { navToCreateEditJourneyScreen(journey.journalName) }
                     )
                 }
             }
@@ -115,7 +117,8 @@ fun HomeScreen(
                     JourneyOverviewBox(
                         journalEntity = journey,
                         navigateToJourney = navigateToJourney,
-                        repository = repository
+                        repository = repository,
+                        onEditClick = { navToCreateEditJourneyScreen(journey.journalName) }
                     )
                 }
             }

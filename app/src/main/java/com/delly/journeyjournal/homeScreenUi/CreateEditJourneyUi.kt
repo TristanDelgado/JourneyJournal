@@ -40,7 +40,7 @@ import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.genericUi.CustomTextField
 import com.delly.journeyjournal.theme.Shapes
 import com.delly.journeyjournal.theme.Typography
-import com.delly.journeyjournal.viewmodels.CreateJournalViewModel
+import com.delly.journeyjournal.viewmodels.CreateEditJournalViewModel
 import com.delly.journeyjournal.viewmodels.CreateJourneyViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -58,17 +58,19 @@ import com.delly.journeyjournal.R as localR
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateJourneyUi(
+fun CreateEditJourneyUi(
     navigateHome: () -> Unit,
     navigateToJourney: (String) -> Unit,
     repository: JournalRepository,
+    journalToEditName: String? = null
 ) {
     //Initialize the viewmodel
-    val viewModel: CreateJournalViewModel = viewModel(
+    val viewModel: CreateEditJournalViewModel = viewModel(
         factory = CreateJourneyViewModelFactory(
             navigateHome = navigateHome,
             navigateToJourney = navigateToJourney,
-            repository = repository
+            repository = repository,
+            journalToEditName = journalToEditName
         )
     )
 
@@ -168,7 +170,7 @@ fun CreateJourneyUi(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerButton(viewModel: CreateJournalViewModel) {
+fun DatePickerButton(viewModel: CreateEditJournalViewModel) {
     var showRangeModal by remember { mutableStateOf(false) }
     val selectedDate = viewModel.selectedDate.collectAsState()
 
@@ -200,7 +202,7 @@ fun DatePickerButton(viewModel: CreateJournalViewModel) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransportationMethodDropdownMenu(viewModel: CreateJournalViewModel) {
+fun TransportationMethodDropdownMenu(viewModel: CreateEditJournalViewModel) {
     var expanded by remember { mutableStateOf(false) }
     val selectedOption = viewModel.selectedTransportationMethod.collectAsState()
 

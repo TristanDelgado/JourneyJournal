@@ -1,13 +1,8 @@
-TODO:
-- Add viewmodels to the JourneyEntriesUI file
-- Create an entry overview box similar to the journey overview box
-- Figure out how to have the EntryEntities list or somehow keep entries inside the journal entity itself.
-
 # Journey Journal
 An android application.
 
 ## Purpose
-Personal project to support my dad when hiking on the appalation trail
+Personal project to support my dad when hiking on the Appalachian Trail (A.T)
 
 ## Installation / Usage
 Run in android studio

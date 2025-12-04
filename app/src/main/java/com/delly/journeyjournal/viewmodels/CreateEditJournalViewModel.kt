@@ -18,10 +18,11 @@ import kotlinx.coroutines.launch
  * @property repository The repository to store the journal in
  * @constructor Create empty Create journey view model
  */
-class CreateJournalViewModel(
+class CreateEditJournalViewModel(
     private val navigateHome: () -> Unit,
     private val createAndNavigateToJournal: (String) -> Unit,
     private val repository: JournalRepository,
+    private val journalToEditName: String?,
 ) : ViewModel() {
 
     private val _journeyName = MutableStateFlow("")
@@ -36,16 +37,33 @@ class CreateJournalViewModel(
     private val _courseRegion = MutableStateFlow("")
     val courseRegion: StateFlow<String> = _courseRegion.asStateFlow()
 
-    private val _description = MutableStateFlow(value = "")
+    private val _description = MutableStateFlow("")
     val description: StateFlow<String> = _description.asStateFlow()
 
-    private val _selectedDate = MutableStateFlow<Long?>(value = null)
+    private val _selectedDate = MutableStateFlow<Long?>(null)
     val selectedDate: StateFlow<Long?> = _selectedDate.asStateFlow()
 
     private val _selectedTransportationMethod =
-        MutableStateFlow<TransportationMethods>(value = TransportationMethods.ON_FOOT)
+        MutableStateFlow(TransportationMethods.ON_FOOT)
     val selectedTransportationMethod: StateFlow<TransportationMethods> =
         _selectedTransportationMethod.asStateFlow()
+
+    init {
+        if (journalToEditName != null) {
+            viewModelScope.launch {
+                val journal = repository.getJournalByName(journalToEditName)
+                if (journal != null) {
+                    _journeyName.value = journal.journalName
+                    _journeymanName.value = journal.journeymanName
+                    _courseName.value = journal.courseName
+                    _courseRegion.value = journal.courseRegion
+                    _description.value = journal.description
+                    _selectedDate.value = journal.startDate
+                    _selectedTransportationMethod.value = journal.transportationMethod
+                }
+            }
+        }
+    }
 
     // -----------------------------------------
     // Functions to update the state from the UI
@@ -98,11 +116,18 @@ class CreateJournalViewModel(
                 description = _description.value
             )
 
-            try {
-                repository.insertJournal(journalEntity = newJourney)
+            // Check if we are editing an existing journey or creating a new one
+            // We assume we are editing if journalToEditName was provided in constructor
+            if (journalToEditName != null) {
+                repository.updateJournal(journalEntity = newJourney)
                 createAndNavigateToJournal(newJourney.journalName)
-            } catch (e: Exception) {
-                // Handle error
+            } else {
+                try {
+                    repository.insertJournal(journalEntity = newJourney)
+                    createAndNavigateToJournal(newJourney.journalName)
+                } catch (e: Exception) {
+                    // Handle error
+                }
             }
         }
     }
