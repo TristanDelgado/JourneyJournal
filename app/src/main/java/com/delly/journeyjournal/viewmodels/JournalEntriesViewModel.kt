@@ -10,22 +10,22 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
- * Journey entries view model
+ * Journal entries view model
  *
  * @property repository
- * @property journeyId
+ * @property journalId
  * @constructor Create empty Journey entries view model
  */
-class JourneyEntriesViewModel(
+class JournalEntriesViewModel(
     private val repository: JournalRepository,
-    private val journeyId: Int
+    private val journalId: Int
 ) : ViewModel() {
 
     /**
-     * _journey with entries
+     * _journal with entries
      */
-    private val _journeyWithEntries = MutableStateFlow<JournalWithEntries?>(null)
-    val journeyWithEntries: StateFlow<JournalWithEntries?> = _journeyWithEntries.asStateFlow()
+    private val _journalWithEntries = MutableStateFlow<JournalWithEntries?>(null)
+    val journalWithEntries: StateFlow<JournalWithEntries?> = _journalWithEntries.asStateFlow()
 
     init {
         loadEntries()
@@ -33,7 +33,7 @@ class JourneyEntriesViewModel(
 
     private fun loadEntries() {
         viewModelScope.launch {
-            _journeyWithEntries.value = repository.getJourneyWithEntries(journeyId)
+            _journalWithEntries.value = repository.getJourneyWithEntries(journalId)
         }
     }
 }

@@ -41,7 +41,7 @@ import com.delly.journeyjournal.genericUi.CustomTextField
 import com.delly.journeyjournal.theme.Shapes
 import com.delly.journeyjournal.theme.Typography
 import com.delly.journeyjournal.viewmodels.CreateEditJournalViewModel
-import com.delly.journeyjournal.viewmodels.CreateJourneyViewModelFactory
+import com.delly.journeyjournal.viewmodels.CreateJournalViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -66,7 +66,7 @@ fun CreateEditJourneyUi(
 ) {
     //Initialize the viewmodel
     val viewModel: CreateEditJournalViewModel = viewModel(
-        factory = CreateJourneyViewModelFactory(
+        factory = CreateJournalViewModelFactory(
             navigateHome = navigateHome,
             navigateToJourney = navigateToJourney,
             repository = repository,

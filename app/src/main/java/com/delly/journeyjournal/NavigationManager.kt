@@ -8,7 +8,7 @@ import androidx.navigation.toRoute
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.homeScreenUi.CreateEditJourneyUi
 import com.delly.journeyjournal.homeScreenUi.HomeScreen
-import com.delly.journeyjournal.journalUi.JourneyViewScaffoldUi
+import com.delly.journeyjournal.journalUi.JournalViewScaffoldUi
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -71,7 +71,7 @@ fun NavHost(
         composable<SelectedJourney> { selectedJourney ->
             val selectedJourneyData: SelectedJourney = selectedJourney.toRoute()
 
-            JourneyViewScaffoldUi(
+            JournalViewScaffoldUi(
                 navigateHome = { navController.navigate(route = Home) },
                 repository = repository,
                 currentJournalId = selectedJourneyData.id,

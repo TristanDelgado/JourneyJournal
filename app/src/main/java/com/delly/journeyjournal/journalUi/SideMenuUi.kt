@@ -9,7 +9,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Help
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import com.delly.journeyjournal.theme.JourneyJournalTheme
 fun SideMenuUi(
     title: String,
     navigateHome: () -> Unit,
+    markAsComplete: () -> Unit
 ) {
     ModalDrawerSheet {
         Column(
@@ -78,20 +80,19 @@ fun SideMenuUi(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-            Text(
-                "Section 2",
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.titleMedium
-            )
             NavigationDrawerItem(
-                label = { Text("Item 1") },
+                label = { Text("Mark as complete") },
                 selected = false,
-                onClick = { /* Handle click */ }
-            )
-            NavigationDrawerItem(
-                label = { Text("Item 2") },
-                selected = false,
-                onClick = { /* Handle click */ }
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.CheckBox,
+                        contentDescription = null
+                    )
+                },
+                onClick = {
+                    markAsComplete()
+                    navigateHome()
+                }
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -101,7 +102,7 @@ fun SideMenuUi(
                 selected = false,
                 icon = {
                     Icon(
-                        Icons.Outlined.Settings,
+                        imageVector = Icons.Filled.Settings,
                         contentDescription = null
                     )
                 },
@@ -113,7 +114,7 @@ fun SideMenuUi(
                 selected = false,
                 icon = {
                     Icon(
-                        Icons.AutoMirrored.Outlined.Help,
+                        imageVector = Icons.AutoMirrored.Outlined.Help,
                         contentDescription = null
                     )
                 },
@@ -131,6 +132,9 @@ fun SideMenuUi(
 @Composable
 fun SideMenuPreview() {
     JourneyJournalTheme {
-        SideMenuUi(title = "Preview Journey", navigateHome = { null })
+        SideMenuUi(
+            title = "Preview Journey",
+            navigateHome = { null },
+            markAsComplete = { null })
     }
 }

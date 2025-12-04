@@ -27,5 +27,5 @@ data class JournalEntity(
     val startDate: Long?,
     val transportationMethod: TransportationMethods,
     val description: String,
-    val isComplete: Boolean = false
+    var isComplete: Boolean = false
 )
