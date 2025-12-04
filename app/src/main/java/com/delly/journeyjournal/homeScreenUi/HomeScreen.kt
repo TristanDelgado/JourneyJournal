@@ -46,6 +46,8 @@ fun HomeScreen(
     repository: JournalRepository,
 ) {
     val allJourneys = repository.getAllJournals().collectAsState(initial = emptyList())
+    val activeJourneys = allJourneys.value.filter { !it.isComplete }
+    val completedJourneys = allJourneys.value.filter { it.isComplete }
 
     Column(modifier = Modifier.padding(dimensionResource(id = localR.dimen.screen_edge_padding))) {
         Row(
@@ -97,30 +99,26 @@ fun HomeScreen(
                 max = dimensionResource(id = localR.dimen.lazy_list_height)
             )
         ) {
-            allJourneys?.let { list ->
-                items(list.value) { journey ->
-                    JourneyOverviewBox(
-                        journalEntity = journey,
-                        navigateToJourney = navigateToJourney,
-                        repository = repository,
-                        onEditClick = { navToCreateEditJourneyScreen(journey.id) }
-                    )
-                }
+            items(activeJourneys) { journey ->
+                JourneyOverviewBox(
+                    journalEntity = journey,
+                    navigateToJourney = navigateToJourney,
+                    repository = repository,
+                    onEditClick = { navToCreateEditJourneyScreen(journey.id) }
+                )
             }
         }
 
         // Display a list of complete journeys
         Text(stringResource(id = localR.string.complete_journeys))
         LazyColumn {
-            allJourneys?.let { list ->
-                items(list.value) { journey ->
-                    JourneyOverviewBox(
-                        journalEntity = journey,
-                        navigateToJourney = navigateToJourney,
-                        repository = repository,
-                        onEditClick = { navToCreateEditJourneyScreen(journey.id) }
-                    )
-                }
+            items(completedJourneys) { journey ->
+                JourneyOverviewBox(
+                    journalEntity = journey,
+                    navigateToJourney = navigateToJourney,
+                    repository = repository,
+                    onEditClick = { navToCreateEditJourneyScreen(journey.id) }
+                )
             }
         }
     }

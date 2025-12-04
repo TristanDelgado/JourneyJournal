@@ -15,6 +15,7 @@ import com.delly.journeyjournal.enums.TransportationMethods
  * @property startDate The start date of the journey.
  * @property transportationMethod The transportation method used on the journey.
  * @property description The description of the journey.
+ * @property isComplete Whether the journey is complete.
  */
 @Entity(tableName = "JournalEntity")
 data class JournalEntity(
@@ -26,4 +27,5 @@ data class JournalEntity(
     val startDate: Long?,
     val transportationMethod: TransportationMethods,
     val description: String,
+    val isComplete: Boolean = false
 )

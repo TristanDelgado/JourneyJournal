@@ -48,6 +48,8 @@ class CreateEditJournalViewModel(
     val selectedTransportationMethod: StateFlow<TransportationMethods> =
         _selectedTransportationMethod.asStateFlow()
 
+    private var _isComplete = false
+
     init {
         if (journalToEditId != null) {
             viewModelScope.launch {
@@ -60,6 +62,7 @@ class CreateEditJournalViewModel(
                     _description.value = journal.description
                     _selectedDate.value = journal.startDate
                     _selectedTransportationMethod.value = journal.transportationMethod
+                    _isComplete = journal.isComplete
                 }
             }
         }
@@ -117,7 +120,8 @@ class CreateEditJournalViewModel(
                 courseRegion = _courseRegion.value,
                 startDate = _selectedDate.value,
                 transportationMethod = _selectedTransportationMethod.value,
-                description = _description.value
+                description = _description.value,
+                isComplete = _isComplete
             )
 
             // Check if we are editing an existing journey or creating a new one
