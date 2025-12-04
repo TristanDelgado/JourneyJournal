@@ -22,24 +22,24 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.JourneyViewDestinations
 import com.delly.journeyjournal.theme.Typography
+import com.delly.journeyjournal.viewmodels.JournalViewViewModel
+import com.delly.journeyjournal.viewmodels.JournalViewViewModelFactory
 import kotlinx.coroutines.launch
 import com.delly.journeyjournal.R as localR
 
@@ -54,28 +54,36 @@ import com.delly.journeyjournal.R as localR
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JourneyViewScaffoldUi(
+fun JournalViewScaffoldUi(
     navigateHome: () -> Unit,
     repository: JournalRepository,
     currentJournalId: Int
 ) {
+    val viewModel: JournalViewViewModel = viewModel(
+        factory = JournalViewViewModelFactory(
+            repository,
+            currentJournalId,
+        )
+    )
+
+    // Observing ViewModel State
+    val titleOfPage by viewModel.titleOfPage.collectAsState()
+    val selectedIndex by viewModel.selectedIndex.collectAsState()
+    val currentJournal by viewModel.currentJournal.collectAsState()
+
     val localNavController = rememberNavController()
-    var selectedIndex by remember { mutableIntStateOf(0) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    // TODO: Fetch journal name from ID
-    var titleOfPage by remember { mutableStateOf(value = "Journey") }
-    val journalId by remember { mutableStateOf(value = currentJournalId) }
     val coroutineScope = rememberCoroutineScope()
 
-    // TODO: we should probably load the journal name here to display it in the title and side menu
-    // For now passing empty string or placeholder to SideMenuUi
-    
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             SideMenuUi(
-                title = "Journey", // Placeholder until we load the name
-                navigateHome = navigateHome
+                title = titleOfPage,
+                navigateHome = navigateHome,
+                markAsComplete = {
+                    viewModel.markJournalComplete()
+                }
             )
         },
     )
@@ -117,7 +125,7 @@ fun JourneyViewScaffoldUi(
                         )
                     }
 
-                    // Title centered - takes up remaining space and centers text
+                    // Title centered
                     Text(
                         text = titleOfPage,
                         style = Typography.headlineLarge,
@@ -134,10 +142,18 @@ fun JourneyViewScaffoldUi(
                         NavigationBarItem(
                             selected = selectedIndex == index,
                             onClick = {
-                                selectedIndex = index
+                                viewModel.updateSelectedIndex(index)
                                 localNavController.navigate(route = destination.route) {
-                                    // Clear back stack and navigate to single destination
-                                    popUpTo(localNavController.graph.startDestinationId)
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    popUpTo(localNavController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    // Avoid multiple copies of the same destination when
+                                    // re-selecting the same item
+                                    launchSingleTop = true
+                                    // Restore state when re-selecting a previously selected item
+                                    restoreState = true
                                 }
                             },
                             icon = {
@@ -156,7 +172,7 @@ fun JourneyViewScaffoldUi(
 
                 NavHost(
                     navController = localNavController,
-                    startDestination = JourneyViewDestinations.ENTRIES.route, // Use the actual first destination route
+                    startDestination = JourneyViewDestinations.ENTRIES.route,
                     modifier = Modifier.padding(paddingValues)
                 ) {
                     JourneyViewDestinations.entries.forEach { destination ->
@@ -165,24 +181,26 @@ fun JourneyViewScaffoldUi(
                                 JourneyViewDestinations.ENTRIES -> {
                                     JournalEntriesNav(
                                         repository,
-                                        journalId
+                                        currentJournalId
                                     )
-                                    // titleOfPage = journalName // TODO: Fix title update
+                                    viewModel.updateTitle(
+                                        currentJournal?.journalName ?: "Loading..."
+                                    )
                                 }
 
                                 JourneyViewDestinations.MAP -> {
                                     UnderConstructionScreen()
-                                    titleOfPage = "Map"
+                                    viewModel.updateTitle("Map")
                                 }
 
                                 JourneyViewDestinations.STATS -> {
                                     UnderConstructionScreen()
-                                    titleOfPage = "Travel Stats"
+                                    viewModel.updateTitle("Travel Stats")
                                 }
 
                                 JourneyViewDestinations.FORECASTS -> {
                                     UnderConstructionScreen()
-                                    titleOfPage = "Forecasts"
+                                    viewModel.updateTitle("Forecasts")
                                 }
                             }
                         }

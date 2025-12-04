@@ -29,8 +29,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JournalEntryEntity
 import com.delly.journeyjournal.theme.Typography
-import com.delly.journeyjournal.viewmodels.JourneyEntriesViewModel
-import com.delly.journeyjournal.viewmodels.JourneyEntriesViewModelFactory
+import com.delly.journeyjournal.viewmodels.JournalEntriesViewModel
+import com.delly.journeyjournal.viewmodels.JournalEntriesViewModelFactory
 import com.delly.journeyjournal.R as localR
 
 /**
@@ -49,8 +49,8 @@ fun JourneyEntriesUi(
     journeyId: Int,
 ) {
     // Initialize the viewmodel
-    val viewModel: JourneyEntriesViewModel = viewModel(
-        factory = JourneyEntriesViewModelFactory(
+    val viewModel: JournalEntriesViewModel = viewModel(
+        factory = JournalEntriesViewModelFactory(
             repository,
             journeyId
         )
@@ -92,7 +92,7 @@ fun JourneyEntriesUi(
             )
         }
 
-        val journeyWithEntries = viewModel.journeyWithEntries.collectAsState()
+        val journeyWithEntries = viewModel.journalWithEntries.collectAsState()
 
         // Display a list of entries
         LazyColumn(
