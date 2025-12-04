@@ -17,12 +17,12 @@ object CreateJourneyEntryDestination
  * Used to navigate viewing, creating and editing journal entries.
  *
  * @param repository The repository to get data from
- * @param journalName The name journal being viewed
+ * @param journalId The id of the journal being viewed
  */
 @Composable
 fun JournalEntriesNav(
     repository: JournalRepository,
-    journalName: String
+    journalId: Int
 ) {
     val navController = rememberNavController()
 
@@ -35,7 +35,7 @@ fun JournalEntriesNav(
             JourneyEntriesUi(
                 navigateToCreateEntry = { navController.navigate(CreateJourneyEntryDestination) },
                 repository = repository,
-                journeyName = journalName
+                journeyId = journalId
             )
         }
 
@@ -44,7 +44,7 @@ fun JournalEntriesNav(
             CreateJourneyEntryUi(
                 navigateBack = { navController.popBackStack() },
                 repository = repository,
-                journalName = journalName,
+                journalId = journalId,
             )
         }
     }

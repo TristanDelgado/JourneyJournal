@@ -24,13 +24,13 @@ interface JournalEntityDao {
     fun getAllJournals(): Flow<List<JournalEntity>>
 
     /**
-     * Retrieves a specific journal entry by its name.
+     * Retrieves a specific journal entry by its id.
      *
-     * @param journeyName The name of the journal to retrieve
-     * @return The JourneyEntity with the specified name, or null if not found
+     * @param journalId The id of the journal to retrieve
+     * @return The JourneyEntity with the specified id, or null if not found
      */
-    @Query("SELECT * FROM JournalEntity WHERE journalName = :journeyName")
-    suspend fun getJournalByName(journeyName: String): JournalEntity?
+    @Query("SELECT * FROM JournalEntity WHERE id = :journalId")
+    suspend fun getJournalById(journalId: Int): JournalEntity?
 
     /**
      * Inserts a new journal into the database.

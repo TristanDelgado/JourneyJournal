@@ -21,7 +21,7 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = JournalEntity::class,
-            parentColumns = ["journalName"],
+            parentColumns = ["id"],
             childColumns = ["ownerId"],
             onDelete = ForeignKey.CASCADE
         )
@@ -30,7 +30,7 @@ import androidx.room.PrimaryKey
 data class JournalEntryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val ownerId: String,
+    val ownerId: Int,
     val dayNumber: String,
     val startLocation: String,
     val endLocation: String,

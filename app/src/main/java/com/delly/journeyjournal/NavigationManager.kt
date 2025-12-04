@@ -15,10 +15,10 @@ import kotlinx.serialization.Serializable
 object Home
 
 @Serializable
-data class CreateEditJourney(val journalName: String? = null)
+data class CreateEditJourney(val journalId: Int? = null)
 
 @Serializable
-data class SelectedJourney(val name: String)
+data class SelectedJourney(val id: Int)
 
 /**
  * Navigation graph for the app.
@@ -36,13 +36,13 @@ fun NavHost(
         // HomeScreen is the initial load in screen where all Journals are displayed
         composable<Home> {
             HomeScreen(
-                navToCreateEditJourneyScreen = { journalToEditName ->
-                    navController.navigate(route = CreateEditJourney(journalName = journalToEditName))
+                navToCreateEditJourneyScreen = { journalToEditId ->
+                    navController.navigate(route = CreateEditJourney(journalId = journalToEditId))
                 },
-                navigateToJourney = { selectedJourney ->
+                navigateToJourney = { selectedJourneyId ->
                     navController.navigate(
                         route = SelectedJourney(
-                            name = selectedJourney
+                            id = selectedJourneyId
                         )
                     )
                 },
@@ -55,26 +55,26 @@ fun NavHost(
             val createJourney: CreateEditJourney = backStackEntry.toRoute()
             CreateEditJourneyUi(
                 navigateHome = { navController.navigate(route = Home) },
-                navigateToJourney = { selectedJourney ->
+                navigateToJourney = { selectedJourneyId ->
                     navController.navigate(
                         route = SelectedJourney(
-                            name = selectedJourney
+                            id = selectedJourneyId
                         )
                     )
                 },
                 repository = repository,
-                journalToEditName = createJourney.journalName
+                journalToEditId = createJourney.journalId
             )
         }
 
         // JourneyViewScaffoldUi is used to view the data for an existing journey
         composable<SelectedJourney> { selectedJourney ->
-            val selectedJourneyName: SelectedJourney = selectedJourney.toRoute()
+            val selectedJourneyData: SelectedJourney = selectedJourney.toRoute()
 
             JourneyViewScaffoldUi(
                 navigateHome = { navController.navigate(route = Home) },
                 repository = repository,
-                currentJournalName = selectedJourneyName.name,
+                currentJournalId = selectedJourneyData.id,
             )
         }
     }

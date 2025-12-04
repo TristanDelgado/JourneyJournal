@@ -50,27 +50,31 @@ import com.delly.journeyjournal.R as localR
  *
  * @param navigateHome A lambda to navigate back to the home screen.
  * @param repository The repository to get journal data from.
- * @param currentJournalName The name of the currently selected journal.
+ * @param currentJournalId The id of the currently selected journal.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JourneyViewScaffoldUi(
     navigateHome: () -> Unit,
     repository: JournalRepository,
-    currentJournalName: String
+    currentJournalId: Int
 ) {
     val localNavController = rememberNavController()
     var selectedIndex by remember { mutableIntStateOf(0) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    var titleOfPage by remember { mutableStateOf(value = currentJournalName) }
-    val journalName by remember { mutableStateOf(value = currentJournalName) }
+    // TODO: Fetch journal name from ID
+    var titleOfPage by remember { mutableStateOf(value = "Journey") }
+    val journalId by remember { mutableStateOf(value = currentJournalId) }
     val coroutineScope = rememberCoroutineScope()
 
+    // TODO: we should probably load the journal name here to display it in the title and side menu
+    // For now passing empty string or placeholder to SideMenuUi
+    
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             SideMenuUi(
-                title = journalName,
+                title = "Journey", // Placeholder until we load the name
                 navigateHome = navigateHome
             )
         },
@@ -161,9 +165,9 @@ fun JourneyViewScaffoldUi(
                                 JourneyViewDestinations.ENTRIES -> {
                                     JournalEntriesNav(
                                         repository,
-                                        journalName
+                                        journalId
                                     )
-                                    titleOfPage = journalName
+                                    // titleOfPage = journalName // TODO: Fix title update
                                 }
 
                                 JourneyViewDestinations.MAP -> {

@@ -16,7 +16,7 @@ data class JournalWithEntries(
     @Embedded val journey: JournalEntity,
 
     @Relation(
-        parentColumn = "journalName", // The Primary Key of the Parent (JournalEntity)
+        parentColumn = "id", // The Primary Key of the Parent (JournalEntity)
         entityColumn = "ownerId"      // The Foreign Key in the Child (JourneyEntryEntity)
     )
     val entries: List<JournalEntryEntity>

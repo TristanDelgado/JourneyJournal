@@ -7,6 +7,7 @@ import com.delly.journeyjournal.enums.TransportationMethods
 /**
  * Represents a journal entity in the database.
  *
+ * @property id The unique identifier of the journal.
  * @property journalName The name of the journal.
  * @property journeymanName The name of the journeyman.
  * @property courseName The name of the course.
@@ -17,7 +18,8 @@ import com.delly.journeyjournal.enums.TransportationMethods
  */
 @Entity(tableName = "JournalEntity")
 data class JournalEntity(
-    @PrimaryKey val journalName: String,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val journalName: String,
     val journeymanName: String,
     val courseName: String,
     val courseRegion: String,

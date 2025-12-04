@@ -19,10 +19,10 @@ interface JournalWithEntriesDao {
      * 1. Selects the Journey.
      * 2. Selects the Entries where the foreign key matches.
      *
-     * @param journeyName The unique name of the journey to retrieve.
+     * @param journalId The unique id of the journey to retrieve.
      * @return A [JournalWithEntries] object containing the journey and its entries.
      */
     @Transaction
-    @Query(value = "SELECT * FROM JournalEntity WHERE journalName = :journeyName")
-    suspend fun getJourneyWithEntries(journeyName: String): JournalWithEntries
+    @Query(value = "SELECT * FROM JournalEntity WHERE id = :journalId")
+    suspend fun getJourneyWithEntries(journalId: Int): JournalWithEntries
 }

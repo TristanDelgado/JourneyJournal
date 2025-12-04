@@ -20,9 +20,9 @@ import kotlinx.coroutines.launch
  */
 class CreateEditJournalViewModel(
     private val navigateHome: () -> Unit,
-    private val createAndNavigateToJournal: (String) -> Unit,
+    private val createAndNavigateToJournal: (Int) -> Unit,
     private val repository: JournalRepository,
-    private val journalToEditName: String?,
+    private val journalToEditId: Int?,
 ) : ViewModel() {
 
     private val _journeyName = MutableStateFlow("")
@@ -49,9 +49,9 @@ class CreateEditJournalViewModel(
         _selectedTransportationMethod.asStateFlow()
 
     init {
-        if (journalToEditName != null) {
+        if (journalToEditId != null) {
             viewModelScope.launch {
-                val journal = repository.getJournalByName(journalToEditName)
+                val journal = repository.getJournalById(journalToEditId)
                 if (journal != null) {
                     _journeyName.value = journal.journalName
                     _journeymanName.value = journal.journeymanName
@@ -106,7 +106,11 @@ class CreateEditJournalViewModel(
     fun saveJourney() {
         viewModelScope.launch {
             // Create a Journey Entity
+            // id is 0 by default which means auto-generate for new entries
+            // if we are editing, we need to use the existing id
+            val idToUse = journalToEditId ?: 0
             val newJourney = JournalEntity(
+                id = idToUse,
                 journalName = _journeyName.value,
                 journeymanName = _journeymanName.value,
                 courseName = _courseName.value,
@@ -117,14 +121,14 @@ class CreateEditJournalViewModel(
             )
 
             // Check if we are editing an existing journey or creating a new one
-            // We assume we are editing if journalToEditName was provided in constructor
-            if (journalToEditName != null) {
+            // We assume we are editing if journalToEditId was provided in constructor
+            if (journalToEditId != null) {
                 repository.updateJournal(journalEntity = newJourney)
-                createAndNavigateToJournal(newJourney.journalName)
+                createAndNavigateToJournal(newJourney.id)
             } else {
                 try {
-                    repository.insertJournal(journalEntity = newJourney)
-                    createAndNavigateToJournal(newJourney.journalName)
+                    val newId = repository.insertJournal(journalEntity = newJourney)
+                    createAndNavigateToJournal(newId.toInt())
                 } catch (e: Exception) {
                     // Handle error
                 }

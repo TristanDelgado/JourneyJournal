@@ -41,8 +41,8 @@ import com.delly.journeyjournal.R as localR
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navToCreateEditJourneyScreen: (String?) -> Unit,
-    navigateToJourney: (String) -> Unit,
+    navToCreateEditJourneyScreen: (Int?) -> Unit,
+    navigateToJourney: (Int) -> Unit,
     repository: JournalRepository,
 ) {
     val allJourneys = repository.getAllJournals().collectAsState(initial = emptyList())
@@ -103,7 +103,7 @@ fun HomeScreen(
                         journalEntity = journey,
                         navigateToJourney = navigateToJourney,
                         repository = repository,
-                        onEditClick = { navToCreateEditJourneyScreen(journey.journalName) }
+                        onEditClick = { navToCreateEditJourneyScreen(journey.id) }
                     )
                 }
             }
@@ -118,7 +118,7 @@ fun HomeScreen(
                         journalEntity = journey,
                         navigateToJourney = navigateToJourney,
                         repository = repository,
-                        onEditClick = { navToCreateEditJourneyScreen(journey.journalName) }
+                        onEditClick = { navToCreateEditJourneyScreen(journey.id) }
                     )
                 }
             }
