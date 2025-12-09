@@ -34,7 +34,7 @@ import com.delly.journeyjournal.viewmodels.JournalEntriesViewModelFactory
 import com.delly.journeyjournal.R as localR
 
 /**
- * This composable displays a list of journey entries.
+ * This composable displays a list of journal entries.
  * It also includes a button to create a new entry.
  *
  * @param navigateToCreateEntry A lambda to navigate to the create entry screen.
@@ -109,19 +109,20 @@ fun JourneyEntriesUi(
                 }
             } else {
                 // Fallback: Show example entry if data is loading (null) or empty
-                val exampleEntry = JournalEntryEntity(
-                    id = 0,
-                    ownerId = 0,
-                    dayNumber = "1",
-                    startLocation = "Valley",
-                    endLocation = "Mountain",
-                    distanceHiked = "2",
-                    trailConditions = "Rough",
-                    wildlifeSightings = "None",
-                    resupplyNotes = "None",
-                    notes = "Example"
-                )
                 item {
+                    val exampleEntry = JournalEntryEntity(
+                        id = 0,
+                        ownerId = 0,
+                        dayNumber = stringResource(id = localR.string.example_day_number),
+                        startLocation = stringResource(id = localR.string.example_start_location),
+                        endLocation = stringResource(id = localR.string.example_end_location),
+                        distanceHiked = stringResource(id = localR.string.example_distance),
+                        trailConditions = stringResource(id = localR.string.example_trail_conditions),
+                        wildlifeSightings = stringResource(id = localR.string.none),
+                        resupplyNotes = stringResource(id = localR.string.none),
+                        notes = stringResource(id = localR.string.example_notes)
+                    )
+
                     JourneyEntryOverviewBox(entry = exampleEntry)
                 }
             }

@@ -1,17 +1,19 @@
 package com.delly.journeyjournal.enums
 
+import androidx.annotation.StringRes
+import com.delly.journeyjournal.R
 
 /**
  * Enum class representing different transportation methods.
  *
- * @property stringValue The string representation of the transportation method.
+ * @property labelResId The string resource ID of the transportation method.
  */
-enum class TransportationMethods(val stringValue: String) {
-    ON_FOOT(stringValue = "On foot"),
+enum class TransportationMethods(@StringRes val labelResId: Int) {
+    ON_FOOT(labelResId = R.string.transport_on_foot),
 
-    BICYCLE(stringValue = "Bicycle"),
+    BICYCLE(labelResId = R.string.transport_bicycle),
 
-    CAR(stringValue = "Car"),
+    CAR(labelResId = R.string.transport_car),
 
-    ANIMAL(stringValue = "Animal")
+    ANIMAL(labelResId = R.string.transport_animal)
 }

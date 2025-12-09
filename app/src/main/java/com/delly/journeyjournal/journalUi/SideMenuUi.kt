@@ -19,9 +19,11 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.delly.journeyjournal.theme.JourneyJournalTheme
+import com.delly.journeyjournal.R as localR
 
 /**
  * Side menu ui used for navigation inside of a journal.
@@ -51,7 +53,7 @@ fun SideMenuUi(
             HorizontalDivider()
 
             Text(
-                "Home",
+                stringResource(id = localR.string.home_menu),
                 modifier = Modifier
                     .padding(16.dp)
                     .clickable {
@@ -63,17 +65,17 @@ fun SideMenuUi(
             HorizontalDivider()
 
             Text(
-                "Section 1",
+                stringResource(id = localR.string.section_1),
                 modifier = Modifier.padding(16.dp),
                 style = MaterialTheme.typography.titleMedium
             )
             NavigationDrawerItem(
-                label = { Text("Item 1") },
+                label = { Text(stringResource(id = localR.string.item_1)) },
                 selected = false,
                 onClick = { /* Handle click */ }
             )
             NavigationDrawerItem(
-                label = { Text("Item 2") },
+                label = { Text(stringResource(id = localR.string.item_2)) },
                 selected = false,
                 onClick = { /* Handle click */ }
             )
@@ -81,7 +83,7 @@ fun SideMenuUi(
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
             NavigationDrawerItem(
-                label = { Text("Mark as complete") },
+                label = { Text(stringResource(id = localR.string.mark_as_complete)) },
                 selected = false,
                 icon = {
                     Icon(
@@ -98,7 +100,7 @@ fun SideMenuUi(
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
             NavigationDrawerItem(
-                label = { Text("Settings") },
+                label = { Text(stringResource(id = localR.string.settings)) },
                 selected = false,
                 icon = {
                     Icon(
@@ -106,11 +108,11 @@ fun SideMenuUi(
                         contentDescription = null
                     )
                 },
-                badge = { Text("20") }, // Placeholder
+                badge = { Text(stringResource(id = localR.string.placeholder_badge)) }, // Placeholder
                 onClick = { /* Handle click */ }
             )
             NavigationDrawerItem(
-                label = { Text("Help and feedback") },
+                label = { Text(stringResource(id = localR.string.help_and_feedback)) },
                 selected = false,
                 icon = {
                     Icon(
@@ -134,7 +136,7 @@ fun SideMenuPreview() {
     JourneyJournalTheme {
         SideMenuUi(
             title = "Preview Journey",
-            navigateHome = { null },
-            markAsComplete = { null })
+            navigateHome = { },
+            markAsComplete = { })
     }
 }

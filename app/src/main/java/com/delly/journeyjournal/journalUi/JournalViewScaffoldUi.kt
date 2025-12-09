@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -121,7 +122,7 @@ fun JournalViewScaffoldUi(
                                 .padding(dimensionResource(localR.dimen.padding_small))
                                 .size(dimensionResource(localR.dimen.large_button_height)),
                             imageVector = Icons.Filled.Menu,
-                            contentDescription = "Menu to open drawer",
+                            contentDescription = stringResource(id = localR.string.menu_open_drawer),
                         )
                     }
 
@@ -159,10 +160,10 @@ fun JournalViewScaffoldUi(
                             icon = {
                                 Icon(
                                     imageVector = destination.icon,
-                                    contentDescription = destination.contentDescription
+                                    contentDescription = stringResource(id = destination.contentDescriptionResId)
                                 )
                             },
-                            label = { Text(destination.label) }
+                            label = { Text(stringResource(id = destination.labelResId)) }
                         )
                     }
                 }
@@ -184,23 +185,23 @@ fun JournalViewScaffoldUi(
                                         currentJournalId
                                     )
                                     viewModel.updateTitle(
-                                        currentJournal?.journalName ?: "Loading..."
+                                        currentJournal?.journalName ?: stringResource(id = localR.string.loading)
                                     )
                                 }
 
                                 JourneyViewDestinations.MAP -> {
                                     UnderConstructionScreen()
-                                    viewModel.updateTitle("Map")
+                                    viewModel.updateTitle(stringResource(id = localR.string.map))
                                 }
 
                                 JourneyViewDestinations.STATS -> {
                                     UnderConstructionScreen()
-                                    viewModel.updateTitle("Travel Stats")
+                                    viewModel.updateTitle(stringResource(id = localR.string.travel_stats))
                                 }
 
                                 JourneyViewDestinations.FORECASTS -> {
                                     UnderConstructionScreen()
-                                    viewModel.updateTitle("Forecasts")
+                                    viewModel.updateTitle(stringResource(id = localR.string.forecasts))
                                 }
                             }
                         }

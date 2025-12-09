@@ -83,7 +83,7 @@ fun CreateEditJourneyUi(
     ) {
         // Title
         Text(
-            text = "New Journey",
+            text = stringResource(id = localR.string.new_journey_title),
             style = Typography.headlineLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
@@ -112,19 +112,19 @@ fun CreateEditJourneyUi(
             CustomTextField(
                 value = journeymanName.value,
                 onValueChange = { viewModel.updateJourneymanName(newName = it) },
-                label = "Journeyman Name"
+                label = stringResource(id = localR.string.journeyman_name)
             )
 
             CustomTextField(
                 value = courseName.value,
                 onValueChange = { viewModel.updateCourseName(newName = it) },
-                label = "Course Name"
+                label = stringResource(id = localR.string.course_name)
             )
 
             CustomTextField(
                 value = courseRegion.value,
                 onValueChange = { viewModel.updateCourseRegion(newRegion = it) },
-                label = "Course Region"
+                label = stringResource(id = localR.string.course_region)
             )
 
             Row(
@@ -139,7 +139,7 @@ fun CreateEditJourneyUi(
             CustomTextField(
                 value = descriptionPurpose.value,
                 onValueChange = { viewModel.updateDescription(newDescription = it) },
-                label = "Description / Purpose",
+                label = stringResource(id = localR.string.description_purpose),
                 singleLine = false
             )
 
@@ -148,7 +148,7 @@ fun CreateEditJourneyUi(
                 Button(
                     onClick = { viewModel.cancelJourney() }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(id = localR.string.cancel))
                 }
 
                 Spacer(Modifier.weight(1f))
@@ -157,7 +157,7 @@ fun CreateEditJourneyUi(
                     onClick = { viewModel.saveJourney() }
                 )
                 {
-                    Text("Save")
+                    Text(stringResource(id = localR.string.save))
                 }
             }
         }
@@ -178,11 +178,11 @@ fun DatePickerButton(viewModel: CreateEditJournalViewModel) {
     Button(onClick = { showRangeModal = true }) {
         Text(selectedDate.value?.let { date ->
             SimpleDateFormat(
-                "MM/dd/yyyy",
+                stringResource(id = localR.string.date_format),
                 Locale.US
             ).format(Date(date))
         }
-            ?: "Start Date")
+            ?: stringResource(id = localR.string.start_date))
     }
 
     if (showRangeModal) {
@@ -212,10 +212,10 @@ fun TransportationMethodDropdownMenu(viewModel: CreateEditJournalViewModel) {
         onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
-            value = selectedOption.value.stringValue,
+            value = stringResource(id = selectedOption.value.labelResId),
             onValueChange = {},
             readOnly = true,
-            label = { Text("Choose one") },
+            label = { Text(stringResource(id = localR.string.choose_one)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
             modifier = Modifier
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable)
@@ -228,7 +228,7 @@ fun TransportationMethodDropdownMenu(viewModel: CreateEditJournalViewModel) {
         ) {
             TransportationMethods.entries.forEach { method ->
                 DropdownMenuItem(
-                    text = { Text(text = method.stringValue) },
+                    text = { Text(text = stringResource(id = method.labelResId)) },
                     onClick = {
                         viewModel.updateTransportationMethod(transportationMethod = method)
                         expanded = false
@@ -261,11 +261,11 @@ fun DatePickerModal(
             TextButton(onClick = {
                 onDateSelected(datePickerState.selectedDateMillis)
             }) {
-                Text("OK")
+                Text(stringResource(id = localR.string.OK))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(id = localR.string.cancel)) }
         }
     ) {
         DatePicker(state = datePickerState)

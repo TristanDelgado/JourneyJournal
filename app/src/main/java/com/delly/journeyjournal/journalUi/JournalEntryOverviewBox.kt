@@ -13,9 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.delly.journeyjournal.db.entities.JournalEntryEntity
+import com.delly.journeyjournal.R as localR
 
 /**
  * Journey entry overview box used to see the general overview of an entry in a journal.
@@ -46,14 +48,14 @@ fun JourneyEntryOverviewBox(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Day ${entry.dayNumber}",
+                    text = stringResource(id = localR.string.day_format, entry.dayNumber),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "${entry.distanceHiked} hiked",
+                    text = stringResource(id = localR.string.hiked_format, entry.distanceHiked),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.secondary
                 )
@@ -62,26 +64,26 @@ fun JourneyEntryOverviewBox(
             Spacer(modifier = Modifier.height(12.dp))
 
             // Locations
-            LabelValueRow(label = "Start:", value = entry.startLocation)
-            LabelValueRow(label = "End:", value = entry.endLocation)
+            LabelValueRow(label = stringResource(id = localR.string.start_label), value = entry.startLocation)
+            LabelValueRow(label = stringResource(id = localR.string.end_label), value = entry.endLocation)
 
             Spacer(modifier = Modifier.height(8.dp))
 
             // Details Section
             if (entry.trailConditions.isNotBlank()) {
-                LabelValueBlock(label = "Trail Conditions", value = entry.trailConditions)
+                LabelValueBlock(label = stringResource(id = localR.string.trail_conditions), value = entry.trailConditions)
             }
 
             if (entry.wildlifeSightings.isNotBlank()) {
-                LabelValueBlock(label = "Wildlife", value = entry.wildlifeSightings)
+                LabelValueBlock(label = stringResource(id = localR.string.wildlife_label), value = entry.wildlifeSightings)
             }
 
             if (entry.resupplyNotes.isNotBlank()) {
-                LabelValueBlock(label = "Resupply / Water", value = entry.resupplyNotes)
+                LabelValueBlock(label = stringResource(id = localR.string.resupply_water_label), value = entry.resupplyNotes)
             }
 
             if (entry.notes.isNotBlank()) {
-                LabelValueBlock(label = "Notes", value = entry.notes)
+                LabelValueBlock(label = stringResource(id = localR.string.notes_label), value = entry.notes)
             }
         }
     }

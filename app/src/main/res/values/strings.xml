@@ -1,31 +1,107 @@
 <resources>
+    <!-- General / App Wide -->
     <string name="app_name">JourneyJournal</string>
 
-    <!-- Visual Elements -->
-    <string name="active_journeys">Active Journeys:</string>
-    <string name="complete_journeys">Complete Journeys:</string>
-    <string name="entries">Entries</string>
-    <string name="forecasts">Forecasts</string>
-    <string name="home_title">Journey Journal</string>
-    <string name="map">Map</string>
-    <string name="settings">Settings</string>
-    <string name="stats">Stats</string>
-    <string name="journey_name">Journey Name</string>
-
-    <!-- Content Descriptions -->
-    <string name="add_journey">Add Journey</string>
-
-    <!-- Create Journey Entry -->
-    <string name="new_entry_title">New Entry</string>
-    <string name="day_number">Day #</string>
-    <string name="start_location">Start Location</string>
-    <string name="end_location">End Location</string>
-    <string name="distance_hiked">Distance Hiked (mi/km)</string>
-    <string name="trail_conditions">Trail Conditions</string>
-    <string name="wildlife_sightings">Wildlife Sightings</string>
-    <string name="resupply_notes">Resupply / Water Notes</string>
-    <string name="journal_notes">Notes &amp; Reflections</string>
-    <string name="add_photos">Add Photos</string>
+    <!-- Common Actions (Used in multiple files) -->
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="OK">OK</string>
+    <string name="date_format">MM/dd/yyyy</string>
+
+    <!-- Used in HomeScreen.kt -->
+    <string name="active_journeys">Active Journeys:</string>
+    <string name="complete_journeys">Complete Journeys:</string>
+    <string name="home_title">Journey Journal</string>
+
+    <!-- Used in HomeScreen.kt and JournalEntriesUi.kt -->
+    <string name="add_journey">Add Journey</string>
+
+    <!-- Used in CreateEditJourneyUi.kt -->
+    <string name="choose_one">Choose one</string>
+    <string name="course_name">Course Name</string>
+    <string name="course_region">Course Region</string>
+    <string name="description_purpose">Description / Purpose</string>
+    <string name="journey_name">Journey Name</string>
+    <string name="journeyman_name">Journeyman Name</string>
+    <string name="new_journey_title">New Journey</string>
+    <string name="start_date">Start Date</string>
+
+    <!-- Used in JournalOverviewBox.kt -->
+    <string name="avg_diff_per_day">Avg diff/day: </string>
+    <string name="delete_journey">Delete Journey</string>
+    <string name="dummy_avg_diff">3.5/5.0</string>
+    <string name="dummy_entries">3)</string>
+    <string name="dummy_miles">25)</string>
+    <string name="edit_journey">Edit Journey</string>
+    <string name="entries_label">Entries: </string>
+    <string name="journey_settings">Journey Settings</string>
+    <string name="miles_abbrev">Mi: </string>
+
+    <!-- Used in CreateJournalEntryUi.kt -->
+    <string name="add_photos">Add Photos</string>
+    <string name="day_number">Day #</string>
+    <string name="distance_hiked">Distance Hiked (mi/km)</string>
+    <string name="end_location">End Location</string>
+    <string name="journal_notes">Notes &amp; Reflections</string>
+    <string name="new_entry_title">New Entry</string>
+    <string name="not_applicable">N/A</string>
+    <string name="rating_label">Rating: %1$s</string>
+    <string name="resupply_notes">Resupply / Water Notes</string>
+    <string name="start_location">Start Location</string>
+    <string name="trail_conditions">Trail Conditions</string>
+    <string name="weather">Weather</string>
+    <string name="wildlife_sightings">Wildlife Sightings</string>
+
+    <!-- Used in JournalEntriesUi.kt -->
+    <string name="example_day_number">1</string>
+    <string name="example_distance">2</string>
+    <string name="example_end_location">Mountain</string>
+    <string name="example_notes">Example Notes</string>
+    <string name="example_start_location">Valley</string>
+    <string name="example_trail_conditions">Rough</string>
+    <string name="none">None</string>
+
+    <!-- Used in JournalEntryOverviewBox.kt -->
+    <string name="day_format">Day %1$s</string>
+    <string name="end_label">End:</string>
+    <string name="hiked_format">%1$s hiked</string>
+    <string name="notes_label">Notes</string>
+    <string name="resupply_water_label">Resupply / Water</string>
+    <string name="start_label">Start:</string>
+    <string name="wildlife_label">Wildlife</string>
+
+    <!-- Used in SideMenuUi.kt -->
+    <string name="help_and_feedback">Help and feedback</string>
+    <string name="home_menu">Home</string>
+    <string name="item_1">Item 1</string>
+    <string name="item_2">Item 2</string>
+    <string name="mark_as_complete">Mark as complete</string>
+    <string name="placeholder_badge">20</string>
+    <string name="section_1">Section 1</string>
+    <string name="settings">Settings</string>
+
+    <!-- Used in JournalViewScaffoldUi.kt -->
+    <string name="loading">Loading…</string>
+    <string name="menu_open_drawer">Menu to open drawer</string>
+    <string name="travel_stats">Travel Stats</string>
+
+    <!-- Used in JourneyViewDestinations.kt -->
+    <string name="stats">Stats</string>
+
+    <!-- Used in JourneyViewDestinations.kt and JournalEntriesUi.kt -->
+    <string name="entries">Entries</string>
+
+    <!-- Used in JourneyViewDestinations.kt and JournalViewScaffoldUi.kt -->
+    <string name="forecasts">Forecasts</string>
+    <string name="map">Map</string>
+
+    <!-- Used in TransportationMethods.kt -->
+    <string name="transport_animal">Animal</string>
+    <string name="transport_bicycle">Bicycle</string>
+    <string name="transport_car">Car</string>
+    <string name="transport_on_foot">On foot</string>
+
+    <!-- Used in UnderConstructionScreenUi.kt -->
+    <string name="under_construction">Under Construction</string>
+
 </resources>

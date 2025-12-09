@@ -1,52 +1,54 @@
 package com.delly.journeyjournal.enums
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.delly.journeyjournal.R
 
 /**
  * Destinations
  *
  * @property route
- * @property label
+ * @property labelResId
  * @property icon
- * @property contentDescription
+ * @property contentDescriptionResId
  * @constructor Create empty Destinations
  */
 enum class JourneyViewDestinations(
     val route: String,
-    val label: String,
+    @StringRes val labelResId: Int,
     val icon: ImageVector,
-    val contentDescription: String,
+    @StringRes val contentDescriptionResId: Int,
 ) {
     ENTRIES(
         route = "entries",
-        label = "Entries",
+        labelResId = R.string.entries,
         Icons.Filled.Home,
-        contentDescription = "entries"
+        contentDescriptionResId = R.string.entries
     ),
 
     MAP(
         route = "map",
-        label = "Map",
+        labelResId = R.string.map,
         Icons.Filled.Person,
-        contentDescription = "map"
+        contentDescriptionResId = R.string.map
     ),
 
     STATS(
         route = "stats",
-        label = "Stats",
+        labelResId = R.string.stats,
         Icons.Filled.Settings,
-        contentDescription = "stats"
+        contentDescriptionResId = R.string.stats
     ),
 
     FORECASTS(
         route = "forecasts",
-        label = "Forecasts",
+        labelResId = R.string.forecasts,
         Icons.Filled.Build,
-        contentDescription = "forecasts"
+        contentDescriptionResId = R.string.forecasts
     ),
 }

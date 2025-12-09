@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JournalEntity
@@ -65,7 +66,7 @@ fun JourneyOverviewBox(
                 content = {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Journey",
+                        contentDescription = stringResource(id = localR.string.edit_journey),
                     )
                 }
             )
@@ -78,7 +79,7 @@ fun JourneyOverviewBox(
                 content = {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete Journey",
+                        contentDescription = stringResource(id = localR.string.delete_journey),
                     )
                 }
             )
@@ -87,17 +88,17 @@ fun JourneyOverviewBox(
                 content = {
                     Icon(
                         imageVector = Icons.Default.Settings,
-                        contentDescription = "Journey Settings",
+                        contentDescription = stringResource(id = localR.string.journey_settings),
                     )
                 }
             )
         }
 
         Row {
-            Text("Mi: 25)")
-            Text("Entries: 3)")
+            Text(stringResource(id = localR.string.miles_abbrev) + stringResource(id = localR.string.dummy_miles))
+            Text(stringResource(id = localR.string.entries_label) + stringResource(id = localR.string.dummy_entries))
         }
-        Text("Avg diff/day: 3.5/5.0")
+        Text(stringResource(id = localR.string.avg_diff_per_day) + stringResource(id = localR.string.dummy_avg_diff))
     }
 }
 
@@ -117,7 +118,7 @@ fun JourneyOverviewBoxPreview() {
     JourneyJournalTheme {
         JourneyOverviewBox(
             journalEntity = journalEntity,
-            navigateToJourney = { null },
+            navigateToJourney = { },
             repository = null,
             onEditClick = { }
         )

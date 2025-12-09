@@ -12,9 +12,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.delly.journeyjournal.R as localR
 
 /**
  * Date picker button
@@ -30,9 +32,10 @@ fun DatePickerButtonUi(
 ) {
     var showRangeModal by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
+    val dateFormat = stringResource(id = localR.string.date_format)
 
     fun formatDate(timestamp: Long): String {
-        return SimpleDateFormat("MM/dd/yyyy", Locale.US).format(Date(timestamp))
+        return SimpleDateFormat(dateFormat, Locale.US).format(Date(timestamp))
     }
 
     Button(onClick = { showRangeModal = true }) {
@@ -52,11 +55,11 @@ fun DatePickerButtonUi(
 
                     onDateSelected(dateToSave)
                 }) {
-                    Text("OK")
+                    Text(stringResource(id = localR.string.OK))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showRangeModal = false }) { Text("Cancel") }
+                TextButton(onClick = { showRangeModal = false }) { Text(stringResource(id = localR.string.cancel)) }
             }
         ) {
             DatePicker(state = datePickerState)

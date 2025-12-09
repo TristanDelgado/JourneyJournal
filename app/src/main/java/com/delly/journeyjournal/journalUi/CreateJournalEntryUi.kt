@@ -50,7 +50,7 @@ import com.delly.journeyjournal.R as localR
 fun WeatherDropdownMenu(viewModel: CreateEntryViewModel) {
     // Placeholder - Implement a dropdown for weather options
     Button(onClick = { /* TODO: Show Weather Dropdown */ }) {
-        Text(viewModel.weather.collectAsState().value.ifEmpty { "Weather" })
+        Text(viewModel.weather.collectAsState().value.ifEmpty { stringResource(localR.string.weather) })
     }
 }
 
@@ -63,7 +63,7 @@ fun WeatherDropdownMenu(viewModel: CreateEntryViewModel) {
 fun RatingDropdownMenu(viewModel: CreateEntryViewModel) {
     // Placeholder - Implement a dropdown for 1-5 rating
     Button(onClick = { /* TODO: Show Rating Dropdown */ }) {
-        Text("Rating: ${viewModel.physicalMentalState.collectAsState().value.ifEmpty { "N/A" }}")
+        Text("${stringResource(localR.string.rating_label)}${viewModel.physicalMentalState.collectAsState().value.ifEmpty { stringResource(localR.string.not_applicable) }}")
     }
 }
 // --- End of Placeholders ---
