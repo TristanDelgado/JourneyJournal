@@ -26,7 +26,7 @@ import com.delly.journeyjournal.R as localR
  * @param modifier
  */
 @Composable
-fun JourneyEntryOverviewBox(
+fun JournalEntryOverviewBox(
     entry: JournalEntryEntity,
     modifier: Modifier = Modifier
 ) {

@@ -129,7 +129,7 @@ fun JournalViewScaffoldUi(
                     // Title centered
                     Text(
                         text = titleOfPage,
-                        style = Typography.headlineLarge,
+                        style = Typography.headlineMedium,
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 48.dp), // Compensate for menu button width

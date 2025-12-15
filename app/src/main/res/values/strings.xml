@@ -53,8 +53,9 @@
     <string name="wildlife_sightings">Wildlife Sightings</string>
 
     <!-- Used in JournalEntriesUi.kt -->
-    <string name="example_day_number">1</string>
-    <string name="example_distance">2</string>
+    <string name="exampleEntryBelow">Example Entry Below</string>
+    <string name="example_day_number">3</string>
+    <string name="example_distance">2 Miles</string>
     <string name="example_end_location">Mountain</string>
     <string name="example_notes">Example Notes</string>
     <string name="example_start_location">Valley</string>

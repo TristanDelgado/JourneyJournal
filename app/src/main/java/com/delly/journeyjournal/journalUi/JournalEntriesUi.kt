@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -95,21 +94,20 @@ fun JourneyEntriesUi(
         val journeyWithEntries = viewModel.journalWithEntries.collectAsState()
 
         // Display a list of entries
-        LazyColumn(
-            modifier = Modifier.heightIn(
-                min = 100.dp,
-                max = dimensionResource(id = localR.dimen.lazy_list_height)
-            )
-        ) {
-
+        LazyColumn {
             // Check if we have valid data AND the list is not empty
             if (!journeyWithEntries.value?.entries.isNullOrEmpty()) {
                 items(items = journeyWithEntries.value!!.entries) { entry ->
-                    JourneyEntryOverviewBox(entry = entry)
+                    JournalEntryOverviewBox(entry = entry)
                 }
             } else {
                 // Fallback: Show example entry if data is loading (null) or empty
                 item {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        text = stringResource(id = localR.string.exampleEntryBelow),
+                        style = Typography.bodyLarge,
+                    )
                     val exampleEntry = JournalEntryEntity(
                         id = 0,
                         ownerId = 0,
@@ -123,7 +121,7 @@ fun JourneyEntriesUi(
                         notes = stringResource(id = localR.string.example_notes)
                     )
 
-                    JourneyEntryOverviewBox(entry = exampleEntry)
+                    JournalEntryOverviewBox(entry = exampleEntry)
                 }
             }
         }
