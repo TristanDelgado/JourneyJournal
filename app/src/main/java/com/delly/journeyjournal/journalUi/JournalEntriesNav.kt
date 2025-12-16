@@ -41,7 +41,7 @@ fun JournalEntriesNav(
 
         // JourneyEntriesUi is the initial load in screen where all entries are displayed
         composable<CreateJourneyEntryDestination> {
-            CreateJourneyEntryUi(
+            CreateJournalEntryUi(
                 navigateBack = { navController.popBackStack() },
                 repository = repository,
                 journalId = journalId,
