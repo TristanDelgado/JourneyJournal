@@ -76,6 +76,7 @@
     <string name="home_menu">Home</string>
     <string name="item_1">Item 1</string>
     <string name="item_2">Item 2</string>
+    <string name="mark_as_incomplete">Mark as incomplete</string>
     <string name="mark_as_complete">Mark as complete</string>
     <string name="placeholder_badge">20</string>
     <string name="section_1">Section 1</string>

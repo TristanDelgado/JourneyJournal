@@ -42,10 +42,13 @@ class JournalViewViewModel(
         }
     }
 
-    fun markJournalComplete() {
-        _currentJournal.value?.isComplete = true
+    fun invertCompleteStatus() {
+        val current = _currentJournal.value ?: return
+        val updatedJournal = current.copy(isComplete = !current.isComplete)
+        _currentJournal.value = updatedJournal
+
         viewModelScope.launch {
-            _currentJournal.value?.let { journal -> repository.updateJournal(journalEntity = journal) }
+            repository.updateJournal(journalEntity = updatedJournal)
         }
     }
 

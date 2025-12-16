@@ -81,9 +81,15 @@ fun JournalViewScaffoldUi(
         drawerContent = {
             SideMenuUi(
                 title = titleOfPage,
+                isComplete = currentJournal?.isComplete ?: false,
                 navigateHome = navigateHome,
-                markAsComplete = {
-                    viewModel.markJournalComplete()
+                invertCompleteStatus = {
+                    viewModel.invertCompleteStatus()
+                },
+                closeDrawer = {
+                    coroutineScope.launch {
+                        drawerState.close()
+                    }
                 }
             )
         },

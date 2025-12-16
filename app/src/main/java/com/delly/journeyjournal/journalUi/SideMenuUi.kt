@@ -35,8 +35,10 @@ import com.delly.journeyjournal.R as localR
 @Composable
 fun SideMenuUi(
     title: String,
+    isComplete: Boolean,
     navigateHome: () -> Unit,
-    markAsComplete: () -> Unit
+    invertCompleteStatus: () -> Unit,
+    closeDrawer: () -> Unit,
 ) {
     ModalDrawerSheet {
         Column(
@@ -82,20 +84,37 @@ fun SideMenuUi(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-            NavigationDrawerItem(
-                label = { Text(stringResource(id = localR.string.mark_as_complete)) },
-                selected = false,
-                icon = {
-                    Icon(
-                        imageVector = Icons.Filled.CheckBox,
-                        contentDescription = null
-                    )
-                },
-                onClick = {
-                    markAsComplete()
-                    navigateHome()
-                }
-            )
+            if (isComplete == false) {
+                NavigationDrawerItem(
+                    label = { Text(stringResource(id = localR.string.mark_as_complete)) },
+                    selected = false,
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.CheckBox,
+                            contentDescription = null
+                        )
+                    },
+                    onClick = {
+                        navigateHome()
+                        invertCompleteStatus()
+                    }
+                )
+            } else {
+                NavigationDrawerItem(
+                    label = { Text(stringResource(id = localR.string.mark_as_incomplete)) },
+                    selected = false,
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.CheckBox,
+                            contentDescription = null
+                        )
+                    },
+                    onClick = {
+                        invertCompleteStatus()
+                        closeDrawer()
+                    }
+                )
+            }
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
@@ -136,7 +155,10 @@ fun SideMenuPreview() {
     JourneyJournalTheme {
         SideMenuUi(
             title = "Preview Journey",
+            isComplete = false,
             navigateHome = { },
-            markAsComplete = { })
+            invertCompleteStatus = { },
+            closeDrawer = { },
+        )
     }
 }
