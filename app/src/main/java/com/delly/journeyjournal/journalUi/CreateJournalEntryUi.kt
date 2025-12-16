@@ -81,7 +81,7 @@ fun RatingDropdownMenu(viewModel: CreateEntryViewModel) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateJourneyEntryUi(
+fun CreateJournalEntryUi(
     navigateBack: () -> Unit,
     repository: JournalRepository,
     journalId: Int
@@ -215,12 +215,6 @@ fun CreateJourneyEntryUi(
                 onValueChange = { viewModel.updateNotes(it) },
                 label = stringResource(id = localR.string.journal_notes),
                 singleLine = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(
-                        1f,
-                        fill = false
-                    ) // Allow notes to expand
             )
 
             // Save and Cancel buttons
