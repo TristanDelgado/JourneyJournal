@@ -115,6 +115,6 @@ class JournalRepository(
      * @param journalId The id of the journey.
      * @return A [JournalWithEntries] object containing the journey and its entries.
      */
-    suspend fun getJourneyWithEntries(journalId: Int): JournalWithEntries =
+    fun getJourneyWithEntries(journalId: Int): Flow<JournalWithEntries> =
         journeyDao.getJourneyWithEntries(journalId)
 }

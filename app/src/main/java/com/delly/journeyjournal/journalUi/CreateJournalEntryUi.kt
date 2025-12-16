@@ -208,7 +208,6 @@ fun CreateJournalEntryUi(
                 }
             }
 
-
             // Main Notes
             CustomTextField(
                 value = notes.value,

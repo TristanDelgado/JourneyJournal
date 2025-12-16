@@ -4,36 +4,35 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JournalWithEntries
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.stateIn
 
 /**
  * Journal entries view model
  *
- * @property repository
- * @property journalId
+ * @property repository The repository to get journal data from
+ * @property journalId The ID of our active journal
  * @constructor Create empty Journey entries view model
  */
 class JournalEntriesViewModel(
     private val repository: JournalRepository,
-    private val journalId: Int
+    private val journalId: Int,
 ) : ViewModel() {
 
     /**
-     * _journal with entries
+     * Observes the database for the specific journal and its entries.
+     *
+     * Uses [stateIn] to convert the Flow from Room into a StateFlow
+     * that Compose can safely observe.
      */
-    private val _journalWithEntries = MutableStateFlow<JournalWithEntries?>(null)
-    val journalWithEntries: StateFlow<JournalWithEntries?> = _journalWithEntries.asStateFlow()
-
-    init {
-        loadEntries()
-    }
-
-    private fun loadEntries() {
-        viewModelScope.launch {
-            _journalWithEntries.value = repository.getJourneyWithEntries(journalId)
-        }
-    }
+    val journalWithEntries: StateFlow<JournalWithEntries?> = repository
+        .getJourneyWithEntries(journalId)
+        .stateIn(
+            scope = viewModelScope,
+            // WhileSubscribed(5000) keeps the flow active for 5 seconds after
+            // the UI stops observing (useful for configuration changes/rotations)
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 }

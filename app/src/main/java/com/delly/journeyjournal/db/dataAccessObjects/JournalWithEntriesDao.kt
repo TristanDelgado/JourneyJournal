@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.delly.journeyjournal.db.entities.JournalWithEntries
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Data Access Object (DAO) for composite operations involving Journeys.
@@ -24,5 +25,5 @@ interface JournalWithEntriesDao {
      */
     @Transaction
     @Query(value = "SELECT * FROM JournalEntity WHERE id = :journalId")
-    suspend fun getJourneyWithEntries(journalId: Int): JournalWithEntries
+    fun getJourneyWithEntries(journalId: Int): Flow<JournalWithEntries>
 }
