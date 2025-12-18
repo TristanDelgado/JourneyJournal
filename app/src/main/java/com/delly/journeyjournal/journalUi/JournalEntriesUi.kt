@@ -118,7 +118,8 @@ fun JourneyEntriesUi(
                         trailConditions = stringResource(id = localR.string.example_trail_conditions),
                         wildlifeSightings = stringResource(id = localR.string.none),
                         resupplyNotes = stringResource(id = localR.string.none),
-                        notes = stringResource(id = localR.string.example_notes)
+                        notes = stringResource(id = localR.string.example_notes),
+                        date = System.currentTimeMillis()
                     )
 
                     JournalEntryOverviewBox(entry = exampleEntry)

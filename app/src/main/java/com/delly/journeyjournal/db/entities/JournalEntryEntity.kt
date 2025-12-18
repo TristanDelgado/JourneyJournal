@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
  * Represents a single entry within a journey. This is a supporting data class that is intended to be
  * referenced by a main journey entity.
  *
+ * @property date The date of the entry.
  * @property dayNumber The day number of the entry.
  * @property startLocation The starting location of the journey entry.
  * @property endLocation The ending location of the journey entry.
@@ -31,6 +32,7 @@ data class JournalEntryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val ownerId: Int,
+    val date: Long,
     val dayNumber: String,
     val startLocation: String,
     val endLocation: String,

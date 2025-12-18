@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,17 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.genericUi.CustomTextField
-import com.delly.journeyjournal.genericUi.DatePickerButtonUi
+import com.delly.journeyjournal.genericUi.DatePickerButton
 import com.delly.journeyjournal.viewmodels.CreateEntryViewModel
 import com.delly.journeyjournal.viewmodels.CreateEntryViewModelFactory
 import com.delly.journeyjournal.R as localR
 
 // --- Placeholders  ---
-
-// TODO: Replace with your actual repository
-//interface JournalRepository {
-//    // Define methods for adding entries, etc.
-//}
 
 /**
  * Weather dropdown menu
@@ -119,6 +115,8 @@ fun CreateJournalEntryUi(
         val wildlifeSightings = viewModel.wildlifeSightings.collectAsState()
         val resupplyNotes = viewModel.resupplyNotes.collectAsState()
         val notes = viewModel.notes.collectAsState()
+        val selectedDate by viewModel.selectedDate.collectAsState()
+
 
         Column(
             modifier = Modifier
@@ -134,9 +132,12 @@ fun CreateJournalEntryUi(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                DatePickerButtonUi(
-                    selectedDate = viewModel.entryDate.collectAsState().value,
-                    onDateSelected = { viewModel.updateEntryDate(newDate = it) }
+                DatePickerButton(
+                    selectedDate = selectedDate,
+                    onDateSelected = { newDate ->
+                        viewModel.updateSelectedDate(newDate = newDate)
+                    },
+                    placeholderText = stringResource(id = localR.string.select_date)
                 )
                 Spacer(Modifier.weight(1f))
                 CustomTextField(

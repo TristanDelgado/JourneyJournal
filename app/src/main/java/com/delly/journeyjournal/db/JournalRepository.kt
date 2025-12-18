@@ -58,7 +58,7 @@ class JournalRepository(
         journeyEntityDao.updateJournal(journalEntity)
 
     /**
-     * Deletes a specific journey.
+     * Deletes a specific journal.
      *
      * @param journalEntity The [journalEntity] to delete.
      */
@@ -115,6 +115,6 @@ class JournalRepository(
      * @param journalId The id of the journey.
      * @return A [JournalWithEntries] object containing the journey and its entries.
      */
-    fun getJourneyWithEntries(journalId: Int): Flow<JournalWithEntries> =
-        journeyDao.getJourneyWithEntries(journalId)
+    fun getJourneyWithEntries(journalId: Int): Flow<JournalWithEntries?> =
+        journeyDao.getJournalWithEntries(journalId)
 }

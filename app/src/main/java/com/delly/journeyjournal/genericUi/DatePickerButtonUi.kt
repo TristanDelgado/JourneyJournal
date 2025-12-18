@@ -8,10 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -19,47 +21,76 @@ import java.util.Locale
 import com.delly.journeyjournal.R as localR
 
 /**
- * Date picker button
+ * A reusable button that opens a DatePickerDialog to select a date.
  *
- * @param selectedDate The selected date in the form of a Long.
- * @param onDateSelected The callback that is triggered when a date is selected.
+ * This component manages its own dialog visibility state and provides a formatted
+ * button label. It can be initialized with an existing date.
+ *
+ * @param selectedDate The currently selected date in milliseconds since the epoch.
+ *                     If null, a placeholder text will be displayed on the button.
+ * @param onDateSelected The callback that is triggered with the new date in
+ *                       milliseconds when the user confirms their selection.
+ * @param modifier The [Modifier] to be applied to the button.
+ * @param placeholderText The text to display on the button when [selectedDate] is null.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerButtonUi(
-    selectedDate: Long,
+fun DatePickerButton(
+    selectedDate: Long?,
     onDateSelected: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholderText: String = stringResource(id = localR.string.start_date)
 ) {
-    var showRangeModal by remember { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState()
-    val dateFormat = stringResource(id = localR.string.date_format)
+    var showDatePicker by remember { mutableStateOf(false) }
 
+    // This state is for the DatePicker within the dialog.
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = selectedDate ?: System.currentTimeMillis()
+    )
+
+    // A one-time effect to ensure the dialog's date picker is synchronized
+    // if the external selectedDate changes.
+    LaunchedEffect(selectedDate) {
+        selectedDate?.let {
+            datePickerState.selectedDateMillis = it
+        }
+    }
+
+    // This function formats the timestamp for the button's text.
+    val dateFormat = stringResource(id = localR.string.date_format)
     fun formatDate(timestamp: Long): String {
         return SimpleDateFormat(dateFormat, Locale.US).format(Date(timestamp))
     }
 
-    Button(onClick = { showRangeModal = true }) {
+    // The button that the user clicks to open the dialog.
+    Button(
+        onClick = { showDatePicker = true },
+        modifier = modifier
+    ) {
         Text(
-            text = formatDate(timestamp = selectedDate)
+            text = selectedDate?.let { formatDate(it) } ?: placeholderText
         )
     }
 
-    if (showRangeModal) {
+    // This block displays the DatePickerDialog when showDatePicker is true.
+    if (showDatePicker) {
         DatePickerDialog(
-            onDismissRequest = { showRangeModal = false },
+            onDismissRequest = { showDatePicker = false },
             confirmButton = {
                 TextButton(onClick = {
-                    // The default date should be the current date
-                    val dateToSave: Long = datePickerState.selectedDateMillis
-                        ?: System.currentTimeMillis()
-
-                    onDateSelected(dateToSave)
+                    // Only trigger the callback if a date has been selected in the picker.
+                    datePickerState.selectedDateMillis?.let {
+                        onDateSelected(it)
+                    }
+                    showDatePicker = false
                 }) {
                     Text(stringResource(id = localR.string.OK))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showRangeModal = false }) { Text(stringResource(id = localR.string.cancel)) }
+                TextButton(onClick = { showDatePicker = false }) {
+                    Text(stringResource(id = localR.string.cancel))
+                }
             }
         ) {
             DatePicker(state = datePickerState)

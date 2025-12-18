@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -19,9 +17,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,13 +35,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.genericUi.CustomTextField
+import com.delly.journeyjournal.genericUi.DatePickerButton
 import com.delly.journeyjournal.theme.Shapes
 import com.delly.journeyjournal.theme.Typography
 import com.delly.journeyjournal.viewmodels.CreateEditJournalViewModel
 import com.delly.journeyjournal.viewmodels.CreateJournalViewModelFactory
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import com.delly.journeyjournal.R as localR
 
 /**
@@ -63,7 +57,7 @@ fun CreateEditJourneyUi(
     navigateHome: () -> Unit,
     navigateToJourney: (Int) -> Unit,
     repository: JournalRepository,
-    journalToEditId: Int? = null
+    journalToEditId: Int? = null,
 ) {
     //Initialize the viewmodel
     val viewModel: CreateEditJournalViewModel = viewModel(
@@ -95,6 +89,7 @@ fun CreateEditJourneyUi(
         val courseName = viewModel.courseName.collectAsState()
         val courseRegion = viewModel.courseRegion.collectAsState()
         val descriptionPurpose = viewModel.description.collectAsState()
+        val selectedDate by viewModel.selectedDate.collectAsState()
 
         Column(
             modifier = Modifier
@@ -103,24 +98,28 @@ fun CreateEditJourneyUi(
                 .padding(dimensionResource(id = localR.dimen.content_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = localR.dimen.content_padding))
         ) {
+            // Journal Name
             CustomTextField(
                 value = journeyName.value,
                 onValueChange = { viewModel.updateJourneyName(newName = it) },
-                label = stringResource(id = localR.string.journey_name)
+                label = stringResource(id = localR.string.journal_name)
             )
 
+            // Journeyman Name
             CustomTextField(
                 value = journeymanName.value,
                 onValueChange = { viewModel.updateJourneymanName(newName = it) },
                 label = stringResource(id = localR.string.journeyman_name)
             )
 
+            // Course Name
             CustomTextField(
                 value = courseName.value,
                 onValueChange = { viewModel.updateCourseName(newName = it) },
                 label = stringResource(id = localR.string.course_name)
             )
 
+            // Course Region
             CustomTextField(
                 value = courseRegion.value,
                 onValueChange = { viewModel.updateCourseRegion(newRegion = it) },
@@ -131,7 +130,12 @@ fun CreateEditJourneyUi(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                DatePickerButton(viewModel = viewModel)
+                DatePickerButton(
+                    selectedDate = selectedDate,
+                    onDateSelected = { newDate ->
+                        viewModel.updateSelectedDate(newDate = newDate)
+                    }
+                )
                 Spacer(Modifier.weight(weight = 1f))
                 TransportationMethodDropdownMenu(viewModel = viewModel)
             }
@@ -161,38 +165,6 @@ fun CreateEditJourneyUi(
                 }
             }
         }
-    }
-}
-
-/**
- * Date picker button
- *
- * @param viewModel
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DatePickerButton(viewModel: CreateEditJournalViewModel) {
-    var showRangeModal by remember { mutableStateOf(false) }
-    val selectedDate = viewModel.selectedDate.collectAsState()
-
-    Button(onClick = { showRangeModal = true }) {
-        Text(selectedDate.value?.let { date ->
-            SimpleDateFormat(
-                stringResource(id = localR.string.date_format),
-                Locale.US
-            ).format(Date(date))
-        }
-            ?: stringResource(id = localR.string.start_date))
-    }
-
-    if (showRangeModal) {
-        DatePickerModal(
-            onDateSelected = {
-                viewModel.updateSelectedDate(newDate = it)
-                showRangeModal = false
-            },
-            onDismiss = { showRangeModal = false }
-        )
     }
 }
 
@@ -236,39 +208,6 @@ fun TransportationMethodDropdownMenu(viewModel: CreateEditJournalViewModel) {
                 )
             }
         }
-    }
-}
-
-/**
- * Date picker modal
- *
- * @param onDateSelected
- * @param onDismiss
- * @receiver
- * @receiver
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DatePickerModal(
-    onDateSelected: (Long?) -> Unit,
-    onDismiss: () -> Unit,
-) {
-    val datePickerState = rememberDatePickerState()
-
-    DatePickerDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = {
-                onDateSelected(datePickerState.selectedDateMillis)
-            }) {
-                Text(stringResource(id = localR.string.OK))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(id = localR.string.cancel)) }
-        }
-    ) {
-        DatePicker(state = datePickerState)
     }
 }
 

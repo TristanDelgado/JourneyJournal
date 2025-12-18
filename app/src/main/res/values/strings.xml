@@ -21,10 +21,10 @@
     <string name="course_name">Course Name</string>
     <string name="course_region">Course Region</string>
     <string name="description_purpose">Description / Purpose</string>
-    <string name="journey_name">Journey Name</string>
+    <string name="journal_name">Journal Name</string>
     <string name="journeyman_name">Journeyman Name</string>
     <string name="new_journey_title">New Journey</string>
-    <string name="start_date">Start Date</string>
+    <string name="start_date">Select Start Date</string>
 
     <!-- Used in JournalOverviewBox.kt -->
     <string name="avg_diff_per_day">Avg diff/day: </string>
@@ -51,6 +51,7 @@
     <string name="trail_conditions">Trail Conditions</string>
     <string name="weather">Weather</string>
     <string name="wildlife_sightings">Wildlife Sightings</string>
+    <string name="select_date">Select Entry Date</string>
 
     <!-- Used in JournalEntriesUi.kt -->
     <string name="exampleEntryBelow">Example Entry Below</string>

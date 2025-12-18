@@ -6,6 +6,7 @@ import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JournalEntryEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -53,6 +54,9 @@ class CreateEntryViewModel(
     private val _physicalMentalState = MutableStateFlow("") // e.g., "1" to "5"
     val physicalMentalState: StateFlow<String> = _physicalMentalState
 
+    private val _selectedDate = MutableStateFlow<Long?>(null)
+    val selectedDate: StateFlow<Long?> = _selectedDate.asStateFlow()
+
     // TODO: Add state for photos/videos
     // private val _photos = MutableStateFlow<List<Uri>>(emptyList())
     // val photos: StateFlow<List<Uri>> = _photos
@@ -61,17 +65,50 @@ class CreateEntryViewModel(
     val notes: StateFlow<String> = _notes
 
     // --- Update Functions ---
-    fun updateEntryDate(newDate: Long) { _entryDate.value = newDate}
+    fun updateEntryDate(newDate: Long) {
+        _entryDate.value = newDate
+    }
+
     // TODO: Add weather update function
-    fun updateWeather(newWeather: String) { _weather.value = newWeather}
-    fun updateDayNumber(newDay: String) { _dayNumber.value = newDay }
-    fun updateStartLocation(newLocation: String) { _startLocation.value = newLocation }
-    fun updateEndLocation(newLocation: String) { _endLocation.value = newLocation }
-    fun updateDistanceHiked(newDistance: String) { _distanceHiked.value = newDistance }
-    fun updateTrailConditions(newConditions: String) { _trailConditions.value = newConditions }
-    fun updateWildlifeSightings(newSightings: String) { _wildlifeSightings.value = newSightings }
-    fun updateResupplyNotes(newNotes: String) { _resupplyNotes.value = newNotes }
-    fun updateNotes(newNotes: String) { _notes.value = newNotes }
+    fun updateWeather(newWeather: String) {
+        _weather.value = newWeather
+    }
+
+    fun updateDayNumber(newDay: String) {
+        _dayNumber.value = newDay
+    }
+
+    fun updateStartLocation(newLocation: String) {
+        _startLocation.value = newLocation
+    }
+
+    fun updateEndLocation(newLocation: String) {
+        _endLocation.value = newLocation
+    }
+
+    fun updateDistanceHiked(newDistance: String) {
+        _distanceHiked.value = newDistance
+    }
+
+    fun updateTrailConditions(newConditions: String) {
+        _trailConditions.value = newConditions
+    }
+
+    fun updateWildlifeSightings(newSightings: String) {
+        _wildlifeSightings.value = newSightings
+    }
+
+    fun updateResupplyNotes(newNotes: String) {
+        _resupplyNotes.value = newNotes
+    }
+
+    fun updateNotes(newNotes: String) {
+        _notes.value = newNotes
+    }
+
+    fun updateSelectedDate(newDate: Long?) {
+        _selectedDate.value = newDate
+    }
     // TODO: Add update functions for Date, Weather, Rating, and Photos
 
     // --- Button Click Handlers ---
@@ -81,6 +118,7 @@ class CreateEntryViewModel(
 
             val newEntry = JournalEntryEntity(
                 ownerId = journalId,
+                date = _selectedDate.value ?: _entryDate.value,
                 dayNumber = _dayNumber.value,
                 startLocation = _startLocation.value,
                 endLocation = _endLocation.value,

@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 /**
- * Represents a one-to-many relationship between a Journey and its Entries.
+ * Represents a one-to-many relationship between a Journal and its Entries.
  *
  * This class allows Room to query the parent [JournalEntity] and all its associated
  * [JournalEntryEntity] children in a single query (using @Transaction).
@@ -17,7 +17,7 @@ data class JournalWithEntries(
 
     @Relation(
         parentColumn = "id", // The Primary Key of the Parent (JournalEntity)
-        entityColumn = "ownerId"      // The Foreign Key in the Child (JourneyEntryEntity)
+        entityColumn = "ownerId" // The Foreign Key in the Child (JourneyEntryEntity)
     )
     val entries: List<JournalEntryEntity>
 )
