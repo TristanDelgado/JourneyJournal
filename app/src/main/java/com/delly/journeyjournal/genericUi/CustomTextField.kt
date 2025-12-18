@@ -25,6 +25,7 @@ fun CustomTextField(
     modifier: Modifier = Modifier,
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    enabled: Boolean = true,
 ) {
     TextField(
         modifier = modifier.fillMaxWidth(),
@@ -33,5 +34,6 @@ fun CustomTextField(
         label = { Text(text = label) },
         singleLine = singleLine,
         keyboardOptions = keyboardOptions,
+        enabled = enabled
     )
 }

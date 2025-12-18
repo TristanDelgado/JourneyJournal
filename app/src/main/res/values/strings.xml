@@ -38,7 +38,7 @@
     <string name="miles_abbrev">Mi: </string>
 
     <!-- Used in CreateJournalEntryUi.kt -->
-    <string name="add_photos">Add Photos</string>
+    <string name="add_photos">Add Photos (Future)</string>
     <string name="day_number">Day #</string>
     <string name="distance_hiked">Distance Hiked (mi/km)</string>
     <string name="end_location">End Location</string>

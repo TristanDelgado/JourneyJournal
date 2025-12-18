@@ -1,29 +1,20 @@
 package com.delly.journeyjournal.journalUi
 
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -35,46 +26,6 @@ import com.delly.journeyjournal.viewmodels.CreateEntryViewModel
 import com.delly.journeyjournal.viewmodels.CreateEntryViewModelFactory
 import com.delly.journeyjournal.R as localR
 
-// --- Placeholders  ---
-
-/**
- * Weather dropdown menu
- *
- * @param viewModel
- */// TODO: Create and implement this Weather Dropdown
-@Composable
-fun WeatherDropdownMenu(viewModel: CreateEntryViewModel) {
-    // Placeholder - Implement a dropdown for weather options
-    Button(onClick = { /* TODO: Show Weather Dropdown */ }) {
-        Text(viewModel.weather.collectAsState().value.ifEmpty { stringResource(localR.string.weather) })
-    }
-}
-
-/**
- * Rating dropdown menu
- *
- * @param viewModel
- */// TODO: Create and implement this Rating Dropdown
-@Composable
-fun RatingDropdownMenu(viewModel: CreateEntryViewModel) {
-    // Placeholder - Implement a dropdown for 1-5 rating
-    Button(onClick = { /* TODO: Show Rating Dropdown */ }) {
-        Text("${stringResource(localR.string.rating_label)}${viewModel.physicalMentalState.collectAsState().value.ifEmpty { stringResource(localR.string.not_applicable) }}")
-    }
-}
-// --- End of Placeholders ---
-
-
-/**
- * Create journey entry UI.
- *
- * Still under construction.
- *
- * @param navigateBack Cancels creating a new journey
- * @param repository The repository to save data to
- * @param journalId The journal id to create the new entry in
- * @receiver
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateJournalEntryUi(
@@ -82,7 +33,6 @@ fun CreateJournalEntryUi(
     repository: JournalRepository,
     journalId: Int
 ) {
-    //Initialize the viewmodel
     val viewModel: CreateEntryViewModel = viewModel(
         factory = CreateEntryViewModelFactory(
             navigateBack = navigateBack,
@@ -90,13 +40,14 @@ fun CreateJournalEntryUi(
             journalId = journalId
         )
     )
+    val context = LocalContext.current
 
     // Start of UI
     Column(
         modifier = Modifier
             .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()) // Make the form scrollable
+            .verticalScroll(rememberScrollState())
     ) {
         // Title
         Text(
@@ -106,17 +57,34 @@ fun CreateJournalEntryUi(
             textAlign = TextAlign.Center
         )
 
-        // Start of form
+        // Collecting States
         val dayNumber = viewModel.dayNumber.collectAsState()
-        val startLocation = viewModel.startLocation.collectAsState()
-        val endLocation = viewModel.endLocation.collectAsState()
-        val distanceHiked = viewModel.distanceHiked.collectAsState()
-        val trailConditions = viewModel.trailConditions.collectAsState()
-        val wildlifeSightings = viewModel.wildlifeSightings.collectAsState()
-        val resupplyNotes = viewModel.resupplyNotes.collectAsState()
-        val notes = viewModel.notes.collectAsState()
+        val prevDayNumber = viewModel.previousDayNumber.collectAsState()
         val selectedDate by viewModel.selectedDate.collectAsState()
 
+        val startLocation = viewModel.startLocation.collectAsState()
+        val startMile = viewModel.startMileMarker.collectAsState()
+
+        val endLocation = viewModel.endLocation.collectAsState()
+        val endMile = viewModel.endMileMarker.collectAsState()
+
+        val distanceHiked = viewModel.distanceHiked.collectAsState()
+
+        val elevationStart = viewModel.elevationStart.collectAsState()
+        val elevationEnd = viewModel.elevationEnd.collectAsState()
+        val netElevation = viewModel.netElevationChange.collectAsState()
+
+        val sleptInBed = viewModel.sleptInBed.collectAsState()
+        val tookShower = viewModel.tookShower.collectAsState()
+
+        val trailConditions = viewModel.trailConditions.collectAsState()
+        val weather = viewModel.weather.collectAsState()
+        val wildlife = viewModel.wildlifeSightings.collectAsState()
+        val resupply = viewModel.resupplyNotes.collectAsState()
+
+        val dayRating = viewModel.dayRating.collectAsState()
+        val moodRating = viewModel.moodRating.collectAsState()
+        val notes = viewModel.notes.collectAsState()
 
         Column(
             modifier = Modifier
@@ -126,113 +94,306 @@ fun CreateJournalEntryUi(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = localR.dimen.content_padding))
         ) {
 
-            // Date and Day Number
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                DatePickerButton(
-                    selectedDate = selectedDate,
-                    onDateSelected = { newDate ->
-                        viewModel.updateSelectedDate(newDate = newDate)
-                    },
-                    placeholderText = stringResource(id = localR.string.select_date)
-                )
-                Spacer(Modifier.weight(1f))
-                CustomTextField(
-                    value = dayNumber.value,
-                    onValueChange = { viewModel.updateDayNumber(it) },
-                    label = stringResource(id = localR.string.day_number),
-                    modifier = Modifier.width(100.dp) // Give day# a smaller width
-                )
-            }
-
-            // Location
-            CustomTextField(
-                value = startLocation.value,
-                onValueChange = { viewModel.updateStartLocation(it) },
-                label = stringResource(id = localR.string.start_location)
-            )
-            CustomTextField(
-                value = endLocation.value,
-                onValueChange = { viewModel.updateEndLocation(it) },
-                label = stringResource(id = localR.string.end_location)
-            )
-
-            // Distance and Weather
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                CustomTextField(
-                    value = distanceHiked.value,
-                    onValueChange = { viewModel.updateDistanceHiked(it) },
-                    label = stringResource(id = localR.string.distance_hiked),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    modifier = Modifier.weight(1f)
-                )
-                WeatherDropdownMenu(viewModel = viewModel)
-            }
-
-            // Conditions
-            CustomTextField(
-                value = trailConditions.value,
-                onValueChange = { viewModel.updateTrailConditions(it) },
-                label = stringResource(id = localR.string.trail_conditions)
-            )
-
-            // Sightings
-            CustomTextField(
-                value = wildlifeSightings.value,
-                onValueChange = { viewModel.updateWildlifeSightings(it) },
-                label = stringResource(id = localR.string.wildlife_sightings)
-            )
-
-            // Practical Notes
-            CustomTextField(
-                value = resupplyNotes.value,
-                onValueChange = { viewModel.updateResupplyNotes(it) },
-                label = stringResource(id = localR.string.resupply_notes)
-            )
-
-            // Rating and Photos
+            // 1. Day # and Date (Required Fields)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                RatingDropdownMenu(viewModel = viewModel)
-                Spacer(Modifier.weight(1f))
-                Button(onClick = { /* TODO: Implement Photo Picker Logic */ }) {
-                    Text(stringResource(id = localR.string.add_photos))
+                // Left Side: Day Number
+                Column(modifier = Modifier.weight(0.4f)) {
+                    CustomTextField(
+                        value = dayNumber.value,
+                        onValueChange = { viewModel.updateDayNumber(it) },
+                        label = stringResource(id = localR.string.day_number),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                    Text(
+                        text = "Prev: ${prevDayNumber.value}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                }
+
+                // Right Side: Date Picker
+                Box(
+                    modifier = Modifier.weight(0.6f),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    DatePickerButton(
+                        selectedDate = selectedDate,
+                        onDateSelected = { viewModel.updateSelectedDate(it) },
+                        placeholderText = stringResource(id = localR.string.select_date)
+                    )
                 }
             }
 
-            // Main Notes
+            HorizontalDivider()
+
+            // 2 & 3. Start Section
+            LocationSectionCard(
+                sectionTitle = "Start Point",
+                locationValue = startLocation.value,
+                onLocationChange = { viewModel.updateStartLocation(it) },
+                mileValue = startMile.value,
+                onMileChange = { viewModel.updateStartMileMarker(it) }
+            )
+
+            // 4 & 5. End Section
+            LocationSectionCard(
+                sectionTitle = "End Point",
+                locationValue = endLocation.value,
+                onLocationChange = { viewModel.updateEndLocation(it) },
+                mileValue = endMile.value,
+                onMileChange = { viewModel.updateEndMileMarker(it) }
+            )
+
+            HorizontalDivider()
+
+            // 6. Total Distance
+            CustomTextField(
+                value = distanceHiked.value,
+                onValueChange = { /* Read only */ },
+                label = stringResource(id = localR.string.distance_hiked),
+                enabled = false
+            )
+
+            // 7, 8 & 9. Elevation Section (Boxed)
+            SectionCard(title = "Elevation Profile") {
+                CustomTextField(
+                    value = elevationStart.value,
+                    onValueChange = { viewModel.updateElevationStart(it) },
+                    label = "Start Elevation",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                Spacer(Modifier.height(8.dp))
+                CustomTextField(
+                    value = elevationEnd.value,
+                    onValueChange = { viewModel.updateElevationEnd(it) },
+                    label = "End Elevation",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                Spacer(Modifier.height(8.dp))
+                CustomTextField(
+                    value = netElevation.value,
+                    onValueChange = { /* Read only */ },
+                    label = "Net Elevation Change",
+                    enabled = false
+                )
+            }
+
+            // 10 & 11. Comforts Section (Boxed)
+            SectionCard(title = "Comforts") {
+                // Bed Toggle
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Slept in a bed?")
+                    Switch(
+                        checked = sleptInBed.value,
+                        onCheckedChange = { viewModel.toggleSleptInBed(it) }
+                    )
+                }
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+
+                // Shower Toggle
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Took a shower?")
+                    Switch(
+                        checked = tookShower.value,
+                        onCheckedChange = { viewModel.toggleTookShower(it) }
+                    )
+                }
+            }
+
+            // 12. Trail Conditions
+            GenericDropdown(
+                label = stringResource(id = localR.string.trail_conditions),
+                options = listOf("Dry/Good", "Muddy", "Snow/Ice", "Rocky/Technical"),
+                selectedOption = trailConditions.value,
+                onOptionSelected = { viewModel.updateTrailConditions(it) }
+            )
+
+            // 13. Weather
+            GenericDropdown(
+                label = stringResource(localR.string.weather),
+                options = listOf("Sunny", "Rain", "Snow", "Overcast"),
+                selectedOption = weather.value,
+                onOptionSelected = { viewModel.updateWeather(it) }
+            )
+
+            // 14. Wildlife
+            CustomTextField(
+                value = wildlife.value,
+                onValueChange = { viewModel.updateWildlifeSightings(it) },
+                label = stringResource(id = localR.string.wildlife_sightings)
+            )
+
+            // 15. Resupply
+            CustomTextField(
+                value = resupply.value,
+                onValueChange = { viewModel.updateResupplyNotes(it) },
+                label = stringResource(id = localR.string.resupply_notes)
+            )
+
+            // 16. Photos Button
+            Button(
+                onClick = { /* TODO: Implement Photo Picker */ },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(stringResource(id = localR.string.add_photos))
+            }
+
+            // 17. Day Rating
+            GenericDropdown(
+                label = "Day Rating",
+                options = listOf("Bad", "Tough", "Good", "Great"),
+                selectedOption = dayRating.value,
+                onOptionSelected = { viewModel.updateDayRating(it) }
+            )
+
+            // 18. Mood Rating
+            GenericDropdown(
+                label = "Mood",
+                options = listOf("Low", "Neutral", "Happy", "Energetic"),
+                selectedOption = moodRating.value,
+                onOptionSelected = { viewModel.updateMoodRating(it) }
+            )
+
+            // 19. Notes
             CustomTextField(
                 value = notes.value,
                 onValueChange = { viewModel.updateNotes(it) },
                 label = stringResource(id = localR.string.journal_notes),
                 singleLine = false,
+                modifier = Modifier.height(120.dp)
             )
 
-            // Save and Cancel buttons
+            // Save/Cancel
             Row {
-                Button(
-                    onClick = { viewModel.cancelEntry() }
-                ) {
+                Button(onClick = { viewModel.cancelEntry() }) {
                     Text(stringResource(id = localR.string.cancel))
                 }
-
                 Spacer(Modifier.weight(1f))
-
                 Button(
-                    onClick = { viewModel.saveEntry() }
-                )
-                {
+                    onClick = {
+                        viewModel.saveEntry(onInvalidInput = {
+                            Toast.makeText(context, "Day # and Date are required!", Toast.LENGTH_SHORT).show()
+                        })
+                    }
+                ) {
                     Text(stringResource(id = localR.string.save))
                 }
+            }
+        }
+    }
+}
+
+/**
+ * Generic Section Card for grouping items
+ */
+@Composable
+fun SectionCard(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    OutlinedCard(
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            content()
+        }
+    }
+}
+
+/**
+ * Helper Card to section apart Location Data
+ */
+@Composable
+fun LocationSectionCard(
+    sectionTitle: String,
+    locationValue: String,
+    onLocationChange: (String) -> Unit,
+    mileValue: String,
+    onMileChange: (String) -> Unit
+) {
+    SectionCard(title = sectionTitle) {
+        CustomTextField(
+            value = locationValue,
+            onValueChange = onLocationChange,
+            label = stringResource(id = localR.string.start_location).replace("Start", "").replace("End", "").trim()
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        CustomTextField(
+            value = mileValue,
+            onValueChange = onMileChange,
+            label = "Mile Marker",
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+        )
+    }
+}
+
+/**
+ * Reusable Dropdown Component
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GenericDropdown(
+    label: String,
+    options: List<String>,
+    selectedOption: String,
+    onOptionSelected: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
+        OutlinedTextField(
+            value = selectedOption,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(label) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(option) },
+                    onClick = {
+                        onOptionSelected(option)
+                        expanded = false
+                    }
+                )
             }
         }
     }
