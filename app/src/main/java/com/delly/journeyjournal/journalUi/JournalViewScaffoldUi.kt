@@ -191,7 +191,7 @@ fun JournalViewScaffoldUi(
                                         currentJournalId
                                     )
                                     viewModel.updateTitle(
-                                        currentJournal?.journalName ?: stringResource(id = localR.string.loading)
+                                        currentJournal?.journalName?.ifBlank { stringResource(id = localR.string.untitled_journal) } ?: stringResource(id = localR.string.loading)
                                     )
                                 }
 

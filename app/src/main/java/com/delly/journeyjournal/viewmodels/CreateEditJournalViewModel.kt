@@ -12,11 +12,6 @@ import kotlinx.coroutines.launch
 
 /**
  * Create journey view model
- *
- * @property navigateHome Cancel creating a new journey
- * @property createAndNavigateToJournal Navigate to the journal after creating it
- * @property repository The repository to store the journal in
- * @constructor Create empty Create journey view model
  */
 class CreateEditJournalViewModel(
     private val navigateHome: () -> Unit,
@@ -25,32 +20,35 @@ class CreateEditJournalViewModel(
     private val journalToEditId: Int?,
 ) : ViewModel() {
 
+    // --- Identity ---
     private val _journeyName = MutableStateFlow("")
     val journeyName: StateFlow<String> = _journeyName.asStateFlow()
 
     private val _journeymanName = MutableStateFlow("")
     val journeymanName: StateFlow<String> = _journeymanName.asStateFlow()
 
+    // --- Course Details ---
     private val _courseName = MutableStateFlow("")
     val courseName: StateFlow<String> = _courseName.asStateFlow()
 
     private val _courseRegion = MutableStateFlow("")
     val courseRegion: StateFlow<String> = _courseRegion.asStateFlow()
 
+    // --- Description ---
     private val _description = MutableStateFlow("")
     val description: StateFlow<String> = _description.asStateFlow()
 
+    // --- Logistics ---
     private val _selectedDate = MutableStateFlow<Long?>(null)
     val selectedDate: StateFlow<Long?> = _selectedDate.asStateFlow()
 
-    private val _selectedTransportationMethod =
-        MutableStateFlow(TransportationMethods.ON_FOOT)
-    val selectedTransportationMethod: StateFlow<TransportationMethods> =
-        _selectedTransportationMethod.asStateFlow()
+    private val _selectedTransportationMethod = MutableStateFlow(TransportationMethods.ON_FOOT)
+    val selectedTransportationMethod: StateFlow<TransportationMethods> = _selectedTransportationMethod.asStateFlow()
 
     private var _isComplete = false
 
     init {
+        // Edit Mode: Load existing data if ID is provided
         if (journalToEditId != null) {
             viewModelScope.launch {
                 val journal = repository.getJournalById(journalToEditId)
@@ -68,9 +66,8 @@ class CreateEditJournalViewModel(
         }
     }
 
-    // -----------------------------------------
-    // Functions to update the state from the UI
-    // -----------------------------------------
+    // --- Update Functions ---
+
     fun updateJourneyName(newName: String) {
         _journeyName.value = newName
     }
@@ -99,18 +96,21 @@ class CreateEditJournalViewModel(
         _selectedTransportationMethod.value = transportationMethod
     }
 
-    // Cancel the creation of a new journey
+    // --- Action Handlers ---
+
     fun cancelJourney() {
         navigateHome()
     }
 
-    // Adds the new journey to the database
-    // and navigates to the journey view
-    fun saveJourney() {
+    fun saveJourney(onInvalidInput: () -> Unit = {}) {
         viewModelScope.launch {
-            // Create a Journey Entity
-            // id is 0 by default which means auto-generate for new entries
-            // if we are editing, we need to use the existing id
+            // Validation
+            if (_journeyName.value.isBlank()) {
+                onInvalidInput()
+                return@launch
+            }
+
+            // Create Entity
             val idToUse = journalToEditId ?: 0
             val newJourney = JournalEntity(
                 id = idToUse,
@@ -124,8 +124,7 @@ class CreateEditJournalViewModel(
                 isComplete = _isComplete
             )
 
-            // Check if we are editing an existing journey or creating a new one
-            // We assume we are editing if journalToEditId was provided in constructor
+            // Database Operations
             if (journalToEditId != null) {
                 repository.updateJournal(journalEntity = newJourney)
                 createAndNavigateToJournal(newJourney.id)

@@ -1,6 +1,7 @@
 <resources>
     <!-- General / App Wide -->
     <string name="app_name">JourneyJournal</string>
+    <string name="untitled_journal">Untitled Journal</string>
 
     <!-- Common Actions (Used in multiple files) -->
     <string name="cancel">Cancel</string>
@@ -66,7 +67,7 @@
     <!-- Used in JournalEntryOverviewBox.kt -->
     <string name="day_format">Day %1$s</string>
     <string name="end_label">End:</string>
-    <string name="hiked_format">%1$s hiked</string>
+    <string name="miles_traversed_format">%1$s Miles Traversed</string>
     <string name="notes_label">Notes</string>
     <string name="resupply_water_label">Resupply / Water</string>
     <string name="start_label">Start:</string>

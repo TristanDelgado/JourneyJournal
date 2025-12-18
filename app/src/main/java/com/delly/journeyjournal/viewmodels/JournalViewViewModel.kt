@@ -36,8 +36,8 @@ class JournalViewViewModel(
             _currentJournal.value = journal
 
             // If the journal was found, update the title
-            if (journal != null) {
-                _titleOfPage.value = journal.journalName
+            journal?.let {
+                _titleOfPage.value = it.journalName.ifBlank { "Untitled Journal" }
             }
         }
     }

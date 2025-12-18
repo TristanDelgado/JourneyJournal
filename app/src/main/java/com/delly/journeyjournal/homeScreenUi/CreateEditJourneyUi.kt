@@ -1,34 +1,19 @@
 package com.delly.journeyjournal.homeScreenUi
 
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -36,20 +21,12 @@ import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.genericUi.CustomTextField
 import com.delly.journeyjournal.genericUi.DatePickerButton
-import com.delly.journeyjournal.theme.Shapes
-import com.delly.journeyjournal.theme.Typography
 import com.delly.journeyjournal.viewmodels.CreateEditJournalViewModel
 import com.delly.journeyjournal.viewmodels.CreateJournalViewModelFactory
 import com.delly.journeyjournal.R as localR
 
 /**
- * Create journey ui
- *
- * @param navigateHome
- * @param navigateToJourney
- * @param repository
- * @receiver
- * @receiver
+ * Create journal ui
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +36,7 @@ fun CreateEditJourneyUi(
     repository: JournalRepository,
     journalToEditId: Int? = null,
 ) {
-    //Initialize the viewmodel
+    // Initialize the viewmodel
     val viewModel: CreateEditJournalViewModel = viewModel(
         factory = CreateJournalViewModelFactory(
             navigateHome = navigateHome,
@@ -69,21 +46,24 @@ fun CreateEditJourneyUi(
         )
     )
 
+    val context = LocalContext.current
+
     // Start of UI
     Column(
         modifier = Modifier
             .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         // Title
         Text(
             text = stringResource(id = localR.string.new_journey_title),
-            style = Typography.headlineLarge,
+            style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
 
-        // Start of form
+        // Collecting States
         val journeyName = viewModel.journeyName.collectAsState()
         val journeymanName = viewModel.journeymanName.collectAsState()
         val courseName = viewModel.courseName.collectAsState()
@@ -91,60 +71,81 @@ fun CreateEditJourneyUi(
         val descriptionPurpose = viewModel.description.collectAsState()
         val selectedDate by viewModel.selectedDate.collectAsState()
 
+        // Wrapper Card
         Column(
             modifier = Modifier
-                .clip(Shapes.large)
+                .clip(MaterialTheme.shapes.large)
                 .background(MaterialTheme.colorScheme.surface)
                 .padding(dimensionResource(id = localR.dimen.content_padding)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = localR.dimen.content_padding))
         ) {
-            // Journal Name
-            CustomTextField(
-                value = journeyName.value,
-                onValueChange = { viewModel.updateJourneyName(newName = it) },
-                label = stringResource(id = localR.string.journal_name)
-            )
 
-            // Journeyman Name
-            CustomTextField(
-                value = journeymanName.value,
-                onValueChange = { viewModel.updateJourneymanName(newName = it) },
-                label = stringResource(id = localR.string.journeyman_name)
-            )
+            // 1. Identity Section
+            SectionCard(title = "Identity") {
+                // Journal Name
+                CustomTextField(
+                    value = journeyName.value,
+                    onValueChange = { viewModel.updateJourneyName(it) },
+                    label = stringResource(id = localR.string.journal_name)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                // Journeyman Name
+                CustomTextField(
+                    value = journeymanName.value,
+                    onValueChange = { viewModel.updateJourneymanName(it) },
+                    label = stringResource(id = localR.string.journeyman_name)
+                )
+            }
 
-            // Course Name
-            CustomTextField(
-                value = courseName.value,
-                onValueChange = { viewModel.updateCourseName(newName = it) },
-                label = stringResource(id = localR.string.course_name)
-            )
+            HorizontalDivider()
 
-            // Course Region
-            CustomTextField(
-                value = courseRegion.value,
-                onValueChange = { viewModel.updateCourseRegion(newRegion = it) },
-                label = stringResource(id = localR.string.course_region)
-            )
+            // 2. Course Details
+            SectionCard(title = "Course Details") {
+                // Course Name
+                CustomTextField(
+                    value = courseName.value,
+                    onValueChange = { viewModel.updateCourseName(it) },
+                    label = stringResource(id = localR.string.course_name)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                // Course Region
+                CustomTextField(
+                    value = courseRegion.value,
+                    onValueChange = { viewModel.updateCourseRegion(it) },
+                    label = stringResource(id = localR.string.course_region)
+                )
+            }
 
+            HorizontalDivider()
+
+            // 3. Logistics
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                DatePickerButton(
-                    selectedDate = selectedDate,
-                    onDateSelected = { newDate ->
-                        viewModel.updateSelectedDate(newDate = newDate)
-                    }
-                )
-                Spacer(Modifier.weight(weight = 1f))
-                TransportationMethodDropdownMenu(viewModel = viewModel)
+                // Left Side: Date Picker
+                Box(modifier = Modifier.weight(0.5f)) {
+                    DatePickerButton(
+                        selectedDate = selectedDate,
+                        onDateSelected = { viewModel.updateSelectedDate(it) }
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                // Right Side: Transportation
+                Box(modifier = Modifier.weight(0.5f)) {
+                    TransportationMethodDropdownMenu(viewModel = viewModel)
+                }
             }
 
+            // 4. Description/Notes
             CustomTextField(
                 value = descriptionPurpose.value,
-                onValueChange = { viewModel.updateDescription(newDescription = it) },
+                onValueChange = { viewModel.updateDescription(it) },
                 label = stringResource(id = localR.string.description_purpose),
-                singleLine = false
+                singleLine = false,
+                modifier = Modifier.height(120.dp)
             )
 
             // Save and Cancel buttons
@@ -158,7 +159,11 @@ fun CreateEditJourneyUi(
                 Spacer(Modifier.weight(1f))
 
                 Button(
-                    onClick = { viewModel.saveJourney() }
+                    onClick = {
+                        viewModel.saveJourney(onInvalidInput = {
+                            Toast.makeText(context, "Journal Name is required!", Toast.LENGTH_SHORT).show()
+                        })
+                    }
                 )
                 {
                     Text(stringResource(id = localR.string.save))
@@ -169,9 +174,39 @@ fun CreateEditJourneyUi(
 }
 
 /**
+ * Generic Section Card for grouping items
+ */
+@Composable
+fun SectionCard(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    OutlinedCard(
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            content()
+        }
+    }
+}
+
+/**
  * Transportation method dropdown menu
- *
- * @param viewModel
+ * Styled to match GenericDropdown from entry UI
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -183,15 +218,16 @@ fun TransportationMethodDropdownMenu(viewModel: CreateEditJournalViewModel) {
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
-        TextField(
+        OutlinedTextField(
             value = stringResource(id = selectedOption.value.labelResId),
             onValueChange = {},
             readOnly = true,
             label = { Text(stringResource(id = localR.string.choose_one)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
             modifier = Modifier
-                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
-                .widthIn(max = 150.dp)
+                .fillMaxWidth()
+                .menuAnchor()
         )
 
         ExposedDropdownMenu(

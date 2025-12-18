@@ -59,7 +59,7 @@ fun JourneyOverviewBox(
     ) {
         Row() {
             // Title
-            Text(journalEntity.journalName)
+            Text(journalEntity.journalName.ifBlank { stringResource(id = localR.string.untitled_journal) })
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = { onEditClick(journalEntity.id) },

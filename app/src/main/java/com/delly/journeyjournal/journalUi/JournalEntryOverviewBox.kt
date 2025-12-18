@@ -55,7 +55,7 @@ fun JournalEntryOverviewBox(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = stringResource(id = localR.string.hiked_format, entry.distanceHiked),
+                    text = stringResource(id = localR.string.miles_traversed_format, entry.distanceHiked),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.secondary
                 )
