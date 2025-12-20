@@ -17,6 +17,16 @@ import androidx.room.PrimaryKey
  * @property wildlifeSightings Any wildlife sighted during the journey entry.
  * @property resupplyNotes Notes on resupply or water during the journey entry.
  * @property notes General notes and reflections for the journey entry.
+ * @property startMileMarker The starting mile marker.
+ * @property endMileMarker The ending mile marker.
+ * @property elevationStart The starting elevation.
+ * @property elevationEnd The ending elevation.
+ * @property netElevationChange The net change in elevation.
+ * @property sleptInBed Whether the user slept in a bed.
+ * @property tookShower Whether the user took a shower.
+ * @property weather The weather conditions.
+ * @property dayRating The rating for the day.
+ * @property moodRating The user's mood rating.
  */
 @Entity(
     foreignKeys = [
@@ -40,5 +50,15 @@ data class JournalEntryEntity(
     val trailConditions: String,
     val wildlifeSightings: String,
     val resupplyNotes: String,
-    val notes: String
+    val notes: String,
+    val startMileMarker: String,
+    val endMileMarker: String,
+    val elevationStart: String,
+    val elevationEnd: String,
+    val netElevationChange: String,
+    val sleptInBed: Boolean,
+    val tookShower: Boolean,
+    val weather: String,
+    val dayRating: String,
+    val moodRating: String
 )

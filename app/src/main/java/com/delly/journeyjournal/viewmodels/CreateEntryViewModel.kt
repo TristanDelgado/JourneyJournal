@@ -230,8 +230,17 @@ class CreateEntryViewModel(
                 trailConditions = _trailConditions.value,
                 wildlifeSightings = _wildlifeSightings.value,
                 resupplyNotes = _resupplyNotes.value,
-                notes = _notes.value
-                // Ensure you map the new fields (elevation, toggles) here when you update your Entity
+                notes = _notes.value,
+                startMileMarker = _startMileMarker.value,
+                endMileMarker = _endMileMarker.value,
+                elevationStart = _elevationStart.value,
+                elevationEnd = _elevationEnd.value,
+                netElevationChange = _netElevationChange.value,
+                sleptInBed = _sleptInBed.value,
+                tookShower = _tookShower.value,
+                weather = _weather.value,
+                dayRating = _dayRating.value,
+                moodRating = _moodRating.value
             )
             try {
                 repository.insertJourneyEntry(entry = newEntry)

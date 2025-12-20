@@ -108,6 +108,7 @@ fun JourneyEntriesUi(
                         text = stringResource(id = localR.string.exampleEntryBelow),
                         style = Typography.bodyLarge,
                     )
+
                     val exampleEntry = JournalEntryEntity(
                         id = 0,
                         ownerId = 0,
@@ -119,7 +120,17 @@ fun JourneyEntriesUi(
                         wildlifeSightings = stringResource(id = localR.string.none),
                         resupplyNotes = stringResource(id = localR.string.none),
                         notes = stringResource(id = localR.string.example_notes),
-                        date = System.currentTimeMillis()
+                        date = System.currentTimeMillis(),
+                        startMileMarker = "100.0",
+                        endMileMarker = "115.5",
+                        elevationStart = "1200",
+                        elevationEnd = "2300",
+                        netElevationChange = "1100",
+                        sleptInBed = false,
+                        tookShower = true,
+                        weather = "Sunny",
+                        dayRating = "5",
+                        moodRating = "5"
                     )
 
                     JournalEntryOverviewBox(entry = exampleEntry)
