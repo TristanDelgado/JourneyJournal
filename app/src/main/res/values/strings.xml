@@ -41,7 +41,7 @@
     <!-- Used in CreateJournalEntryUi.kt -->
     <string name="add_photos">Add Photos (Future)</string>
     <string name="day_number">Day #</string>
-    <string name="distance_hiked">Distance Hiked (mi/km)</string>
+    <string name="distance_hiked">Distance Hiked (miles)</string>
     <string name="end_location">End Location</string>
     <string name="journal_notes">Notes &amp; Reflections</string>
     <string name="new_entry_title">New Entry</string>
