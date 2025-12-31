@@ -17,22 +17,27 @@ fun JournalsList(
     onSettingsClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     header: @Composable (() -> Unit)? = null,
+    emptyState: @Composable (() -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
         header?.invoke()
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(journals) { journal ->
-                JournalOverviewBox(
-                    journalWithEntries = journal,
-                    navigateToJournal = navigateToJournal,
-                    onEditClick = onEditClick,
-                    onDeleteClick = onDeleteClick,
-                    onSettingsClick = onSettingsClick
-                )
+        if (journals.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(journals) { journal ->
+                    JournalOverviewBox(
+                        journalWithEntries = journal,
+                        navigateToJournal = navigateToJournal,
+                        onEditClick = onEditClick,
+                        onDeleteClick = onDeleteClick,
+                        onSettingsClick = onSettingsClick
+                    )
+                }
             }
+        } else {
+            emptyState?.invoke()
         }
     }
 }

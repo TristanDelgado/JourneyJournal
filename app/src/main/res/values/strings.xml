@@ -13,18 +13,21 @@
     <string name="active_journals">Active Journals:</string>
     <string name="complete_journeys">Complete Journeys:</string>
     <string name="home_title">Journey Journal</string>
+    <string name="no_active_journals">No Active Journals</string>
+    <string name="no_complete_journals">No Complete Journals</string>
 
     <!-- Used in HomeScreen.kt and JournalEntriesUi.kt -->
     <string name="add_journal">Add Journey</string>
 
     <!-- Used in CreateEditJourneyUi.kt -->
-    <string name="choose_one">Choose one</string>
+    <string name="travel_method">Travel Method</string>
     <string name="course_name">Course Name</string>
     <string name="course_region">Course Region</string>
     <string name="description_purpose">Description / Purpose</string>
     <string name="journal_name">Journal Name</string>
     <string name="journeyman_name">Journeyman Name</string>
-    <string name="new_journey_title">New Journey</string>
+    <string name="new_journal_title">New Journal</string>
+    <string name="edit_journal_title">Edit Journal"</string>
     <string name="start_date">Select Start Date</string>
 
     <!-- Used in JournalOverviewBox.kt -->

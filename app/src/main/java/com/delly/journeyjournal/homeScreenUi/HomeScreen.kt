@@ -1,6 +1,7 @@
 package com.delly.journeyjournal.homeScreenUi
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -145,6 +147,18 @@ fun HomeScreen(
                                 modifier = Modifier.padding(start = dimensionResource(id = localR.dimen.padding_small))
                             )
                         }
+                    },
+                    emptyState = {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(id = localR.string.no_active_journals),
+                                style = Typography.bodyLarge,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 )
             }
@@ -159,35 +173,15 @@ fun HomeScreen(
                         }
                     },
                     onSettingsClick = {},
-                    header = {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    top = dimensionResource(id = localR.dimen.padding_small),
-                                    bottom = dimensionResource(id = localR.dimen.padding_small)
-                                ),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
+                    emptyState = {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
-                            // Create a new journal button
-                            Button(
-                                onClick = { navToCreateEditJournalScreen(null) },
-                                modifier = Modifier
-                                    .height(dimensionResource(id = localR.dimen.button_height_mini))
-                                    .width(dimensionResource(id = localR.dimen.button_height_mini)),
-                                contentPadding = PaddingValues(dimensionResource(id = localR.dimen.button_internal_padding_zero))
-                            ) {
-                                Icon(
-                                    modifier = Modifier.size(dimensionResource(id = localR.dimen.button_height_mini)),
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = stringResource(id = localR.string.add_journal)
-                                )
-                            }
                             Text(
-                                stringResource(id = localR.string.active_journals),
-                                style = Typography.titleMedium,
-                                modifier = Modifier.padding(start = dimensionResource(id = localR.dimen.padding_small))
+                                text = stringResource(id = localR.string.no_complete_journals),
+                                style = Typography.bodyLarge,
+                                textAlign = TextAlign.Center
                             )
                         }
                     }

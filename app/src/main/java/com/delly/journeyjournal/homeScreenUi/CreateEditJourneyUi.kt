@@ -57,7 +57,11 @@ fun CreateEditJourneyUi(
     ) {
         // Title
         Text(
-            text = stringResource(id = localR.string.new_journey_title),
+            text = if(journalToEditId == null){
+                stringResource(id = localR.string.new_journal_title)
+            } else {
+                stringResource(id = localR.string.edit_journal_title)
+            },
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
@@ -222,7 +226,7 @@ fun TransportationMethodDropdownMenu(viewModel: CreateEditJournalViewModel) {
             value = stringResource(id = selectedOption.value.labelResId),
             onValueChange = {},
             readOnly = true,
-            label = { Text(stringResource(id = localR.string.choose_one)) },
+            label = { Text(stringResource(id = localR.string.travel_method)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
             modifier = Modifier
