@@ -1,8 +1,8 @@
 package com.delly.journeyjournal.db
 
-import com.delly.journeyjournal.db.dataAccessObjects.JournalWithEntriesDao
 import com.delly.journeyjournal.db.dataAccessObjects.JournalEntityDao
 import com.delly.journeyjournal.db.dataAccessObjects.JournalEntryEntityDao
+import com.delly.journeyjournal.db.dataAccessObjects.JournalWithEntriesDao
 import com.delly.journeyjournal.db.entities.JournalEntity
 import com.delly.journeyjournal.db.entities.JournalEntryEntity
 import com.delly.journeyjournal.db.entities.JournalWithEntries
@@ -12,24 +12,24 @@ import kotlinx.coroutines.flow.Flow
  * Repository class that abstracts access to multiple data sources.
  * It acts as a mediator between the domain/UI layer and the data layer (DAOs).
  *
- * @property journeyEntityDao DAO for [JournalEntity] operations.
- * @property journeyEntryEntityDao DAO for [JournalEntryEntity] operations.
- * @property journeyDao DAO for composite operations like [JournalWithEntries].
+ * @property journalEntityDao DAO for [JournalEntity] operations.
+ * @property journalEntryEntityDao DAO for [JournalEntryEntity] operations.
+ * @property journalDao DAO for composite operations like [JournalWithEntries].
  */
 class JournalRepository(
-    private val journeyEntityDao: JournalEntityDao,
-    private val journeyEntryEntityDao: JournalEntryEntityDao,
-    private val journeyDao: JournalWithEntriesDao
+    private val journalEntityDao: JournalEntityDao,
+    private val journalEntryEntityDao: JournalEntryEntityDao,
+    private val journalDao: JournalWithEntriesDao,
 ) {
     // Journal Specific Operations
 
     /**
-     * Retrieves all journeys as a Flow.
+     * Retrieves all journals as a Flow.
      *
      * @return A [Flow] emitting a list of [JournalEntity] objects.
      */
     fun getAllJournals(): Flow<List<JournalEntity>> =
-        journeyEntityDao.getAllJournals()
+        journalEntityDao.getAllJournals()
 
     /**
      * Retrieves a specific journal by its id.
@@ -38,16 +38,16 @@ class JournalRepository(
      * @return The [JournalEntity] if found, null otherwise.
      */
     suspend fun getJournalById(id: Int): JournalEntity? =
-        journeyEntityDao.getJournalById(journalId = id)
+        journalEntityDao.getJournalById(journalId = id)
 
     /**
      * Inserts a new journal into the database.
      *
      * @param journalEntity The [journalEntity] to insert.
-     * @return The row ID of the inserted journey.
+     * @return The row ID of the inserted journal.
      */
     suspend fun insertJournal(journalEntity: JournalEntity): Long =
-        journeyEntityDao.insertJournal(journalEntity)
+        journalEntityDao.insertJournal(journalEntity)
 
     /**
      * Updates an existing journal.
@@ -55,21 +55,21 @@ class JournalRepository(
      * @param journalEntity The [journalEntity] with updated values.
      */
     suspend fun updateJournal(journalEntity: JournalEntity) =
-        journeyEntityDao.updateJournal(journalEntity)
+        journalEntityDao.updateJournal(journalEntity)
 
     /**
      * Deletes a specific journal.
      *
      * @param journalEntity The [journalEntity] to delete.
      */
-    suspend fun deleteJournal(journalEntity: JournalEntity) =
-        journeyEntityDao.deleteJournal(journalEntity)
+    fun deleteJournal(journalEntity: JournalEntity) =
+        journalEntityDao.deleteJournal(journalEntity)
 
     /**
-     * Deletes all journeys from the database.
+     * Deletes all journals from the database.
      */
     suspend fun deleteAllJournals() =
-        journeyEntityDao.deleteAllJournals()
+        journalEntityDao.deleteAllJournals()
 
     // Entry Entity Specific Operations
 
@@ -80,24 +80,33 @@ class JournalRepository(
      * @return The [JournalEntryEntity] if found, null otherwise
      */
     suspend fun getEntryById(id: Int): JournalEntryEntity? =
-        journeyEntryEntityDao.getEntryById(id = id)
+        journalEntryEntityDao.getEntryById(id = id)
 
     /**
-     * Inserts a new journey entry.
+     * Get the last entry in a journal by the journal's main ID
+     *
+     * @param journalId The id of the journal to get the last entry of
+     * @return The [JournalEntryEntity] if found, null otherwise
+     */
+    fun getLastEntryForJournal(journalId: Int): JournalEntryEntity? =
+        journalEntryEntityDao.getLastEntryForJournal(journalId)
+
+    /**
+     * Inserts a new journal entry.
      *
      * @param entry The [JournalEntryEntity] to insert.
      * @return The row ID of the inserted entry.
      */
-    suspend fun insertJourneyEntry(entry: JournalEntryEntity): Long =
-        journeyEntryEntityDao.insertJourneyEntry(entry)
+    suspend fun insertJournalEntry(entry: JournalEntryEntity): Long =
+        journalEntryEntityDao.insertJournalEntry(entry)
 
     /**
-     * Update an existing journey entry
+     * Update an existing journal entry
      *
      * @param entry The [JournalEntryEntity] with updated values
      */
     suspend fun updateEntry(entry: JournalEntryEntity) =
-        journeyEntryEntityDao.updateEntry(entry)
+        journalEntryEntityDao.updateEntry(entry)
 
     /**
      * Delete entry
@@ -105,16 +114,24 @@ class JournalRepository(
      * @param entry The [JournalEntryEntity] to delete found via its primary key
      */
     suspend fun deleteEntry(entry: JournalEntryEntity) =
-        journeyEntryEntityDao.deleteEntry(entry)
+        journalEntryEntityDao.deleteEntry(entry)
 
     // Getting a coupled Journal and its related entries
 
     /**
-     * Retrieves a journey along with its associated entries.
+     * Retrieves a journal along with its associated entries.
      *
-     * @param journalId The id of the journey.
-     * @return A [JournalWithEntries] object containing the journey and its entries.
+     * @param journalId The id of the journal.
+     * @return A [JournalWithEntries] object containing the journal and its entries.
      */
-    fun getJourneyWithEntries(journalId: Int): Flow<JournalWithEntries?> =
-        journeyDao.getJournalWithEntries(journalId)
+    fun getJournalWithEntries(journalId: Int): Flow<JournalWithEntries?> =
+        journalDao.getJournalWithEntries(journalId)
+
+    /**
+     * Retrieves all Journals with their associated entries.
+     *
+     * @return A [JournalWithEntries] object containing the journal and its entries.
+     */
+    fun getAllJournalsWithEntries(): Flow<List<JournalWithEntries>> =
+        journalDao.getAllJournalsWithAssociatedEntries()
 }

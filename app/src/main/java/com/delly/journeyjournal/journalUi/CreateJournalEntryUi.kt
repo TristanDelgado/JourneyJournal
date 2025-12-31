@@ -31,13 +31,13 @@ import com.delly.journeyjournal.R as localR
 fun CreateJournalEntryUi(
     navigateBack: () -> Unit,
     repository: JournalRepository,
-    journalId: Int
+    journalId: Int,
 ) {
     val viewModel: CreateEntryViewModel = viewModel(
         factory = CreateEntryViewModelFactory(
             navigateBack = navigateBack,
             repository = repository,
-            journalId = journalId
+            journalId = journalId,
         )
     )
     val context = LocalContext.current

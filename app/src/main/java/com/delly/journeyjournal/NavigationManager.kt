@@ -36,10 +36,10 @@ fun NavHost(
         // HomeScreen is the initial load in screen where all Journals are displayed
         composable<Home> {
             HomeScreen(
-                navToCreateEditJourneyScreen = { journalToEditId ->
+                navToCreateEditJournalScreen = { journalToEditId ->
                     navController.navigate(route = CreateEditJourney(journalId = journalToEditId))
                 },
-                navigateToJourney = { selectedJourneyId ->
+                navigateToJournal = { selectedJourneyId ->
                     navController.navigate(
                         route = SelectedJourney(
                             id = selectedJourneyId

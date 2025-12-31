@@ -63,7 +63,7 @@ interface JournalEntityDao {
      * @param journeyEntity The JourneyEntity to delete
      */
     @Delete
-    suspend fun deleteJournal(journeyEntity: JournalEntity)
+    fun deleteJournal(journeyEntity: JournalEntity)
 
     /**
      * Deletes all journey entries from the database.

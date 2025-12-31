@@ -58,7 +58,7 @@ import com.delly.journeyjournal.R as localR
 fun JournalViewScaffoldUi(
     navigateHome: () -> Unit,
     repository: JournalRepository,
-    currentJournalId: Int
+    currentJournalId: Int,
 ) {
     val viewModel: JournalViewViewModel = viewModel(
         factory = JournalViewViewModelFactory(
@@ -191,7 +191,8 @@ fun JournalViewScaffoldUi(
                                         currentJournalId
                                     )
                                     viewModel.updateTitle(
-                                        currentJournal?.journalName?.ifBlank { stringResource(id = localR.string.untitled_journal) } ?: stringResource(id = localR.string.loading)
+                                        currentJournal?.journalName?.ifBlank { stringResource(id = localR.string.untitled_journal) }
+                                            ?: stringResource(id = localR.string.loading)
                                     )
                                 }
 
@@ -218,15 +219,58 @@ fun JournalViewScaffoldUi(
     }
 }
 
-// TODO - Make this preview available by passing a repository into it.
+// TODO: Make this preview work
 //@Composable
 //@Preview(showBackground = true)
 //fun JourneyViewUiPreview() {
+//    val journalEntity = JournalEntity(
+//        id = 1,
+//        journalName = "Appalachian Trail 2025",
+//        journeymanName = "Hiker Joe",
+//        courseName = "Appalachian Trail",
+//        courseRegion = "East Coast",
+//        startDate = 1704067200000L, // Jan 1 2024
+//        transportationMethod = TransportationMethods.ON_FOOT,
+//        description = "A long walk."
+//    )
+//
+//    val entries = listOf(
+//        JournalEntryEntity(
+//            ownerId = 1,
+//            date = 1704153600000L,
+//            dayNumber = "1",
+//            startLocation = "Springer",
+//            endLocation = "Shelter",
+//            distanceHiked = "8.5",
+//            trailConditions = "", wildlifeSightings = "", resupplyNotes = "", notes = "",
+//            startMileMarker = "", endMileMarker = "", elevationStart = "", elevationEnd = "",
+//            netElevationChange = "", sleptInBed = false, tookShower = false,
+//            weather = "", dayRating = "", moodRating = ""
+//        ),
+//        JournalEntryEntity(
+//            ownerId = 1,
+//            date = 1704240000000L,
+//            dayNumber = "2",
+//            startLocation = "Shelter",
+//            endLocation = "Town",
+//            distanceHiked = "12.2",
+//            trailConditions = "", wildlifeSightings = "", resupplyNotes = "", notes = "",
+//            startMileMarker = "", endMileMarker = "", elevationStart = "", elevationEnd = "",
+//            netElevationChange = "", sleptInBed = false, tookShower = false,
+//            weather = "", dayRating = "", moodRating = ""
+//        )
+//    )
+//
+//    val journalWithEntries = JournalWithEntries(
+//        journal = journalEntity,
+//        entries = entries
+//    )
+//
 //    JourneyJournalTheme {
-//        JourneyViewScaffoldUi(
-//            navigateHome = { null },
-//            repository = null,
-//            currentJournalName = "Journey Name"
+//        JournalViewScaffoldUi(
+//            navigateHome = { },
+//            repository = journalWithEntries,
+//            currentJournalId = 0
 //        )
 //    }
 //}

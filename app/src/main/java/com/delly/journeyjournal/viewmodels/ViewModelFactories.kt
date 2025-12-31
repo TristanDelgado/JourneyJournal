@@ -35,7 +35,7 @@ class CreateEntryViewModelFactory(
             return CreateEntryViewModel(
                 navigateBack,
                 repository,
-                journalId
+                journalId,
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

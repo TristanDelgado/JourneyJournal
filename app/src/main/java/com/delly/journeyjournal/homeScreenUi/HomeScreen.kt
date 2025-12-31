@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.theme.Typography
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import com.delly.journeyjournal.R as localR
 
@@ -44,30 +47,43 @@ object ActiveJournalsRoute
 object CompletedJournalsRoute
 
 /**
- * The main screen of the application. It displays a title, a button to create a new journey,
- * and two lists of journeys: active and complete.
+ * The main screen of the application. It displays a title, a button to create a new journal,
+ * and two lists of journals: active and complete.
  *
- * @param navToCreateEditJourneyScreen A lambda function to be invoked when the user clicks the button to create a new journey.
- * @param navigateToJourney A lambda function that takes a journey name as a string and navigates to that journey's screen.
- * @param repository The repository to fetch journey data from.
+ * @param navToCreateEditJournalScreen A lambda function to be invoked when the user clicks the button to create a new journal.
+ * @param navigateToJournal A lambda function that takes a journal name as a string and navigates to that journal's screen.
+ * @param repository The repository to fetch journal data from.
  */
 @Composable
 fun HomeScreen(
-    navToCreateEditJourneyScreen: (Int?) -> Unit,
-    navigateToJourney: (Int) -> Unit,
+    navToCreateEditJournalScreen: (Int?) -> Unit,
+    navigateToJournal: (Int) -> Unit,
     repository: JournalRepository,
 ) {
-    val allJourneys = repository.getAllJournals().collectAsState(initial = emptyList())
-    val activeJourneys = allJourneys.value.filter { !it.isComplete }
-    val completedJourneys = allJourneys.value.filter { it.isComplete }
+    val allJournalsWithEntries = repository.getAllJournalsWithEntries()
+        .collectAsState(initial = emptyList())
+
+    // This calculation now only happens when 'allJournalsWithEntries' changes
+    val activeJournals = remember(allJournalsWithEntries.value) {
+        allJournalsWithEntries.value.filter { !it.journal.isComplete }
+    }
+
+    val completedJournals = remember(allJournalsWithEntries.value) {
+        allJournalsWithEntries.value.filter { it.journal.isComplete }
+    }
 
     val navController = rememberNavController()
+    val coroutineScope = rememberCoroutineScope()
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf("Active", "Complete")
+    val tabs = listOf(
+        "Active",
+        "Complete"
+    )
 
-    Column(modifier = Modifier
-        .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
-        .fillMaxSize()
+    Column(
+        modifier = Modifier
+            .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
+            .fillMaxSize()
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -89,10 +105,15 @@ fun HomeScreen(
         ) {
             composable<ActiveJournalsRoute> {
                 JournalsList(
-                    journeys = activeJourneys,
-                    repository = repository,
-                    navigateToJourney = navigateToJourney,
-                    onEditClick = { navToCreateEditJourneyScreen(it) },
+                    journals = activeJournals,
+                    navigateToJournal = navigateToJournal,
+                    onEditClick = { navToCreateEditJournalScreen(it) },
+                    onDeleteClick = {
+                        coroutineScope.launch(Dispatchers.IO) {
+                            repository.deleteJournal(it.journal)
+                        }
+                    },
+                    onSettingsClick = {},
                     header = {
                         Row(
                             modifier = Modifier
@@ -106,7 +127,7 @@ fun HomeScreen(
                         ) {
                             // Create a new journal button
                             Button(
-                                onClick = { navToCreateEditJourneyScreen(null) },
+                                onClick = { navToCreateEditJournalScreen(null) },
                                 modifier = Modifier
                                     .height(dimensionResource(id = localR.dimen.button_height_mini))
                                     .width(dimensionResource(id = localR.dimen.button_height_mini)),
@@ -115,7 +136,7 @@ fun HomeScreen(
                                 Icon(
                                     modifier = Modifier.size(dimensionResource(id = localR.dimen.button_height_mini)),
                                     imageVector = Icons.Default.Add,
-                                    contentDescription = stringResource(id = localR.string.add_journey)
+                                    contentDescription = stringResource(id = localR.string.add_journal)
                                 )
                             }
                             Text(
@@ -129,16 +150,46 @@ fun HomeScreen(
             }
             composable<CompletedJournalsRoute> {
                 JournalsList(
-                    journeys = completedJourneys,
-                    repository = repository,
-                    navigateToJourney = navigateToJourney,
-                    onEditClick = { navToCreateEditJourneyScreen(it) },
+                    journals = completedJournals,
+                    navigateToJournal = navigateToJournal,
+                    onEditClick = { navToCreateEditJournalScreen(it) },
+                    onDeleteClick = {
+                        coroutineScope.launch(Dispatchers.IO) {
+                            repository.deleteJournal(it.journal)
+                        }
+                    },
+                    onSettingsClick = {},
                     header = {
-                        Text(
-                            stringResource(id = localR.string.complete_journeys),
-                            style = Typography.titleMedium,
-                            modifier = Modifier.padding(dimensionResource(id = localR.dimen.padding_small))
-                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = localR.dimen.padding_small),
+                                    bottom = dimensionResource(id = localR.dimen.padding_small)
+                                ),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            // Create a new journal button
+                            Button(
+                                onClick = { navToCreateEditJournalScreen(null) },
+                                modifier = Modifier
+                                    .height(dimensionResource(id = localR.dimen.button_height_mini))
+                                    .width(dimensionResource(id = localR.dimen.button_height_mini)),
+                                contentPadding = PaddingValues(dimensionResource(id = localR.dimen.button_internal_padding_zero))
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(dimensionResource(id = localR.dimen.button_height_mini)),
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = stringResource(id = localR.string.add_journal)
+                                )
+                            }
+                            Text(
+                                stringResource(id = localR.string.active_journals),
+                                style = Typography.titleMedium,
+                                modifier = Modifier.padding(start = dimensionResource(id = localR.dimen.padding_small))
+                            )
+                        }
                     }
                 )
             }

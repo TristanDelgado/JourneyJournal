@@ -26,4 +26,17 @@ interface JournalWithEntriesDao {
     @Transaction
     @Query(value = "SELECT * FROM JournalEntity WHERE id = :journalId")
     fun getJournalWithEntries(journalId: Int): Flow<JournalWithEntries?>
+
+    /**
+     * Retrieves all Journal's and their associated entries.
+     *
+     * The @Transaction annotation is required because this method runs two queries atomically:
+     * 1. Gets all Journals.
+     * 2. Selects the Entries where the foreign key matches.
+     *
+     * @return A [List<JournalWithEntries>] object containing the journey and its entries.
+     */
+    @Transaction
+    @Query(value = "SELECT * FROM JournalEntity")
+    fun getAllJournalsWithAssociatedEntries(): Flow<List<JournalWithEntries>>
 }

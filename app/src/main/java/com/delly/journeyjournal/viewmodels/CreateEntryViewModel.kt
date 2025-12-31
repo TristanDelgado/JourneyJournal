@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JournalEntryEntity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,18 +18,31 @@ class CreateEntryViewModel(
 ) : ViewModel() {
 
     // --- Date & Day ---
-    private val _entryDate = MutableStateFlow(value = System.currentTimeMillis())
-    val entryDate: StateFlow<Long> = _entryDate
-
     private val _selectedDate = MutableStateFlow<Long?>(null)
     val selectedDate: StateFlow<Long?> = _selectedDate.asStateFlow()
 
     private val _dayNumber = MutableStateFlow("")
     val dayNumber: StateFlow<String> = _dayNumber
 
-    // Mocking a previous day for the UI hint
     private val _previousDayNumber = MutableStateFlow("0")
     val previousDayNumber: StateFlow<String> = _previousDayNumber
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            val lastEntry = repository.getLastEntryForJournal(journalId)?.dayNumber
+
+            // Switch back to the Main thread implicitly by updating the StateFlow
+            if (lastEntry != null) {
+                val nextDay = (lastEntry.toIntOrNull() ?: 0) + 1
+                _dayNumber.value = nextDay.toString()
+                _previousDayNumber.value = lastEntry
+            } else {
+                // Default for the first entry
+                _dayNumber.value = "1"
+                _previousDayNumber.value = "0"
+            }
+        }
+    }
 
     // --- Locations ---
     private val _startLocation = MutableStateFlow("")
@@ -88,11 +102,6 @@ class CreateEntryViewModel(
 
     private val _notes = MutableStateFlow("")
     val notes: StateFlow<String> = _notes
-
-    init {
-        // Todo: Fetch the actual previous day number from repository here
-        _previousDayNumber.value = "14" // Placeholder example
-    }
 
     // --- Update Functions ---
 
@@ -215,14 +224,14 @@ class CreateEntryViewModel(
     fun saveEntry(onInvalidInput: () -> Unit) {
         viewModelScope.launch {
             // 1. Validation Logic
-            if (_dayNumber.value.isBlank() || (_selectedDate.value == null && _entryDate.value == 0L)) {
+            if (_dayNumber.value.isBlank() || _selectedDate.value == null) {
                 onInvalidInput() // Trigger UI callback for error
                 return@launch
             }
 
             val newEntry = JournalEntryEntity(
                 ownerId = journalId,
-                date = _selectedDate.value ?: _entryDate.value,
+                date = _selectedDate.value ?: System.currentTimeMillis(),
                 dayNumber = _dayNumber.value,
                 startLocation = _startLocation.value,
                 endLocation = _endLocation.value,
@@ -243,7 +252,7 @@ class CreateEntryViewModel(
                 moodRating = _moodRating.value
             )
             try {
-                repository.insertJourneyEntry(entry = newEntry)
+                repository.insertJournalEntry(entry = newEntry)
                 navigateBack()
             } catch (e: Exception) {
                 // Handle error
