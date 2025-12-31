@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.delly.journeyjournal.db.entities.JournalEntity
 import com.delly.journeyjournal.db.entities.JournalEntryEntity
 import com.delly.journeyjournal.db.entities.JournalWithEntries
+import com.delly.journeyjournal.enums.DistanceUnit
 import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.theme.JourneyJournalTheme
 import java.text.SimpleDateFormat
@@ -52,7 +53,7 @@ fun JournalOverviewBox(
     val entries = journalWithEntries.entries
 
     // Calculations
-    val totalMiles = remember(entries) {
+    val totalDistance = remember(entries) {
         entries.sumOf { it.distanceHiked.toDoubleOrNull() ?: 0.0 }
     }
 
@@ -133,12 +134,16 @@ fun JournalOverviewBox(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Total Miles
+                // Total Distance
                 StatBlock(
-                    label = stringResource(id = localR.string.total_miles),
+                    label = if (journal.distanceUnit == DistanceUnit.MILES) {
+                        stringResource(id = localR.string.total_miles)
+                    } else {
+                        stringResource(id = localR.string.total_kilometers)
+                    },
                     value = String.format(
                         "%.1f",
-                        totalMiles
+                        totalDistance
                     )
                 )
 
@@ -203,7 +208,8 @@ fun JournalOverviewBoxPreview() {
         courseRegion = "East Coast",
         startDate = 1704067200000L, // Jan 1 2024
         transportationMethod = TransportationMethods.ON_FOOT,
-        description = "A long walk."
+        description = "A long walk.",
+        distanceUnit = DistanceUnit.MILES
     )
 
     val entries = listOf(

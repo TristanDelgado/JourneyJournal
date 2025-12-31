@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.delly.journeyjournal.db.entities.JournalEntryEntity
+import com.delly.journeyjournal.enums.DistanceUnit
 import com.delly.journeyjournal.theme.JourneyJournalTheme
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -44,6 +45,7 @@ import com.delly.journeyjournal.R as localR
 @Composable
 fun JournalEntryOverviewBox(
     entry: JournalEntryEntity,
+    distanceUnit: DistanceUnit,
     onEditClick: (Long) -> Unit,
     onDeleteClick: (JournalEntryEntity) -> Unit,
     modifier: Modifier = Modifier,
@@ -124,7 +126,11 @@ fun JournalEntryOverviewBox(
                     StatBlock(
                         label = stringResource(id = localR.string.distance_label),
                         value = stringResource(
-                            id = localR.string.miles_format,
+                            id = if (distanceUnit == DistanceUnit.MILES) {
+                                localR.string.miles_format
+                            } else {
+                                localR.string.kilometers_format
+                            },
                             entry.distanceHiked
                         )
                     )
@@ -373,6 +379,7 @@ fun JournalEntryOverviewBoxPreview() {
     JourneyJournalTheme {
         JournalEntryOverviewBox(
             entry = entry,
+            distanceUnit = DistanceUnit.MILES,
             onEditClick = {},
             onDeleteClick = {}
         )

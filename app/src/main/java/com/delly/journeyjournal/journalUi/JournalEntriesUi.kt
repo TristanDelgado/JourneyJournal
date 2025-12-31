@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JournalEntryEntity
+import com.delly.journeyjournal.enums.DistanceUnit
 import com.delly.journeyjournal.theme.Typography
 import com.delly.journeyjournal.viewmodels.JournalEntriesViewModel
 import com.delly.journeyjournal.viewmodels.JournalEntriesViewModelFactory
@@ -92,6 +93,7 @@ fun JourneyEntriesUi(
         }
 
         val journeyWithEntries = viewModel.journalWithEntries.collectAsState()
+        val distanceUnit = journeyWithEntries.value?.journal?.distanceUnit ?: DistanceUnit.MILES
 
         // Display a list of entries
         LazyColumn {
@@ -101,6 +103,7 @@ fun JourneyEntriesUi(
                     // TODO: Update onEditClick and onDeleteClick
                     JournalEntryOverviewBox(
                         entry = entry,
+                        distanceUnit = distanceUnit,
                         onEditClick = { },
                         onDeleteClick = { },
                     )
@@ -140,6 +143,7 @@ fun JourneyEntriesUi(
                     // TODO: Update onEditClick and onDeleteClick
                     JournalEntryOverviewBox(
                         entry = exampleEntry,
+                        distanceUnit = distanceUnit,
                         onEditClick = { },
                         onDeleteClick = { },
                     )

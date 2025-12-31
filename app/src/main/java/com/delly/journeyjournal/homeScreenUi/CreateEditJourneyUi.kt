@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
+import com.delly.journeyjournal.enums.DistanceUnit
 import com.delly.journeyjournal.enums.TransportationMethods
 import com.delly.journeyjournal.genericUi.CustomTextField
 import com.delly.journeyjournal.genericUi.DatePickerButton
@@ -123,25 +124,30 @@ fun CreateEditJourneyUi(
             HorizontalDivider()
 
             // 3. Logistics
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Left Side: Date Picker
-                Box(modifier = Modifier.weight(0.5f)) {
-                    DatePickerButton(
-                        selectedDate = selectedDate,
-                        onDateSelected = { viewModel.updateSelectedDate(it) }
-                    )
-                }
+            SectionCard(title = "Logistics") {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Left Side: Date Picker
+                    Box(modifier = Modifier.weight(0.5f)) {
+                        DatePickerButton(
+                            selectedDate = selectedDate,
+                            onDateSelected = { viewModel.updateSelectedDate(it) }
+                        )
+                    }
 
-                Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
 
-                // Right Side: Transportation
-                Box(modifier = Modifier.weight(0.5f)) {
-                    TransportationMethodDropdownMenu(viewModel = viewModel)
+                    // Right Side: Transportation
+                    Box(modifier = Modifier.weight(0.5f)) {
+                        TransportationMethodDropdownMenu(viewModel = viewModel)
+                    }
                 }
+                Spacer(modifier = Modifier.height(12.dp))
+                DistanceUnitDropdownMenu(viewModel = viewModel)
             }
+
 
             // 4. Description/Notes
             CustomTextField(
@@ -250,6 +256,50 @@ fun TransportationMethodDropdownMenu(viewModel: CreateEditJournalViewModel) {
         }
     }
 }
+
+/**
+ * Distance unit dropdown menu
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DistanceUnitDropdownMenu(viewModel: CreateEditJournalViewModel) {
+    var expanded by remember { mutableStateOf(false) }
+    val selectedOption = viewModel.selectedDistanceUnit.collectAsState()
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
+        OutlinedTextField(
+            value = stringResource(id = selectedOption.value.labelResId),
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(stringResource(id = localR.string.distance_unit)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor()
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            DistanceUnit.entries.forEach { unit ->
+                DropdownMenuItem(
+                    text = { Text(text = stringResource(id = unit.labelResId)) },
+                    onClick = {
+                        viewModel.updateDistanceUnit(distanceUnit = unit)
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+
 
 //@Composable
 //@Preview(showBackground = true)

@@ -2,6 +2,7 @@ package com.delly.journeyjournal.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.delly.journeyjournal.enums.DistanceUnit
 import com.delly.journeyjournal.enums.TransportationMethods
 
 /**
@@ -15,6 +16,7 @@ import com.delly.journeyjournal.enums.TransportationMethods
  * @property startDate The start date of the journey.
  * @property transportationMethod The transportation method used on the journey.
  * @property description The description of the journey.
+ * @property distanceUnit The unit of distance used in the journal.
  * @property isComplete Whether the journey is complete.
  */
 @Entity(tableName = "JournalEntity")
@@ -27,5 +29,6 @@ data class JournalEntity(
     val startDate: Long?,
     val transportationMethod: TransportationMethods,
     val description: String,
+    val distanceUnit: DistanceUnit = DistanceUnit.MILES,
     var isComplete: Boolean = false
 )
