@@ -9,15 +9,15 @@ import androidx.room.Relation
  * This class allows Room to query the parent [JournalEntity] and all its associated
  * [JournalEntryEntity] children in a single query (using @Transaction).
  *
- * @property journey The parent [JournalEntity].
+ * @property journal The parent [JournalEntity].
  * @property entries The list of associated [JournalEntryEntity] objects.
  */
 data class JournalWithEntries(
-    @Embedded val journey: JournalEntity,
+    @Embedded val journal: JournalEntity,
 
     @Relation(
         parentColumn = "id", // The Primary Key of the Parent (JournalEntity)
-        entityColumn = "ownerId" // The Foreign Key in the Child (JourneyEntryEntity)
+        entityColumn = "ownerId" // The Foreign Key in the Child (JournalEntryEntity)
     )
     val entries: List<JournalEntryEntity>
 )

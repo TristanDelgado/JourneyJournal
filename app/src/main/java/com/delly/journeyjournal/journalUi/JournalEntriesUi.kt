@@ -81,7 +81,7 @@ fun JourneyEntriesUi(
                 Icon(
                     modifier = Modifier.size(dimensionResource(id = localR.dimen.button_height_mini)),
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(id = localR.string.add_journey)
+                    contentDescription = stringResource(id = localR.string.add_journal)
                 )
             }
             Text(
@@ -98,7 +98,12 @@ fun JourneyEntriesUi(
             // Check if we have valid data AND the list is not empty
             if (!journeyWithEntries.value?.entries.isNullOrEmpty()) {
                 items(items = journeyWithEntries.value!!.entries) { entry ->
-                    JournalEntryOverviewBox(entry = entry)
+                    // TODO: Update onEditClick and onDeleteClick
+                    JournalEntryOverviewBox(
+                        entry = entry,
+                        onEditClick = { },
+                        onDeleteClick = { },
+                    )
                 }
             } else {
                 // Fallback: Show example entry if data is loading (null) or empty
@@ -132,8 +137,12 @@ fun JourneyEntriesUi(
                         dayRating = "5",
                         moodRating = "5"
                     )
-
-                    JournalEntryOverviewBox(entry = exampleEntry)
+                    // TODO: Update onEditClick and onDeleteClick
+                    JournalEntryOverviewBox(
+                        entry = exampleEntry,
+                        onEditClick = { },
+                        onDeleteClick = { },
+                    )
                 }
             }
         }

@@ -15,7 +15,7 @@
     <string name="home_title">Journey Journal</string>
 
     <!-- Used in HomeScreen.kt and JournalEntriesUi.kt -->
-    <string name="add_journey">Add Journey</string>
+    <string name="add_journal">Add Journey</string>
 
     <!-- Used in CreateEditJourneyUi.kt -->
     <string name="choose_one">Choose one</string>
@@ -29,14 +29,16 @@
 
     <!-- Used in JournalOverviewBox.kt -->
     <string name="avg_diff_per_day">Avg diff/day: </string>
-    <string name="delete_journey">Delete Journey</string>
+    <string name="delete_journal">Delete Journey</string>
     <string name="dummy_avg_diff">3.5/5.0</string>
     <string name="dummy_entries">3)</string>
     <string name="dummy_miles">25)</string>
-    <string name="edit_journey">Edit Journey</string>
+    <string name="edit_journal">Edit Journey</string>
     <string name="entries_label">Entries: </string>
-    <string name="journey_settings">Journey Settings</string>
+    <string name="journal_settings">Journey Settings</string>
     <string name="miles_abbrev">Mi: </string>
+    <string name="total_miles">total miles:</string>
+    <string name="last_entry">Last Entry:</string>
 
     <!-- Used in CreateJournalEntryUi.kt -->
     <string name="add_photos">Add Photos (Future)</string>
@@ -67,11 +69,17 @@
     <!-- Used in JournalEntryOverviewBox.kt -->
     <string name="day_format">Day %1$s</string>
     <string name="end_label">End:</string>
-    <string name="miles_traversed_format">%1$s Miles Traversed</string>
+    <string name="miles_format">%1$s</string>
     <string name="notes_label">Notes</string>
     <string name="resupply_water_label">Resupply / Water</string>
     <string name="start_label">Start:</string>
     <string name="wildlife_label">Wildlife</string>
+    <string name="distance_label">Distance</string>
+    <string name="date_label">Date</string>
+    <string name="weather_label">Weather</string>
+    <string name="day_rating_label">Day Rating</string>
+    <string name="mood_rating_label">Mood Rating</string>
+    <string name="elevation_label">Elevation Change</string>
 
     <!-- Used in SideMenuUi.kt -->
     <string name="help_and_feedback">Help and feedback</string>

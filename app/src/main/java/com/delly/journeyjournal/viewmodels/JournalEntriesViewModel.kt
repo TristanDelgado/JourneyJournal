@@ -27,7 +27,7 @@ class JournalEntriesViewModel(
      * that Compose can safely observe.
      */
     val journalWithEntries: StateFlow<JournalWithEntries?> = repository
-        .getJourneyWithEntries(journalId)
+        .getJournalWithEntries(journalId)
         .stateIn(
             scope = viewModelScope,
             // WhileSubscribed(5000) keeps the flow active for 5 seconds after

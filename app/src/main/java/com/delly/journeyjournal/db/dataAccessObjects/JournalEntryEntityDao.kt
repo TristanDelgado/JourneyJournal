@@ -22,6 +22,10 @@ interface JournalEntryEntityDao {
     @Query("SELECT * FROM JournalEntryEntity WHERE id = :id")
     suspend fun getEntryById(id: Int): JournalEntryEntity?
 
+    // Returns the most recent entry for a specific journey ID
+    @Query("SELECT * FROM JournalEntryEntity WHERE ownerId = :journalId ORDER BY id DESC LIMIT 1")
+    fun getLastEntryForJournal(journalId: Int): JournalEntryEntity?
+
     /**
      * Inserts a new journey entry into the database.
      *
@@ -31,7 +35,7 @@ interface JournalEntryEntityDao {
      * @return The row ID of the newly inserted entry.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertJourneyEntry(entry: JournalEntryEntity): Long
+    suspend fun insertJournalEntry(entry: JournalEntryEntity): Long
 
     /**
      * Updates an existing journey entry in the database.

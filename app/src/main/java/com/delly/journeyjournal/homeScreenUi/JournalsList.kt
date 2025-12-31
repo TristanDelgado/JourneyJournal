@@ -6,17 +6,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.delly.journeyjournal.db.JournalRepository
-import com.delly.journeyjournal.db.entities.JournalEntity
+import com.delly.journeyjournal.db.entities.JournalWithEntries
 
 @Composable
 fun JournalsList(
-    journeys: List<JournalEntity>,
-    repository: JournalRepository,
-    navigateToJourney: (Int) -> Unit,
+    journals: List<JournalWithEntries>,
+    navigateToJournal: (Int) -> Unit,
     onEditClick: (Int) -> Unit,
+    onDeleteClick: (JournalWithEntries) -> Unit,
+    onSettingsClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    header: @Composable (() -> Unit)? = null
+    header: @Composable (() -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
         header?.invoke()
@@ -24,12 +24,13 @@ fun JournalsList(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(journeys) { journey ->
-                JourneyOverviewBox(
-                    journalEntity = journey,
-                    navigateToJourney = navigateToJourney,
-                    repository = repository,
-                    onEditClick = onEditClick
+            items(journals) { journal ->
+                JournalOverviewBox(
+                    journalWithEntries = journal,
+                    navigateToJournal = navigateToJournal,
+                    onEditClick = onEditClick,
+                    onDeleteClick = onDeleteClick,
+                    onSettingsClick = onSettingsClick
                 )
             }
         }

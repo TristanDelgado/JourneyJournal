@@ -20,9 +20,9 @@ class MainActivity : ComponentActivity() {
         val journeyEntryEntityDao = database.journeyEntryEntityDao()
         val journeyDao = database.journeyDao()
         val repository = JournalRepository(
-            journeyEntityDao = journeyEntityDao,
-            journeyEntryEntityDao = journeyEntryEntityDao,
-            journeyDao = journeyDao
+            journalEntityDao = journeyEntityDao,
+            journalEntryEntityDao = journeyEntryEntityDao,
+            journalDao = journeyDao
         )
 
         setContent {
