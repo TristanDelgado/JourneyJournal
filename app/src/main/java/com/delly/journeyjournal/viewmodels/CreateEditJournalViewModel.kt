@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JournalEntity
+import com.delly.journeyjournal.enums.DistanceUnit
 import com.delly.journeyjournal.enums.TransportationMethods
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,6 +46,9 @@ class CreateEditJournalViewModel(
     private val _selectedTransportationMethod = MutableStateFlow(TransportationMethods.ON_FOOT)
     val selectedTransportationMethod: StateFlow<TransportationMethods> = _selectedTransportationMethod.asStateFlow()
 
+    private val _selectedDistanceUnit = MutableStateFlow(DistanceUnit.MILES)
+    val selectedDistanceUnit: StateFlow<DistanceUnit> = _selectedDistanceUnit.asStateFlow()
+
     private var _isComplete = false
 
     init {
@@ -60,6 +64,7 @@ class CreateEditJournalViewModel(
                     _description.value = journal.description
                     _selectedDate.value = journal.startDate
                     _selectedTransportationMethod.value = journal.transportationMethod
+                    _selectedDistanceUnit.value = journal.distanceUnit
                     _isComplete = journal.isComplete
                 }
             }
@@ -96,6 +101,10 @@ class CreateEditJournalViewModel(
         _selectedTransportationMethod.value = transportationMethod
     }
 
+    fun updateDistanceUnit(distanceUnit: DistanceUnit) {
+        _selectedDistanceUnit.value = distanceUnit
+    }
+
     // --- Action Handlers ---
 
     fun cancelJourney() {
@@ -121,6 +130,7 @@ class CreateEditJournalViewModel(
                 startDate = _selectedDate.value,
                 transportationMethod = _selectedTransportationMethod.value,
                 description = _description.value,
+                distanceUnit = _selectedDistanceUnit.value,
                 isComplete = _isComplete
             )
 

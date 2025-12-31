@@ -29,6 +29,7 @@
     <string name="new_journal_title">New Journal</string>
     <string name="edit_journal_title">Edit Journal"</string>
     <string name="start_date">Select Start Date</string>
+    <string name="distance_unit">Distance Unit</string>
 
     <!-- Used in JournalOverviewBox.kt -->
     <string name="avg_diff_per_day">Avg diff/day: </string>
@@ -41,6 +42,7 @@
     <string name="journal_settings">Journey Settings</string>
     <string name="miles_abbrev">Mi: </string>
     <string name="total_miles">total miles:</string>
+    <string name="total_kilometers">total kilometers:</string>
     <string name="last_entry">Last Entry:</string>
 
     <!-- Used in CreateJournalEntryUi.kt -->
@@ -62,7 +64,7 @@
     <!-- Used in JournalEntriesUi.kt -->
     <string name="exampleEntryBelow">Example Entry Below</string>
     <string name="example_day_number">3</string>
-    <string name="example_distance">2 Miles</string>
+    <string name="example_distance">2</string>
     <string name="example_end_location">Mountain</string>
     <string name="example_notes">Example Notes</string>
     <string name="example_start_location">Valley</string>
@@ -72,7 +74,8 @@
     <!-- Used in JournalEntryOverviewBox.kt -->
     <string name="day_format">Day %1$s</string>
     <string name="end_label">End:</string>
-    <string name="miles_format">%1$s</string>
+    <string name="miles_format">%1$s mi</string>
+    <string name="kilometers_format">%1$s km</string>
     <string name="notes_label">Notes</string>
     <string name="resupply_water_label">Resupply / Water</string>
     <string name="start_label">Start:</string>
@@ -118,5 +121,9 @@
 
     <!-- Used in UnderConstructionScreenUi.kt -->
     <string name="under_construction">Under Construction</string>
+
+    <!-- Used in DistanceUnit.kt -->
+    <string name="miles">Miles</string>
+    <string name="kilometers">Kilometers</string>
 
 </resources>
