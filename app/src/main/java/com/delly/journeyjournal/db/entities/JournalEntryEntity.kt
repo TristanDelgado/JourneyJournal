@@ -41,7 +41,7 @@ import androidx.room.PrimaryKey
 data class JournalEntryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val ownerId: Int,
+    val ownerId: Long,
     val date: Long,
     val dayNumber: String,
     val startLocation: String,

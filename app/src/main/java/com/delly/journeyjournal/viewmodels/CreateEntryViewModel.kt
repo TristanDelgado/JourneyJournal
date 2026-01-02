@@ -14,7 +14,7 @@ import kotlin.math.abs
 class CreateEntryViewModel(
     private val navigateBack: () -> Unit,
     private val repository: JournalRepository,
-    private val journalId: Int,
+    private val journalId: Long,
 ) : ViewModel() {
 
     // --- Date & Day ---

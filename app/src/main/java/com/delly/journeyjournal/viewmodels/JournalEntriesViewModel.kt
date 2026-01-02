@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.stateIn
  */
 class JournalEntriesViewModel(
     private val repository: JournalRepository,
-    private val journalId: Int,
+    private val journalId: Long,
 ) : ViewModel() {
 
     /**

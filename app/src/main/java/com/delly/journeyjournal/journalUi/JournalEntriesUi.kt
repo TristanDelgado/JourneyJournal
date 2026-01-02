@@ -46,7 +46,7 @@ import com.delly.journeyjournal.R as localR
 fun JourneyEntriesUi(
     navigateToCreateEntry: () -> Unit,
     repository: JournalRepository,
-    journeyId: Int,
+    journeyId: Long,
 ) {
     // Initialize the viewmodel
     val viewModel: JournalEntriesViewModel = viewModel(
@@ -99,7 +99,7 @@ fun JourneyEntriesUi(
         LazyColumn {
             // Check if we have valid data AND the list is not empty
             if (!journeyWithEntries.value?.entries.isNullOrEmpty()) {
-                items(items = journeyWithEntries.value!!.entries) { entry ->
+                items(items = journeyWithEntries.value!!.entries.reversed()) { entry ->
                     // TODO: Update onEditClick and onDeleteClick
                     JournalEntryOverviewBox(
                         entry = entry,

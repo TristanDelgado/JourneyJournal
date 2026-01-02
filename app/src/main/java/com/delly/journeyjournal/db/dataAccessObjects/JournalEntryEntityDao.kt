@@ -20,11 +20,11 @@ interface JournalEntryEntityDao {
      * @return The JourneyEntryEntity, or null if not found.
      */
     @Query("SELECT * FROM JournalEntryEntity WHERE id = :id")
-    suspend fun getEntryById(id: Int): JournalEntryEntity?
+    suspend fun getEntryById(id: Long): JournalEntryEntity?
 
     // Returns the most recent entry for a specific journey ID
     @Query("SELECT * FROM JournalEntryEntity WHERE ownerId = :journalId ORDER BY id DESC LIMIT 1")
-    fun getLastEntryForJournal(journalId: Int): JournalEntryEntity?
+    fun getLastEntryForJournal(journalId: Long): JournalEntryEntity?
 
     /**
      * Inserts a new journey entry into the database.

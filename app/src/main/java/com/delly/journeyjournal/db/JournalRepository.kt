@@ -37,7 +37,7 @@ class JournalRepository(
      * @param id The id of the journal.
      * @return The [JournalEntity] if found, null otherwise.
      */
-    suspend fun getJournalById(id: Int): JournalEntity? =
+    suspend fun getJournalById(id: Long): JournalEntity? =
         journalEntityDao.getJournalById(journalId = id)
 
     /**
@@ -79,7 +79,7 @@ class JournalRepository(
      * @param id The id of the entry to return
      * @return The [JournalEntryEntity] if found, null otherwise
      */
-    suspend fun getEntryById(id: Int): JournalEntryEntity? =
+    suspend fun getEntryById(id: Long): JournalEntryEntity? =
         journalEntryEntityDao.getEntryById(id = id)
 
     /**
@@ -88,7 +88,7 @@ class JournalRepository(
      * @param journalId The id of the journal to get the last entry of
      * @return The [JournalEntryEntity] if found, null otherwise
      */
-    fun getLastEntryForJournal(journalId: Int): JournalEntryEntity? =
+    fun getLastEntryForJournal(journalId: Long): JournalEntryEntity? =
         journalEntryEntityDao.getLastEntryForJournal(journalId)
 
     /**
@@ -124,7 +124,7 @@ class JournalRepository(
      * @param journalId The id of the journal.
      * @return A [JournalWithEntries] object containing the journal and its entries.
      */
-    fun getJournalWithEntries(journalId: Int): Flow<JournalWithEntries?> =
+    fun getJournalWithEntries(journalId: Long): Flow<JournalWithEntries?> =
         journalDao.getJournalWithEntries(journalId)
 
     /**

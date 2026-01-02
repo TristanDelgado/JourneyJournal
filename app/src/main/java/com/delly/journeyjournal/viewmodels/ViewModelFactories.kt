@@ -6,9 +6,9 @@ import com.delly.journeyjournal.db.JournalRepository
 
 class CreateJournalViewModelFactory(
     private val navigateHome: () -> Unit,
-    private val navigateToJourney: (Int) -> Unit,
+    private val navigateToJourney: (Long) -> Unit,
     private val repository: JournalRepository,
-    private val journalToEditId: Int?,
+    private val journalToEditId: Long?,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CreateEditJournalViewModel::class.java)) {
@@ -27,7 +27,7 @@ class CreateJournalViewModelFactory(
 class CreateEntryViewModelFactory(
     private val navigateBack: () -> Unit,
     private val repository: JournalRepository,
-    private val journalId: Int,
+    private val journalId: Long,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CreateEntryViewModel::class.java)) {
@@ -44,7 +44,7 @@ class CreateEntryViewModelFactory(
 
 class JournalEntriesViewModelFactory(
     private val repository: JournalRepository,
-    private val journalId: Int,
+    private val journalId: Long,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(JournalEntriesViewModel::class.java)) {
@@ -60,7 +60,7 @@ class JournalEntriesViewModelFactory(
 
 class JournalViewViewModelFactory(
     private val repository: JournalRepository,
-    private val currentJournalId: Int,
+    private val currentJournalId: Long,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(JournalViewViewModel::class.java)) {
@@ -71,6 +71,5 @@ class JournalViewViewModelFactory(
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
-
     }
 }

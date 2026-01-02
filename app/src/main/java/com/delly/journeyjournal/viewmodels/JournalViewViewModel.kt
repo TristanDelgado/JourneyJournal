@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class JournalViewViewModel(
     private val repository: JournalRepository,
-    private val journalId: Int
+    private val journalId: Long
 ) : ViewModel() {
 
     // Internal mutable state

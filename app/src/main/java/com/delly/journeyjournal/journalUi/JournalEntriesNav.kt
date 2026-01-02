@@ -22,7 +22,7 @@ object CreateJourneyEntryDestination
 @Composable
 fun JournalEntriesNav(
     repository: JournalRepository,
-    journalId: Int
+    journalId: Long
 ) {
     val navController = rememberNavController()
 

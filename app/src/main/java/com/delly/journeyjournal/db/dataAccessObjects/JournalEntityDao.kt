@@ -30,7 +30,7 @@ interface JournalEntityDao {
      * @return The JourneyEntity with the specified id, or null if not found
      */
     @Query("SELECT * FROM JournalEntity WHERE id = :journalId")
-    suspend fun getJournalById(journalId: Int): JournalEntity?
+    suspend fun getJournalById(journalId: Long): JournalEntity?
 
     /**
      * Inserts a new journal into the database.

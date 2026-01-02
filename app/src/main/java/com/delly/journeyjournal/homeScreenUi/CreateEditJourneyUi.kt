@@ -33,9 +33,9 @@ import com.delly.journeyjournal.R as localR
 @Composable
 fun CreateEditJourneyUi(
     navigateHome: () -> Unit,
-    navigateToJourney: (Int) -> Unit,
+    navigateToJourney: (Long) -> Unit,
     repository: JournalRepository,
-    journalToEditId: Int? = null,
+    journalToEditId: Long? = null,
 ) {
     // Initialize the viewmodel
     val viewModel: CreateEditJournalViewModel = viewModel(

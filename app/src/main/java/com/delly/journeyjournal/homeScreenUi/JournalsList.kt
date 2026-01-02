@@ -11,10 +11,10 @@ import com.delly.journeyjournal.db.entities.JournalWithEntries
 @Composable
 fun JournalsList(
     journals: List<JournalWithEntries>,
-    navigateToJournal: (Int) -> Unit,
-    onEditClick: (Int) -> Unit,
+    navigateToJournal: (Long) -> Unit,
+    onEditClick: (Long) -> Unit,
     onDeleteClick: (JournalWithEntries) -> Unit,
-    onSettingsClick: (Int) -> Unit,
+    onSettingsClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
     header: @Composable (() -> Unit)? = null,
     emptyState: @Composable (() -> Unit)? = null,

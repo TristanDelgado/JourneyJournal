@@ -31,7 +31,7 @@ import com.delly.journeyjournal.R as localR
 fun CreateJournalEntryUi(
     navigateBack: () -> Unit,
     repository: JournalRepository,
-    journalId: Int,
+    journalId: Long,
 ) {
     val viewModel: CreateEntryViewModel = viewModel(
         factory = CreateEntryViewModelFactory(

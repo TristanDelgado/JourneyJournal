@@ -58,7 +58,7 @@ import com.delly.journeyjournal.R as localR
 fun JournalViewScaffoldUi(
     navigateHome: () -> Unit,
     repository: JournalRepository,
-    currentJournalId: Int,
+    currentJournalId: Long,
 ) {
     val viewModel: JournalViewViewModel = viewModel(
         factory = JournalViewViewModelFactory(

@@ -44,10 +44,10 @@ import com.delly.journeyjournal.R as localR
 @Composable
 fun JournalOverviewBox(
     journalWithEntries: JournalWithEntries,
-    navigateToJournal: (Int) -> Unit,
-    onEditClick: (Int) -> Unit,
+    navigateToJournal: (Long) -> Unit,
+    onEditClick: (Long) -> Unit,
     onDeleteClick: (JournalWithEntries) -> Unit,
-    onSettingsClick: (Int) -> Unit,
+    onSettingsClick: (Long) -> Unit,
 ) {
     val journal = journalWithEntries.journal
     val entries = journalWithEntries.entries

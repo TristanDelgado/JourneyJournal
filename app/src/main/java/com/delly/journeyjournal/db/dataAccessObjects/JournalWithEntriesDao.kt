@@ -25,7 +25,7 @@ interface JournalWithEntriesDao {
      */
     @Transaction
     @Query(value = "SELECT * FROM JournalEntity WHERE id = :journalId")
-    fun getJournalWithEntries(journalId: Int): Flow<JournalWithEntries?>
+    fun getJournalWithEntries(journalId: Long): Flow<JournalWithEntries?>
 
     /**
      * Retrieves all Journal's and their associated entries.

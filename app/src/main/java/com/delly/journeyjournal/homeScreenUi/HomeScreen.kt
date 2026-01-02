@@ -58,8 +58,8 @@ object CompletedJournalsRoute
  */
 @Composable
 fun HomeScreen(
-    navToCreateEditJournalScreen: (Int?) -> Unit,
-    navigateToJournal: (Int) -> Unit,
+    navToCreateEditJournalScreen: (Long?) -> Unit,
+    navigateToJournal: (Long) -> Unit,
     repository: JournalRepository,
 ) {
     val allJournalsWithEntries = repository.getAllJournalsWithEntries()

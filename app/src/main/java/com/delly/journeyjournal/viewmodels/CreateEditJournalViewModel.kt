@@ -16,9 +16,9 @@ import kotlinx.coroutines.launch
  */
 class CreateEditJournalViewModel(
     private val navigateHome: () -> Unit,
-    private val createAndNavigateToJournal: (Int) -> Unit,
+    private val createAndNavigateToJournal: (Long) -> Unit,
     private val repository: JournalRepository,
-    private val journalToEditId: Int?,
+    private val journalToEditId: Long?,
 ) : ViewModel() {
 
     // --- Identity ---
@@ -141,7 +141,7 @@ class CreateEditJournalViewModel(
             } else {
                 try {
                     val newId = repository.insertJournal(journalEntity = newJourney)
-                    createAndNavigateToJournal(newId.toInt())
+                    createAndNavigateToJournal(newId)
                 } catch (e: Exception) {
                     // Handle error
                 }

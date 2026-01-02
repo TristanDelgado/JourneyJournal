@@ -15,10 +15,10 @@ import kotlinx.serialization.Serializable
 object Home
 
 @Serializable
-data class CreateEditJourney(val journalId: Int? = null)
+data class CreateEditJourney(val journalId: Long? = null)
 
 @Serializable
-data class SelectedJourney(val id: Int)
+data class SelectedJourney(val id: Long)
 
 /**
  * Navigation graph for the app.
