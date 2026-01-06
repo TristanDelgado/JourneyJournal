@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.journalUi
+package com.delly.journeyjournal.journalUi.entries
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -22,7 +22,7 @@ object CreateJourneyEntryDestination
 @Composable
 fun JournalEntriesNav(
     repository: JournalRepository,
-    journalId: Long
+    journalId: Long,
 ) {
     val navController = rememberNavController()
 

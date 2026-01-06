@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.journalUi
+package com.delly.journeyjournal.journalUi.entries
 
 import android.widget.Toast
 import androidx.compose.foundation.background

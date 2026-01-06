@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.journalUi
+package com.delly.journeyjournal.journalUi.entries
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -282,7 +283,7 @@ private fun AmenityBadge(
     icon: ImageVector,
     text: String,
 ) {
-    androidx.compose.material3.Surface(
+    Surface(
         shape = MaterialTheme.shapes.small, // Rounded corners
         color = MaterialTheme.colorScheme.secondaryContainer, // Subtle highlight color
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer

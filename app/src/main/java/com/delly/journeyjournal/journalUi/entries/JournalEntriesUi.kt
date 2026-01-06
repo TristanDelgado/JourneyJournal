@@ -1,4 +1,4 @@
-package com.delly.journeyjournal.journalUi
+package com.delly.journeyjournal.journalUi.entries
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

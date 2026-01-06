@@ -38,6 +38,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.JourneyViewDestinations
+import com.delly.journeyjournal.journalUi.entries.JournalEntriesNav
+import com.delly.journeyjournal.journalUi.stats.StatsScreenUi
 import com.delly.journeyjournal.theme.Typography
 import com.delly.journeyjournal.viewmodels.JournalViewViewModel
 import com.delly.journeyjournal.viewmodels.JournalViewViewModelFactory
@@ -202,7 +204,10 @@ fun JournalViewScaffoldUi(
                                 }
 
                                 JourneyViewDestinations.STATS -> {
-                                    UnderConstructionScreen()
+                                    StatsScreenUi(
+                                        repository,
+                                        currentJournalId
+                                    )
                                     viewModel.updateTitle(stringResource(id = localR.string.travel_stats))
                                 }
 
