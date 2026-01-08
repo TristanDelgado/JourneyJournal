@@ -39,6 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.enums.JourneyViewDestinations
 import com.delly.journeyjournal.journalUi.entries.JournalEntriesNav
+import com.delly.journeyjournal.journalUi.forecasts.ForecastsScreenUi
 import com.delly.journeyjournal.journalUi.stats.StatsScreenUi
 import com.delly.journeyjournal.theme.Typography
 import com.delly.journeyjournal.viewmodels.JournalViewViewModel
@@ -212,7 +213,10 @@ fun JournalViewScaffoldUi(
                                 }
 
                                 JourneyViewDestinations.FORECASTS -> {
-                                    UnderConstructionScreen()
+                                    ForecastsScreenUi(
+                                        repository = repository,
+                                        journalId = currentJournalId
+                                    )
                                     viewModel.updateTitle(stringResource(id = localR.string.forecasts))
                                 }
                             }

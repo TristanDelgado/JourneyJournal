@@ -3,6 +3,7 @@ package com.delly.journeyjournal.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.delly.journeyjournal.db.JournalRepository
+import com.delly.journeyjournal.journalUi.forecasts.ForecastsScreenViewModel
 import com.delly.journeyjournal.journalUi.stats.StatsScreenViewModel
 
 class CreateJournalViewModelFactory(
@@ -37,6 +38,22 @@ class CreateEntryViewModelFactory(
                 navigateBack,
                 repository,
                 journalId,
+            ) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class ForecastsViewModelFactory(
+    private val repository: JournalRepository,
+    private val journalId: Long,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ForecastsScreenViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ForecastsScreenViewModel(
+                repository,
+                journalId
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import com.delly.journeyjournal.db.JourneyJournalDatabase
 import com.delly.journeyjournal.db.JournalRepository
+import com.delly.journeyjournal.db.JourneyJournalDatabase
 import com.delly.journeyjournal.theme.JourneyJournalTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,14 +16,23 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Initialize database
-        val database = JourneyJournalDatabase.getDatabase(context = this, scope = lifecycleScope)
+        val database = JourneyJournalDatabase.getDatabase(
+            context = this,
+            scope = lifecycleScope
+        )
         val journeyEntityDao = database.journalEntityDao()
         val journeyEntryEntityDao = database.journalEntryEntityDao()
-        val journeyDao = database.journalDao()
+        val journeyDao = database.journalWithEntriesDao()
+        val forecastDao = database.forecastDao()
+        val journalWithEntriesAndForecasts = database.journalWithEntriesAndForecastsDao()
+
+        // Initialize repository
         val repository = JournalRepository(
             journalEntityDao = journeyEntityDao,
             journalEntryEntityDao = journeyEntryEntityDao,
-            journalDao = journeyDao
+            journalWithEntriesDao = journeyDao,
+            forecastDao = forecastDao,
+            journalWithEntriesAndForecastsDao = journalWithEntriesAndForecasts
         )
 
         setContent {
