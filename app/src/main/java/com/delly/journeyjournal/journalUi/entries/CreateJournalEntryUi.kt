@@ -2,12 +2,38 @@ package com.delly.journeyjournal.journalUi.entries
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,12 +58,14 @@ fun CreateJournalEntryUi(
     navigateBack: () -> Unit,
     repository: JournalRepository,
     journalId: Long,
+    entryId: Long? = null,
 ) {
     val viewModel: CreateEntryViewModel = viewModel(
         factory = CreateEntryViewModelFactory(
             navigateBack = navigateBack,
             repository = repository,
             journalId = journalId,
+            entryId = entryId
         )
     )
     val context = LocalContext.current
@@ -51,10 +79,11 @@ fun CreateJournalEntryUi(
     ) {
         // Title
         Text(
-            text = stringResource(id = localR.string.new_entry_title),
+            text = if (entryId == null) stringResource(id = localR.string.new_entry_title) else "Edit Entry",
+            //stringResource( //TODO id = localR.string.edit_entry_title ),
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         // Collecting States
@@ -107,12 +136,14 @@ fun CreateJournalEntryUi(
                         label = stringResource(id = localR.string.day_number),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
-                    Text(
-                        text = "Prev: ${prevDayNumber.value}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
+                    if (entryId == null) {
+                        Text(
+                            text = "Prev: ${prevDayNumber.value}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
+                    }
                 }
 
                 // Right Side: Date Picker
@@ -191,7 +222,7 @@ fun CreateJournalEntryUi(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Slept in a bed?")
-                    Switch(
+                    Checkbox(
                         checked = sleptInBed.value,
                         onCheckedChange = { viewModel.toggleSleptInBed(it) }
                     )
@@ -216,7 +247,12 @@ fun CreateJournalEntryUi(
             // 12. Trail Conditions
             GenericDropdown(
                 label = stringResource(id = localR.string.trail_conditions),
-                options = listOf("Dry/Good", "Muddy", "Snow/Ice", "Rocky/Technical"),
+                options = listOf(
+                    "Dry/Good",
+                    "Muddy",
+                    "Snow/Ice",
+                    "Rocky/Technical"
+                ),
                 selectedOption = trailConditions.value,
                 onOptionSelected = { viewModel.updateTrailConditions(it) }
             )
@@ -224,7 +260,12 @@ fun CreateJournalEntryUi(
             // 13. Weather
             GenericDropdown(
                 label = stringResource(localR.string.weather),
-                options = listOf("Sunny", "Rain", "Snow", "Overcast"),
+                options = listOf(
+                    "Sunny",
+                    "Rain",
+                    "Snow",
+                    "Overcast"
+                ),
                 selectedOption = weather.value,
                 onOptionSelected = { viewModel.updateWeather(it) }
             )
@@ -254,7 +295,12 @@ fun CreateJournalEntryUi(
             // 17. Day Rating
             GenericDropdown(
                 label = "Day Rating",
-                options = listOf("Bad", "Tough", "Good", "Great"),
+                options = listOf(
+                    "Bad",
+                    "Tough",
+                    "Good",
+                    "Great"
+                ),
                 selectedOption = dayRating.value,
                 onOptionSelected = { viewModel.updateDayRating(it) }
             )
@@ -262,7 +308,12 @@ fun CreateJournalEntryUi(
             // 18. Mood Rating
             GenericDropdown(
                 label = "Mood",
-                options = listOf("Low", "Neutral", "Happy", "Energetic"),
+                options = listOf(
+                    "Low",
+                    "Neutral",
+                    "Happy",
+                    "Energetic"
+                ),
                 selectedOption = moodRating.value,
                 onOptionSelected = { viewModel.updateMoodRating(it) }
             )
@@ -285,7 +336,11 @@ fun CreateJournalEntryUi(
                 Button(
                     onClick = {
                         viewModel.saveEntry(onInvalidInput = {
-                            Toast.makeText(context, "Day # and Date are required!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Day # and Date are required!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         })
                     }
                 ) {
@@ -302,7 +357,7 @@ fun CreateJournalEntryUi(
 @Composable
 fun SectionCard(
     title: String,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     OutlinedCard(
         colors = CardDefaults.outlinedCardColors(
@@ -336,13 +391,19 @@ fun LocationSectionCard(
     locationValue: String,
     onLocationChange: (String) -> Unit,
     mileValue: String,
-    onMileChange: (String) -> Unit
+    onMileChange: (String) -> Unit,
 ) {
     SectionCard(title = sectionTitle) {
         CustomTextField(
             value = locationValue,
             onValueChange = onLocationChange,
-            label = stringResource(id = localR.string.start_location).replace("Start", "").replace("End", "").trim()
+            label = stringResource(id = localR.string.start_location).replace(
+                "Start",
+                ""
+            ).replace(
+                "End",
+                ""
+            ).trim()
         )
         Spacer(modifier = Modifier.height(12.dp))
         CustomTextField(
@@ -363,7 +424,7 @@ fun GenericDropdown(
     label: String,
     options: List<String>,
     selectedOption: String,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (String) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -378,10 +439,9 @@ fun GenericDropdown(
             label = { Text(label) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor()
+            modifier = Modifier.menuAnchor()
         )
+
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }

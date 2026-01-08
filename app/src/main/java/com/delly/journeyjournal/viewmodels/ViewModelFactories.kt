@@ -30,6 +30,7 @@ class CreateEntryViewModelFactory(
     private val navigateBack: () -> Unit,
     private val repository: JournalRepository,
     private val journalId: Long,
+    private val entryId: Long? = null
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CreateEntryViewModel::class.java)) {
@@ -38,6 +39,7 @@ class CreateEntryViewModelFactory(
                 navigateBack,
                 repository,
                 journalId,
+                entryId
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

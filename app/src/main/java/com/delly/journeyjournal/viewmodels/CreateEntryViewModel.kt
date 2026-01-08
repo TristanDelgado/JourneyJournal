@@ -15,6 +15,7 @@ class CreateEntryViewModel(
     private val navigateBack: () -> Unit,
     private val repository: JournalRepository,
     private val journalId: Long,
+    private val entryId: Long? = null
 ) : ViewModel() {
 
     // --- Date & Day ---
@@ -29,18 +30,44 @@ class CreateEntryViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val lastEntry = repository.getLastEntryForJournal(journalId)
-
-            if (lastEntry != null) {
-                val nextDay = (lastEntry.dayNumber.toIntOrNull() ?: 0) + 1
-                _dayNumber.value = nextDay.toString()
-                _previousDayNumber.value = lastEntry.dayNumber
-                _startLocation.value = lastEntry.endLocation
-                _startMileMarker.value = lastEntry.endMileMarker
+            if (entryId != null) {
+                // Editing existing entry
+                val entry = repository.getEntryById(entryId)
+                if (entry != null) {
+                    _dayNumber.value = entry.dayNumber
+                    _selectedDate.value = entry.date
+                    _startLocation.value = entry.startLocation
+                    _startMileMarker.value = entry.startMileMarker
+                    _endLocation.value = entry.endLocation
+                    _endMileMarker.value = entry.endMileMarker
+                    _distanceHiked.value = entry.distanceHiked
+                    _elevationStart.value = entry.elevationStart
+                    _elevationEnd.value = entry.elevationEnd
+                    _netElevationChange.value = entry.netElevationChange
+                    _sleptInBed.value = entry.sleptInBed
+                    _tookShower.value = entry.tookShower
+                    _trailConditions.value = entry.trailConditions
+                    _weather.value = entry.weather
+                    _wildlifeSightings.value = entry.wildlifeSightings
+                    _resupplyNotes.value = entry.resupplyNotes
+                    _dayRating.value = entry.dayRating
+                    _moodRating.value = entry.moodRating
+                    _notes.value = entry.notes
+                }
             } else {
-                // Default for the first entry
-                _dayNumber.value = "1"
-                _previousDayNumber.value = "0"
+                // Creating new entry
+                val lastEntry = repository.getLastEntryForJournal(journalId)
+                if (lastEntry != null) {
+                    val nextDay = (lastEntry.dayNumber.toIntOrNull() ?: 0) + 1
+                    _dayNumber.value = nextDay.toString()
+                    _previousDayNumber.value = lastEntry.dayNumber
+                    _startLocation.value = lastEntry.endLocation
+                    _startMileMarker.value = lastEntry.endMileMarker
+                } else {
+                    // Default for the first entry
+                    _dayNumber.value = "1"
+                    _previousDayNumber.value = "0"
+                }
             }
         }
     }
@@ -63,8 +90,6 @@ class CreateEntryViewModel(
     val distanceHiked: StateFlow<String> = _distanceHiked
 
     // --- Elevation ---
-    // Assuming "Total Ascent" fields meant Start/End Elevation to calculate net change
-    // based on your request to "subtract" them.
     private val _elevationStart = MutableStateFlow("")
     val elevationStart: StateFlow<String> = _elevationStart
 
@@ -142,11 +167,7 @@ class CreateEntryViewModel(
         val end = _endMileMarker.value.toDoubleOrNull()
         if (start != null && end != null) {
             val dist = abs(start - end)
-            // Round to 1 decimal place
-            _distanceHiked.value = String.format(
-                "%.1f",
-                dist
-            )
+            _distanceHiked.value = String.format("%.1f", dist)
         } else {
             _distanceHiked.value = ""
         }
@@ -224,13 +245,13 @@ class CreateEntryViewModel(
     // --- Button Click Handlers ---
     fun saveEntry(onInvalidInput: () -> Unit) {
         viewModelScope.launch {
-            // 1. Validation Logic
             if (_dayNumber.value.isBlank() || _selectedDate.value == null) {
-                onInvalidInput() // Trigger UI callback for error
+                onInvalidInput()
                 return@launch
             }
 
-            val newEntry = JournalEntryEntity(
+            val entry = JournalEntryEntity(
+                id = entryId ?: 0,
                 ownerId = journalId,
                 date = _selectedDate.value ?: System.currentTimeMillis(),
                 dayNumber = _dayNumber.value,
@@ -252,8 +273,13 @@ class CreateEntryViewModel(
                 dayRating = _dayRating.value,
                 moodRating = _moodRating.value
             )
+
             try {
-                repository.insertJournalEntry(entry = newEntry)
+                if (entryId == null) {
+                    repository.insertJournalEntry(entry = entry)
+                } else {
+                    repository.updateEntry(entry = entry)
+                }
                 navigateBack()
             } catch (e: Exception) {
                 // Handle error

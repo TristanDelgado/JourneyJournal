@@ -3,10 +3,12 @@ package com.delly.journeyjournal.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.delly.journeyjournal.db.JournalRepository
+import com.delly.journeyjournal.db.entities.JournalEntryEntity
 import com.delly.journeyjournal.db.entities.JournalWithEntries
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 /**
  * Journal entries view model
@@ -35,4 +37,15 @@ class JournalEntriesViewModel(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = null
         )
+
+    /**
+     * Deletes a specific entry from the database.
+     *
+     * @param entry The [JournalEntryEntity] to delete.
+     */
+    fun deleteEntry(entry: JournalEntryEntity) {
+        viewModelScope.launch {
+            repository.deleteEntry(entry = entry)
+        }
+    }
 }

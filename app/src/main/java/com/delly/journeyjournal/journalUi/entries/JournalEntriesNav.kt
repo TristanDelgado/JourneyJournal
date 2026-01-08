@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.delly.journeyjournal.db.JournalRepository
 import kotlinx.serialization.Serializable
 
@@ -11,7 +12,7 @@ import kotlinx.serialization.Serializable
 object JourneyEntriesDestination
 
 @Serializable
-object CreateJourneyEntryDestination
+data class CreateJourneyEntryDestination(val entryId: Long? = null)
 
 /**
  * Used to navigate viewing, creating and editing journal entries.
@@ -33,18 +34,20 @@ fun JournalEntriesNav(
         // JourneyEntriesUi is the initial load in screen where all entries are displayed
         composable<JourneyEntriesDestination> {
             JourneyEntriesUi(
-                navigateToCreateEntry = { navController.navigate(CreateJourneyEntryDestination) },
+                navigateToCreateEntry = { entryId -> navController.navigate(CreateJourneyEntryDestination(entryId = entryId)) },
                 repository = repository,
                 journeyId = journalId
             )
         }
 
         // CreateJournalEntryUi is where new entries are created
-        composable<CreateJourneyEntryDestination> {
+        composable<CreateJourneyEntryDestination> { backStackEntry ->
+            val entry: CreateJourneyEntryDestination = backStackEntry.toRoute()
             CreateJournalEntryUi(
                 navigateBack = { navController.popBackStack() },
                 repository = repository,
                 journalId = journalId,
+                entryId = entry.entryId
             )
         }
     }

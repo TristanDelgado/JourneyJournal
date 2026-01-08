@@ -9,15 +9,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,7 +47,7 @@ import com.delly.journeyjournal.R as localR
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JourneyEntriesUi(
-    navigateToCreateEntry: () -> Unit,
+    navigateToCreateEntry: (Long?) -> Unit,
     repository: JournalRepository,
     journeyId: Long,
 ) {
@@ -56,12 +61,13 @@ fun JourneyEntriesUi(
 
     val journeyWithEntries by viewModel.journalWithEntries.collectAsState()
     val distanceUnit = journeyWithEntries?.journal?.distanceUnit ?: DistanceUnit.MILES
+    var entryToDelete by remember { mutableStateOf<JournalEntryEntity?>(null) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateToCreateEntry() }
+                onClick = { navigateToCreateEntry(null) }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -100,12 +106,11 @@ fun JourneyEntriesUi(
             if (!entries.isNullOrEmpty()) {
                 // Show actual entries (Reversed to show newest first)
                 items(items = entries.reversed()) { entry ->
-                    // TODO: Update onEditClick and onDeleteClick implementation when features are ready
                     JournalEntryOverviewBox(
                         entry = entry,
                         distanceUnit = distanceUnit,
-                        onEditClick = { },
-                        onDeleteClick = { },
+                        onEditClick = { navigateToCreateEntry(entry.id) },
+                        onDeleteClick = { entryToDelete = it },
                     )
                 }
             } else {
@@ -156,5 +161,30 @@ fun JourneyEntriesUi(
                 }
             }
         }
+    }
+
+    if (entryToDelete != null) {
+        AlertDialog(
+            onDismissRequest = { entryToDelete = null },
+            title = { Text(text = "Delete Entry") },
+            text = { Text("Are you sure you want to delete this entry? This action cannot be undone.") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        entryToDelete?.let { viewModel.deleteEntry(it) }
+                        entryToDelete = null
+                    }
+                ) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { entryToDelete = null }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
