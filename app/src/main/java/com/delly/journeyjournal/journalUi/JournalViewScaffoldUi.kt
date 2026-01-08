@@ -1,7 +1,6 @@
 package com.delly.journeyjournal.journalUi
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -178,47 +177,44 @@ fun JournalViewScaffoldUi(
                 }
             }
         ) { paddingValues ->
-            Box(modifier = Modifier.padding(dimensionResource(localR.dimen.padding_normal))) {
+            NavHost(
+                navController = localNavController,
+                startDestination = JourneyViewDestinations.ENTRIES.route,
+                modifier = Modifier.padding(paddingValues)
+            ) {
+                JourneyViewDestinations.entries.forEach { destination ->
+                    composable(destination.route) {
+                        when (destination) {
+                            JourneyViewDestinations.ENTRIES -> {
+                                JournalEntriesNav(
+                                    repository,
+                                    currentJournalId
+                                )
+                                viewModel.updateTitle(
+                                    currentJournal?.journalName?.ifBlank { stringResource(id = localR.string.untitled_journal) }
+                                        ?: stringResource(id = localR.string.loading)
+                                )
+                            }
 
-                NavHost(
-                    navController = localNavController,
-                    startDestination = JourneyViewDestinations.ENTRIES.route,
-                    modifier = Modifier.padding(paddingValues)
-                ) {
-                    JourneyViewDestinations.entries.forEach { destination ->
-                        composable(destination.route) {
-                            when (destination) {
-                                JourneyViewDestinations.ENTRIES -> {
-                                    JournalEntriesNav(
-                                        repository,
-                                        currentJournalId
-                                    )
-                                    viewModel.updateTitle(
-                                        currentJournal?.journalName?.ifBlank { stringResource(id = localR.string.untitled_journal) }
-                                            ?: stringResource(id = localR.string.loading)
-                                    )
-                                }
+                            JourneyViewDestinations.MAP -> {
+                                UnderConstructionScreen()
+                                viewModel.updateTitle(stringResource(id = localR.string.map))
+                            }
 
-                                JourneyViewDestinations.MAP -> {
-                                    UnderConstructionScreen()
-                                    viewModel.updateTitle(stringResource(id = localR.string.map))
-                                }
+                            JourneyViewDestinations.STATS -> {
+                                StatsScreenUi(
+                                    repository,
+                                    currentJournalId
+                                )
+                                viewModel.updateTitle(stringResource(id = localR.string.travel_stats))
+                            }
 
-                                JourneyViewDestinations.STATS -> {
-                                    StatsScreenUi(
-                                        repository,
-                                        currentJournalId
-                                    )
-                                    viewModel.updateTitle(stringResource(id = localR.string.travel_stats))
-                                }
-
-                                JourneyViewDestinations.FORECASTS -> {
-                                    ForecastsScreenUi(
-                                        repository = repository,
-                                        journalId = currentJournalId
-                                    )
-                                    viewModel.updateTitle(stringResource(id = localR.string.forecasts))
-                                }
+                            JourneyViewDestinations.FORECASTS -> {
+                                ForecastsScreenUi(
+                                    repository = repository,
+                                    journalId = currentJournalId
+                                )
+                                viewModel.updateTitle(stringResource(id = localR.string.forecasts))
                             }
                         }
                     }
@@ -227,59 +223,3 @@ fun JournalViewScaffoldUi(
         }
     }
 }
-
-// TODO: Make this preview work
-//@Composable
-//@Preview(showBackground = true)
-//fun JourneyViewUiPreview() {
-//    val journalEntity = JournalEntity(
-//        id = 1,
-//        journalName = "Appalachian Trail 2025",
-//        journeymanName = "Hiker Joe",
-//        courseName = "Appalachian Trail",
-//        courseRegion = "East Coast",
-//        startDate = 1704067200000L, // Jan 1 2024
-//        transportationMethod = TransportationMethods.ON_FOOT,
-//        description = "A long walk."
-//    )
-//
-//    val entries = listOf(
-//        JournalEntryEntity(
-//            ownerId = 1,
-//            date = 1704153600000L,
-//            dayNumber = "1",
-//            startLocation = "Springer",
-//            endLocation = "Shelter",
-//            distanceHiked = "8.5",
-//            trailConditions = "", wildlifeSightings = "", resupplyNotes = "", notes = "",
-//            startMileMarker = "", endMileMarker = "", elevationStart = "", elevationEnd = "",
-//            netElevationChange = "", sleptInBed = false, tookShower = false,
-//            weather = "", dayRating = "", moodRating = ""
-//        ),
-//        JournalEntryEntity(
-//            ownerId = 1,
-//            date = 1704240000000L,
-//            dayNumber = "2",
-//            startLocation = "Shelter",
-//            endLocation = "Town",
-//            distanceHiked = "12.2",
-//            trailConditions = "", wildlifeSightings = "", resupplyNotes = "", notes = "",
-//            startMileMarker = "", endMileMarker = "", elevationStart = "", elevationEnd = "",
-//            netElevationChange = "", sleptInBed = false, tookShower = false,
-//            weather = "", dayRating = "", moodRating = ""
-//        )
-//    )
-//
-//    val journalWithEntries = JournalWithEntries(
-//        journal = journalEntity,
-//        entries = entries
-//    )
-//
-//    JourneyJournalTheme {
-//        JournalViewScaffoldUi(
-//            navigateHome = { },
-//            repository = journalWithEntries,
-//            currentJournalId = 0
-//        )
-//    }
-//}

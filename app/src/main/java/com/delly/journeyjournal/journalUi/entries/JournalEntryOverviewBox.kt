@@ -37,11 +37,18 @@ import com.delly.journeyjournal.theme.JourneyJournalTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import com.delly.journeyjournal.R as localR
 
 /**
  * Journey entry overview box used to see the general overview of an entry in a journal.
- * Updated to match the styling of JournalOverviewBox.
+ * Updated to match the styling of JournalOverviewBox and includes Mile Marker display.
+ *
+ * @param entry The [JournalEntryEntity] containing the data to display.
+ * @param distanceUnit The user's preferred [DistanceUnit] (Miles/Kilometers).
+ * @param onEditClick Callback when the edit button is clicked, passing the entry ID.
+ * @param onDeleteClick Callback when the delete button is clicked, passing the entry entity.
+ * @param modifier Modifier for styling the layout.
  */
 @Composable
 fun JournalEntryOverviewBox(
@@ -55,8 +62,9 @@ fun JournalEntryOverviewBox(
     val formattedDate = remember(entry.date) {
         val sdf = SimpleDateFormat(
             "MMM dd, yyyy",
-            Locale.getDefault()
+            Locale.US
         )
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
         sdf.format(Date(entry.date))
     }
 
@@ -75,12 +83,12 @@ fun JournalEntryOverviewBox(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // --- Header Row: Title and Action Buttons ---
+            // --- Header Row: Title, Locations, Markers, and Action Buttons ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top
             ) {
-                // Left Side: Day Number and Locations
+                // Left Side: Day Number, Locations, and Mile Markers
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(
@@ -97,6 +105,29 @@ fun JournalEntryOverviewBox(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.secondary
                     )
+
+                    // Only display if at least one marker is present
+                    if (entry.startMileMarker.isNotBlank() || entry.endMileMarker.isNotBlank()) {
+                        Text(
+                            text = stringResource(
+                                id = if (distanceUnit == DistanceUnit.MILES) {
+                                    localR.string.mile_format
+                                } else {
+                                    localR.string.km_var_format
+                                },
+                                entry.startMileMarker
+                            ) + " ➔ " + stringResource(
+                                id = if (distanceUnit == DistanceUnit.MILES) {
+                                    localR.string.mile_format
+                                } else {
+                                    localR.string.km_var_format
+                                },
+                                entry.endMileMarker
+                            ),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                    }
                 }
 
                 // Right Side: Action Buttons (Edit, Delete)
@@ -128,9 +159,9 @@ fun JournalEntryOverviewBox(
                         label = stringResource(id = localR.string.distance_label),
                         value = stringResource(
                             id = if (distanceUnit == DistanceUnit.MILES) {
-                                localR.string.miles_format
+                                localR.string.mi_format
                             } else {
-                                localR.string.kilometers_format
+                                localR.string.var_km_format
                             },
                             entry.distanceHiked
                         )
@@ -140,7 +171,7 @@ fun JournalEntryOverviewBox(
                     if (entry.netElevationChange.isNotBlank()) {
                         Spacer(modifier = Modifier.width(24.dp)) // Space between Distance and Elevation
                         StatBlock(
-                            label = stringResource(id = localR.string.elevation_label), // Needs "Elevation" or "Net Elev."
+                            label = stringResource(id = localR.string.elevation_label),
                             value = entry.netElevationChange
                         )
                     }
@@ -259,6 +290,9 @@ fun JournalEntryOverviewBox(
 
 // --- Helper Composables ---
 
+/**
+ * A standard icon button for actions (Edit, Delete).
+ */
 @Composable
 private fun ActionIcon(
     icon: ImageVector,
@@ -278,6 +312,9 @@ private fun ActionIcon(
     }
 }
 
+/**
+ * A styled badge for boolean amenities (Bed, Shower).
+ */
 @Composable
 private fun AmenityBadge(
     icon: ImageVector,
@@ -310,6 +347,9 @@ private fun AmenityBadge(
     }
 }
 
+/**
+ * A standard block for displaying a label and a value (e.g., Distance: 12.0).
+ */
 @Composable
 private fun StatBlock(
     label: String,
@@ -330,6 +370,9 @@ private fun StatBlock(
     }
 }
 
+/**
+ * A block for displaying longer text details (Notes, Conditions).
+ */
 @Composable
 private fun DetailBlock(
     label: String,
@@ -365,8 +408,8 @@ fun JournalEntryOverviewBoxPreview() {
         wildlifeSightings = "Saw a black bear cub!",
         resupplyNotes = "",
         notes = "Felt strong today, but knees hurt on the descent.",
-        startMileMarker = "",
-        endMileMarker = "",
+        startMileMarker = "42.1",
+        endMileMarker = "54.5",
         elevationStart = "",
         elevationEnd = "",
         netElevationChange = "+2400 ft", // Added for preview

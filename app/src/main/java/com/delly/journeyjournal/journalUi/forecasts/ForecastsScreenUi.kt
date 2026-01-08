@@ -3,6 +3,7 @@ package com.delly.journeyjournal.journalUi.forecasts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -76,6 +77,7 @@ fun ForecastsScreenUi(
     var forecastToDelete by remember { mutableStateOf<Forecast?>(null) }
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -101,8 +103,11 @@ fun ForecastsScreenUi(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues)
-                //.padding(16.dp),
+                    .padding(
+                        top = paddingValues.calculateTopPadding(),
+                        start = 16.dp,
+                        end = 16.dp
+                    ),
             ) {
                 ForecastHeader(
                     lastMileMarker = uiState.lastMileMarker,
@@ -110,7 +115,10 @@ fun ForecastsScreenUi(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(
+                        bottom = paddingValues.calculateBottomPadding() + 84.dp
+                    )
                 ) {
                     items(uiState.forecasts) { forecast ->
                         ForecastBox(

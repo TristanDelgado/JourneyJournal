@@ -1,9 +1,11 @@
 package com.delly.journeyjournal.genericUi
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -15,9 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import com.delly.journeyjournal.R as localR
 
 /**
@@ -26,12 +30,6 @@ import com.delly.journeyjournal.R as localR
  * This component manages its own dialog visibility state and provides a formatted
  * button label. It can be initialized with an existing date.
  *
- * @param selectedDate The currently selected date in milliseconds since the epoch.
- *                     If null, a placeholder text will be displayed on the button.
- * @param onDateSelected The callback that is triggered with the new date in
- *                       milliseconds when the user confirms their selection.
- * @param modifier The [Modifier] to be applied to the button.
- * @param placeholderText The text to display on the button when [selectedDate] is null.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +37,7 @@ fun DatePickerButton(
     selectedDate: Long?,
     onDateSelected: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    placeholderText: String = stringResource(id = localR.string.start_date)
+    placeholderText: String = stringResource(id = localR.string.start_date),
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
 
@@ -58,8 +56,15 @@ fun DatePickerButton(
 
     // This function formats the timestamp for the button's text.
     val dateFormat = stringResource(id = localR.string.date_format)
+
+    // Helper to format the date in UTC to match the Picker's output
     fun formatDate(timestamp: Long): String {
-        return SimpleDateFormat(dateFormat, Locale.US).format(Date(timestamp))
+        val sdf = SimpleDateFormat(
+            dateFormat,
+            Locale.US
+        )
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        return sdf.format(Date(timestamp))
     }
 
     // The button that the user clicks to open the dialog.
@@ -93,7 +98,25 @@ fun DatePickerButton(
                 }
             }
         ) {
-            DatePicker(state = datePickerState)
+            DatePicker(
+                state = datePickerState,
+                headline = {
+                    val headerText = datePickerState.selectedDateMillis?.let {
+                        formatDate(it)
+                    } ?: placeholderText
+
+                    Text(
+                        text = headerText,
+                        // Using 'headlineMedium' since the default was too large
+                        style = MaterialTheme.typography.headlineMedium,
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 12.dp,
+                            bottom = 12.dp
+                        )
+                    )
+                }
+            )
         }
     }
 }

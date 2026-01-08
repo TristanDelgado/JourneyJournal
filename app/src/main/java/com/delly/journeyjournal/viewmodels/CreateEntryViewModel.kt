@@ -29,13 +29,14 @@ class CreateEntryViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val lastEntry = repository.getLastEntryForJournal(journalId)?.dayNumber
+            val lastEntry = repository.getLastEntryForJournal(journalId)
 
-            // Switch back to the Main thread implicitly by updating the StateFlow
             if (lastEntry != null) {
-                val nextDay = (lastEntry.toIntOrNull() ?: 0) + 1
+                val nextDay = (lastEntry.dayNumber.toIntOrNull() ?: 0) + 1
                 _dayNumber.value = nextDay.toString()
-                _previousDayNumber.value = lastEntry
+                _previousDayNumber.value = lastEntry.dayNumber
+                _startLocation.value = lastEntry.endLocation
+                _startMileMarker.value = lastEntry.endMileMarker
             } else {
                 // Default for the first entry
                 _dayNumber.value = "1"

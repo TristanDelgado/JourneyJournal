@@ -1,6 +1,5 @@
 package com.delly.journeyjournal.journalUi
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -10,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.filled.House
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -52,34 +52,19 @@ fun SideMenuUi(
                 modifier = Modifier.padding(16.dp),
                 style = MaterialTheme.typography.titleLarge
             )
-            HorizontalDivider()
-
-            Text(
-                stringResource(id = localR.string.home_menu),
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clickable {
-                        navigateHome()
-                    },
-                style = MaterialTheme.typography.titleMedium
-            )
 
             HorizontalDivider()
 
-            Text(
-                stringResource(id = localR.string.section_1),
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.titleMedium
-            )
             NavigationDrawerItem(
-                label = { Text(stringResource(id = localR.string.item_1)) },
+                label = { Text(stringResource(id = localR.string.navigate_home)) },
                 selected = false,
-                onClick = { /* Handle click */ }
-            )
-            NavigationDrawerItem(
-                label = { Text(stringResource(id = localR.string.item_2)) },
-                selected = false,
-                onClick = { /* Handle click */ }
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.House,
+                        contentDescription = null
+                    )
+                },
+                onClick = { navigateHome() }
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))

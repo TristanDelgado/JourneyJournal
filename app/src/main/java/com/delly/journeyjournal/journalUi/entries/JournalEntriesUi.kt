@@ -1,28 +1,27 @@
 package com.delly.journeyjournal.journalUi.entries
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.delly.journeyjournal.db.JournalRepository
@@ -35,7 +34,6 @@ import com.delly.journeyjournal.R as localR
 
 /**
  * This composable displays a list of journal entries.
- * It also includes a button to create a new entry.
  *
  * @param navigateToCreateEntry A lambda to navigate to the create entry screen.
  * @param repository The repository to fetch data.
@@ -56,51 +54,53 @@ fun JourneyEntriesUi(
         )
     )
 
-    // Start of UI
-    Column(
-        modifier = Modifier
-            .padding(dimensionResource(id = localR.dimen.screen_edge_padding))
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = dimensionResource(id = localR.dimen.padding_small),
-                    bottom = dimensionResource(id = localR.dimen.padding_small)
-                ),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Button to create a new entry
-            Button(
-                onClick = { navigateToCreateEntry() },
-                modifier = Modifier
-                    .height(dimensionResource(id = localR.dimen.button_height_mini))
-                    .width(dimensionResource(id = localR.dimen.button_height_mini)),
-                contentPadding = PaddingValues(dimensionResource(id = localR.dimen.button_internal_padding_zero))
+    val journeyWithEntries by viewModel.journalWithEntries.collectAsState()
+    val distanceUnit = journeyWithEntries?.journal?.distanceUnit ?: DistanceUnit.MILES
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navigateToCreateEntry() }
             ) {
                 Icon(
-                    modifier = Modifier.size(dimensionResource(id = localR.dimen.button_height_mini)),
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(id = localR.string.add_journal)
                 )
             }
-            Text(
-                stringResource(id = localR.string.entries),
-                style = Typography.titleMedium,
-                modifier = Modifier.padding(start = 8.dp)
-            )
         }
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(
+                top = paddingValues.calculateTopPadding(), // Top Bar height + optional extra space
+                bottom = paddingValues.calculateBottomPadding() + 80.dp, // Bottom Bar height + Space for FAB
+                start = 16.dp,
+                end = 16.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // --- 1. Header Section (Scrollable) ---
+            item {
+                Text(
+                    text = stringResource(id = localR.string.entries),
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
 
-        val journeyWithEntries = viewModel.journalWithEntries.collectAsState()
-        val distanceUnit = journeyWithEntries.value?.journal?.distanceUnit ?: DistanceUnit.MILES
+            // --- 2. List Content ---
+            val entries = journeyWithEntries?.entries
 
-        // Display a list of entries
-        LazyColumn {
-            // Check if we have valid data AND the list is not empty
-            if (!journeyWithEntries.value?.entries.isNullOrEmpty()) {
-                items(items = journeyWithEntries.value!!.entries.reversed()) { entry ->
-                    // TODO: Update onEditClick and onDeleteClick
+            if (!entries.isNullOrEmpty()) {
+                // Show actual entries (Reversed to show newest first)
+                items(items = entries.reversed()) { entry ->
+                    // TODO: Update onEditClick and onDeleteClick implementation when features are ready
                     JournalEntryOverviewBox(
                         entry = entry,
                         distanceUnit = distanceUnit,
@@ -109,14 +109,20 @@ fun JourneyEntriesUi(
                     )
                 }
             } else {
-                // Fallback: Show example entry if data is loading (null) or empty
+                // --- 3. Fallback / Example Content ---
                 item {
                     Text(
-                        modifier = Modifier.padding(horizontal = 8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
                         text = stringResource(id = localR.string.exampleEntryBelow),
                         style = Typography.bodyLarge,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.secondary
                     )
+                }
 
+                item {
                     val exampleEntry = JournalEntryEntity(
                         id = 0,
                         ownerId = 0,
@@ -140,7 +146,7 @@ fun JourneyEntriesUi(
                         dayRating = "5",
                         moodRating = "5"
                     )
-                    // TODO: Update onEditClick and onDeleteClick
+
                     JournalEntryOverviewBox(
                         entry = exampleEntry,
                         distanceUnit = distanceUnit,
