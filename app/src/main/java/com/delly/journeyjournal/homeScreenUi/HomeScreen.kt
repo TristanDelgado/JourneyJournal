@@ -4,24 +4,25 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,20 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.delly.journeyjournal.db.JournalRepository
 import com.delly.journeyjournal.db.entities.JournalWithEntries
+import com.delly.journeyjournal.enums.HomeScreenDestinations
 import com.delly.journeyjournal.theme.Typography
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import com.delly.journeyjournal.R as localR
-
-@Serializable
-object ActiveJournalsRoute
-
-@Serializable
-object CompletedJournalsRoute
 
 /**
  * The main screen of the application. It displays a title, a button to create a new journal,
@@ -78,40 +74,33 @@ fun HomeScreen(
 
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
     var journalToDelete by remember { mutableStateOf<JournalWithEntries?>(null) }
-    val tabs = listOf(
-        "Active",
-        "Complete"
-    )
 
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
         bottomBar = {
-            TabRow(selectedTabIndex = selectedTabIndex) {
-                tabs.forEachIndexed { index, title ->
-                    Tab(
-                        selected = selectedTabIndex == index,
+            NavigationBar {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                HomeScreenDestinations.entries.forEach { destination ->
+                    NavigationBarItem(
+                        selected = currentDestination?.route == destination.route,
                         onClick = {
-                            selectedTabIndex = index
-                            if (index == 0) {
-                                navController.navigate(ActiveJournalsRoute) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
+                            navController.navigate(destination.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
                                 }
-                            } else {
-                                navController.navigate(CompletedJournalsRoute) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
                         },
-                        text = { Text(title) }
+                        icon = {
+                            Icon(
+                                destination.icon,
+                                contentDescription = stringResource(id = destination.contentDescriptionResId)
+                            )
+                        },
+                        label = { Text(stringResource(id = destination.labelResId)) }
                     )
                 }
             }
@@ -129,8 +118,8 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = paddingValues.calculateTopPadding(), // Top Bar height + optional extra space
-                    bottom = paddingValues.calculateBottomPadding() + 80.dp, // Bottom Bar height + Space for FAB
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding(),
                     start = 16.dp,
                     end = 16.dp
                 )
@@ -150,10 +139,10 @@ fun HomeScreen(
             // Controls whether complete or incomplete journals are shown
             NavHost(
                 navController = navController,
-                startDestination = ActiveJournalsRoute,
+                startDestination = HomeScreenDestinations.ACTIVE.route,
                 modifier = Modifier.weight(1f)
             ) {
-                composable<ActiveJournalsRoute> {
+                composable(HomeScreenDestinations.ACTIVE.route) {
                     JournalsList(
                         journals = activeJournals,
                         navigateToJournal = navigateToJournal,
@@ -192,7 +181,7 @@ fun HomeScreen(
                         }
                     )
                 }
-                composable<CompletedJournalsRoute> {
+                composable(HomeScreenDestinations.COMPLETED.route) {
                     JournalsList(
                         journals = completedJournals,
                         navigateToJournal = navigateToJournal,
@@ -211,7 +200,7 @@ fun HomeScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Complete Journals:",
+                                    text = stringResource(id = localR.string.complete_journeys),
                                     style = Typography.titleMedium,
                                     modifier = Modifier.padding(start = dimensionResource(id = localR.dimen.padding_small))
                                 )
@@ -232,7 +221,6 @@ fun HomeScreen(
                     )
                 }
             }
-
         }
     }
 

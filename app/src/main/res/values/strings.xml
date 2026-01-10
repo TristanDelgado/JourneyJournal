@@ -11,6 +11,10 @@
 
     <!-- Used in HomeScreen.kt -->
     <string name="active_journals">Active Journals:</string>
+    <string name="active_journals_nav">Active</string>
+    <string name="completed_journals_nav">Completed</string>
+    <string name="active_journals_content_description">View active journals</string>
+    <string name="completed_journals_content_description">View completed journals</string>
     <string name="complete_journeys">Complete Journeys:</string>
     <string name="home_title">Journey Journal</string>
     <string name="no_active_journals">No Active Journals</string>
