@@ -26,17 +26,30 @@ import com.delly.journeyjournal.theme.JourneyJournalTheme
 import com.delly.journeyjournal.R as localR
 
 /**
- * Side menu ui used for navigation inside of a journal.
+ * A composable that renders the side navigation menu (drawer) for a specific journal.
  *
- * @param title The title of the journal
- * @param navigateHome Navigates the user to the home screen to view all journals
- * @receiver
+ * This drawer provides navigation options to return to the home screen, adjust journal settings,
+ * or toggle the journal's completion status. It adapts its content based on whether the
+ * journal is currently marked as complete or active.
+ *
+ * @param title The title of the current journal, displayed at the top of the menu.
+ * @param isComplete A boolean flag indicating if the journal is currently marked as complete.
+ * This determines whether the "Mark as Complete" or "Mark as Incomplete" option is shown.
+ * @param navigateHome Callback triggered when the "Home" navigation item is clicked.
+ * Typically navigates the user back to the main journal list.
+ * @param markCompleteAndNavHome Callback specific to the "Mark as Complete" action.
+ * This is usually intended to mark the journal as done and immediately
+ * navigate the user back to the home screen.
+ * @param invertCompleteStatus Callback specific to the "Mark as Incomplete" action.
+ * This toggles the status back to active without necessarily navigating away.
+ * @param closeDrawer Callback to close the navigation drawer, typically invoked after an action is selected.
  */
 @Composable
 fun SideMenuUi(
     title: String,
     isComplete: Boolean,
     navigateHome: () -> Unit,
+    markCompleteAndNavHome: () -> Unit,
     invertCompleteStatus: () -> Unit,
     closeDrawer: () -> Unit,
 ) {
@@ -47,6 +60,7 @@ fun SideMenuUi(
                 .verticalScroll(rememberScrollState())
         ) {
             Spacer(Modifier.height(12.dp))
+            // Display the Journal Title
             Text(
                 text = title,
                 modifier = Modifier.padding(16.dp),
@@ -55,6 +69,7 @@ fun SideMenuUi(
 
             HorizontalDivider()
 
+            // Option: Navigate Home
             NavigationDrawerItem(
                 label = { Text(stringResource(id = localR.string.navigate_home)) },
                 selected = false,
@@ -69,7 +84,10 @@ fun SideMenuUi(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-            if (isComplete == false) {
+            // Option: Toggle Complete Status
+            // If incomplete, show "Mark as Complete" and navigate home.
+            // If complete, show "Mark as Incomplete" and stay on page.
+            if (!isComplete) {
                 NavigationDrawerItem(
                     label = { Text(stringResource(id = localR.string.mark_as_complete)) },
                     selected = false,
@@ -80,8 +98,7 @@ fun SideMenuUi(
                         )
                     },
                     onClick = {
-                        navigateHome()
-                        invertCompleteStatus()
+                        markCompleteAndNavHome()
                     }
                 )
             } else {
@@ -103,6 +120,7 @@ fun SideMenuUi(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
+            // Option: Settings (Placeholder)
             NavigationDrawerItem(
                 label = { Text(stringResource(id = localR.string.settings)) },
                 selected = false,
@@ -112,9 +130,11 @@ fun SideMenuUi(
                         contentDescription = null
                     )
                 },
-                badge = { Text(stringResource(id = localR.string.placeholder_badge)) }, // Placeholder
+                badge = { Text(stringResource(id = localR.string.placeholder_badge)) },
                 onClick = { /* Handle click */ }
             )
+
+            // Option: Help & Feedback (Placeholder)
             NavigationDrawerItem(
                 label = { Text(stringResource(id = localR.string.help_and_feedback)) },
                 selected = false,
@@ -132,7 +152,8 @@ fun SideMenuUi(
 }
 
 /**
- * Side menu preview
+ * Preview for the [SideMenuUi] composable.
+ * Displays the menu in a "Preview Journey" context with the journal marked as active.
  */
 @Preview
 @Composable
@@ -142,6 +163,7 @@ fun SideMenuPreview() {
             title = "Preview Journey",
             isComplete = false,
             navigateHome = { },
+            markCompleteAndNavHome = { },
             invertCompleteStatus = { },
             closeDrawer = { },
         )

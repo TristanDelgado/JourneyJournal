@@ -116,7 +116,14 @@ fun StatsScreenUi(
             }
             item {
                 StatCard(
-                    "Highest Day",
+                    "Avg Week (No Zeros)",
+                    uiState.avgMilesPerWeek,
+                    Icons.AutoMirrored.Filled.DirectionsWalk
+                )
+            }
+            item {
+                StatCard(
+                    "Personal Best (PB)",
                     uiState.highestMileageDay,
                     Icons.Default.Terrain
                 )
@@ -141,21 +148,21 @@ fun StatsScreenUi(
             }
             item {
                 StatCard(
-                    "Biggest Climb",
+                    "Max Climb",
                     uiState.biggestAscentDay,
                     Icons.Default.Landscape
                 )
             }
             item {
                 StatCard(
-                    "Biggest Descent",
+                    "Max Descent",
                     uiState.biggestDescentDay,
                     Icons.Default.Landscape
                 )
             }
 
             // --- Lifestyle / Zeros ---
-            item(span = { GridItemSpan(maxLineSpan) }) { SectionHeader("Lifestyle") }
+            item(span = { GridItemSpan(maxLineSpan) }) { SectionHeader("Rest & Recovery") }
 
             item {
                 StatCard(
@@ -173,7 +180,7 @@ fun StatsScreenUi(
             }
             item {
                 StatCard(
-                    "Nights on Ground",
+                    "Nights Afield",
                     uiState.daysOnGround.toString(),
                     Icons.Default.Terrain
                 )

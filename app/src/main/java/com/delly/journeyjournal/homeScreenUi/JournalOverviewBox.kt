@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -117,7 +118,8 @@ fun JournalOverviewBox(
                     ActionIcon(
                         icon = Icons.Default.Delete,
                         contentDescription = stringResource(id = localR.string.delete_journal),
-                        onClick = { onDeleteClick(journalWithEntries) }
+                        onClick = { onDeleteClick(journalWithEntries) },
+                        tint = MaterialTheme.colorScheme.error
                     )
                     ActionIcon(
                         icon = Icons.Default.Settings,
@@ -142,6 +144,7 @@ fun JournalOverviewBox(
                         stringResource(id = localR.string.total_kilometers)
                     },
                     value = String.format(
+                        Locale.getDefault(),
                         "%.1f",
                         totalDistance
                     )
@@ -163,6 +166,7 @@ private fun ActionIcon(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
+    tint: Color = MaterialTheme.colorScheme.onSurfaceVariant
 ) {
     IconButton(
         onClick = onClick,
@@ -172,7 +176,7 @@ private fun ActionIcon(
             imageVector = icon,
             contentDescription = contentDescription,
             modifier = Modifier.size(20.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            tint = tint
         )
     }
 }

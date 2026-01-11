@@ -23,7 +23,10 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
@@ -47,12 +50,7 @@ import com.delly.journeyjournal.R as localR
 
 /**
  * This composable is the main UI for viewing a journey. It sets up a `ModalNavigationDrawer` with a
- * `Scaffold`. The `Scaffold` has a top bar, a bottom navigation bar, and the main content area which
- * is a `NavHost`.
- *
- * @param navigateHome A lambda to navigate back to the home screen.
- * @param repository The repository to get journal data from.
- * @param currentJournalId The id of the currently selected journal.
+ * `Scaffold`.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,6 +71,18 @@ fun JournalViewScaffoldUi(
     val selectedIndex by viewModel.selectedIndex.collectAsState()
     val currentJournal by viewModel.currentJournal.collectAsState()
 
+    // --- State Freezing Logic ---
+    // 1. Get the "Live" state from the DB
+    val liveCompleteState = currentJournal?.isComplete ?: false
+
+    // 2. Create local state to "Freeze" the UI when leaving
+    var isFrozen by remember { mutableStateOf(false) }
+    var frozenCompleteState by remember { mutableStateOf(liveCompleteState) }
+
+    // 3. Decide which state to show:
+    // If frozen, show the snapshot. If not, show live data.
+    val displayedCompleteState = if (isFrozen) frozenCompleteState else liveCompleteState
+
     val localNavController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
@@ -82,8 +92,19 @@ fun JournalViewScaffoldUi(
         drawerContent = {
             SideMenuUi(
                 title = titleOfPage,
-                isComplete = currentJournal?.isComplete ?: false,
+                isComplete = displayedCompleteState, // Pass the controlled state
                 navigateHome = navigateHome,
+                markCompleteAndNavHome = {
+                    // A. Snapshot the current state and Freeze it
+                    frozenCompleteState = liveCompleteState
+                    isFrozen = true
+
+                    // B. Navigate away
+                    navigateHome()
+
+                    // C. Update DB (The UI will ignore this change now)
+                    viewModel.invertCompleteStatus()
+                },
                 invertCompleteStatus = {
                     viewModel.invertCompleteStatus()
                 },

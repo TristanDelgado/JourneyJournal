@@ -15,14 +15,17 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,7 +71,7 @@ fun HomeScreen(
         allJournalsWithEntries.value.filter { !it.journal.isComplete }
     }
 
-    val completedJournals = remember(allJournalsWithEntries.value) {
+    val completeJournals = remember(allJournalsWithEntries.value) {
         allJournalsWithEntries.value.filter { it.journal.isComplete }
     }
 
@@ -181,9 +184,9 @@ fun HomeScreen(
                         }
                     )
                 }
-                composable(HomeScreenDestinations.COMPLETED.route) {
+                composable(HomeScreenDestinations.COMPLETE.route) {
                     JournalsList(
-                        journals = completedJournals,
+                        journals = completeJournals,
                         navigateToJournal = navigateToJournal,
                         onEditClick = { navToCreateEditJournalScreen(it) },
                         onDeleteClick = { journalToDelete = it },
@@ -200,7 +203,7 @@ fun HomeScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = stringResource(id = localR.string.complete_journeys),
+                                    text = stringResource(id = localR.string.complete_journals),
                                     style = Typography.titleMedium,
                                     modifier = Modifier.padding(start = dimensionResource(id = localR.dimen.padding_small))
                                 )
@@ -225,29 +228,53 @@ fun HomeScreen(
     }
 
     journalToDelete?.let { journal ->
-        AlertDialog(
-            onDismissRequest = { journalToDelete = null },
-            title = { Text(text = "Delete Journal") },
-            text = { Text("Are you sure you want to delete the ${journal.journal.journalName} journal? This action cannot be undone.") },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            journalToDelete?.let { repository.deleteJournal(it.journal) }
-                            journalToDelete = null
-                        }
-                    }
-                ) {
-                    Text("Delete")
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { journalToDelete = null }
-                ) {
-                    Text("Cancel")
+        // ... inside your Composable where the dialog is shown
+
+        journalToDelete?.let { journal ->
+            // State to track the countdown (Starts at 3 seconds)
+            var timeLeft by remember { mutableIntStateOf(3) }
+
+            // Start the countdown when this dialog enters the composition
+            LaunchedEffect(Unit) {
+                while (timeLeft > 0) {
+                    kotlinx.coroutines.delay(1000L)
+                    timeLeft--
                 }
             }
-        )
+
+            AlertDialog(
+                onDismissRequest = { journalToDelete = null },
+                title = { Text(text = "Delete Journal") },
+                text = { Text("Are you sure you want to delete the \"${journal.journal.journalName}\" journal? This action cannot be undone.") },
+                confirmButton = {
+                    TextButton(
+                        // Disable the button while the timer is running
+                        enabled = timeLeft == 0,
+
+                        // Make the button red to indicate a destructive action
+                        colors = androidx.compose.material3.ButtonDefaults.textButtonColors( // Changed to textButtonColors since you are using TextButton
+                            containerColor = if (timeLeft == 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                            contentColor = if (timeLeft == 0) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                        ),
+                        onClick = {
+                            coroutineScope.launch(Dispatchers.IO) {
+                                journalToDelete?.let { repository.deleteJournal(it.journal) }
+                                journalToDelete = null
+                            }
+                        },
+                    ) {
+                        // Update text to visually show the countdown
+                        Text(if (timeLeft > 0) "Delete ($timeLeft)" else "Delete")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { journalToDelete = null }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
     }
 }

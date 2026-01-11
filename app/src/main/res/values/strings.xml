@@ -12,10 +12,10 @@
     <!-- Used in HomeScreen.kt -->
     <string name="active_journals">Active Journals:</string>
     <string name="active_journals_nav">Active</string>
-    <string name="completed_journals_nav">Completed</string>
+    <string name="complete_journals_nav">Complete</string>
     <string name="active_journals_content_description">View active journals</string>
-    <string name="completed_journals_content_description">View completed journals</string>
-    <string name="complete_journeys">Complete Journeys:</string>
+    <string name="complete_journals_content_description">View complete journals</string>
+    <string name="complete_journals">Complete Journals:</string>
     <string name="home_title">Journey Journal</string>
     <string name="no_active_journals">No Active Journals</string>
     <string name="no_complete_journals">No Complete Journals</string>
@@ -45,7 +45,7 @@
     <string name="entries_label">Entries: </string>
     <string name="journal_settings">Journey Settings</string>
     <string name="miles_abbrev">Mi: </string>
-    <string name="total_miles">total miles:</string>
+    <string name="total_miles">Total Miles:</string>
     <string name="total_kilometers">total kilometers:</string>
     <string name="last_entry">Last Entry:</string>
 

@@ -316,7 +316,7 @@ private fun DeleteConfirmationDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = "Delete Forecast") },
-        text = { Text(text = "Are you sure you want to delete \"$forecastName\"? This action cannot be undone.") },
+        text = { Text(text = "Are you sure you want to delete the \"$forecastName\" forecast? This action cannot be undone.") },
         confirmButton = {
             Button(
                 onClick = onConfirm,

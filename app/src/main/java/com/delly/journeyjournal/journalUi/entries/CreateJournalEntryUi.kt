@@ -136,6 +136,7 @@ fun CreateJournalEntryUi(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                     if (entryId == null) {
+                        // Prompt user where day number is from
                         Text(
                             text = "Prev: ${prevDayNumber.value}",
                             style = MaterialTheme.typography.bodySmall,
@@ -166,7 +167,8 @@ fun CreateJournalEntryUi(
                 locationValue = startLocation.value,
                 onLocationChange = { viewModel.updateStartLocation(it) },
                 mileValue = startMile.value,
-                onMileChange = { viewModel.updateStartMileMarker(it) }
+                onMileChange = { viewModel.updateStartMileMarker(it) },
+                showDerivedFromText = entryId == null
             )
 
             // 4 & 5. End Section
@@ -194,8 +196,17 @@ fun CreateJournalEntryUi(
                     value = elevationStart.value,
                     onValueChange = { viewModel.updateElevationStart(it) },
                     label = "Start Elevation",
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
+                if (entryId == null) {
+                    // Prompt user where start elevation is from
+                    Text(
+                        text = "Previous Entry End Elevation",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                }
                 Spacer(Modifier.height(8.dp))
                 CustomTextField(
                     value = elevationEnd.value,
@@ -391,6 +402,7 @@ fun LocationSectionCard(
     onLocationChange: (String) -> Unit,
     mileValue: String,
     onMileChange: (String) -> Unit,
+    showDerivedFromText: Boolean = false,
 ) {
     SectionCard(title = sectionTitle) {
         CustomTextField(
@@ -404,6 +416,16 @@ fun LocationSectionCard(
                 ""
             ).trim()
         )
+        if (showDerivedFromText) {
+            // Prompt user where start location is from
+            Text(
+                text = "Previous Entry End Point",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
+
         Spacer(modifier = Modifier.height(12.dp))
         CustomTextField(
             value = mileValue,
@@ -411,6 +433,15 @@ fun LocationSectionCard(
             label = "Mile Marker",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
         )
+        if (showDerivedFromText) {
+            // Prompt user where start location is from
+            Text(
+                text = "Previous Entry End Point Mile Marker",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
     }
 }
 

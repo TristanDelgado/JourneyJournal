@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Locale
 import kotlin.math.abs
 
 class CreateEntryViewModel(
@@ -63,6 +64,7 @@ class CreateEntryViewModel(
                     _previousDayNumber.value = lastEntry.dayNumber
                     _startLocation.value = lastEntry.endLocation
                     _startMileMarker.value = lastEntry.endMileMarker
+                    _elevationStart.value = lastEntry.elevationEnd
                 } else {
                     // Default for the first entry
                     _dayNumber.value = "1"
@@ -167,7 +169,11 @@ class CreateEntryViewModel(
         val end = _endMileMarker.value.toDoubleOrNull()
         if (start != null && end != null) {
             val dist = abs(start - end)
-            _distanceHiked.value = String.format("%.1f", dist)
+            _distanceHiked.value = String.format(
+                locale = Locale.getDefault(),
+                format = "%.1f",
+                dist
+            )
         } else {
             _distanceHiked.value = ""
         }

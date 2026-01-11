@@ -31,6 +31,7 @@ data class StatsUiState(
     val avgMilesPerDay: String = "--",
     val avgMilesNoZeros: String = "--",
     val avgMilesPerWeek: String = "--",
+    val avgMilesPerWeekNoZeros: String = "--",
     val highestMileageDay: String = "--",
     val totalNetAscent: String = "--",
     val totalNetDescent: String = "--",
@@ -133,8 +134,8 @@ class StatsScreenViewModel(
         val hikingDaysCount = totalDays - zeroDaysCount
         val avgMilesNoZeros = if (hikingDaysCount > 0) totalMiles / hikingDaysCount else 0.0
 
-        val weeks = totalDays / 7.0
-        val avgMilesPerWeek = if (weeks >= 1.0) totalMiles / weeks else totalMiles
+        val avgMilesPerWeek = avgMilesPerDay * 7
+        val avgMilesPerWeekNoZeros = avgMilesNoZeros * 7
 
         val highestMileage = distances.maxOrNull() ?: 0.0
 
@@ -186,6 +187,7 @@ class StatsScreenViewModel(
             avgMilesPerDay = formatDouble(avgMilesPerDay),
             avgMilesNoZeros = formatDouble(avgMilesNoZeros),
             avgMilesPerWeek = formatDouble(avgMilesPerWeek),
+            avgMilesPerWeekNoZeros = formatDouble(avgMilesPerWeekNoZeros),
             highestMileageDay = formatDouble(highestMileage),
             totalNetAscent = "+$totalNetAscent",
             totalNetDescent = "$totalNetDescent",

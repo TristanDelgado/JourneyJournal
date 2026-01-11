@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -128,6 +129,25 @@ fun JournalEntryOverviewBox(
                             color = MaterialTheme.colorScheme.tertiary
                         )
                     }
+
+                    // Display elevation if present
+                    if (entry.elevationStart.isNotBlank() || entry.elevationEnd.isNotBlank()) {
+                        Text(
+                            text = (if (distanceUnit == DistanceUnit.MILES) {
+                                "ft"
+                            } else {
+                                "m"
+                            } + " " + entry.elevationStart
+                                    + " ➔ " +
+                                    if (distanceUnit == DistanceUnit.MILES) {
+                                        "ft"
+                                    } else {
+                                        "m"
+                                    } + " " + entry.elevationEnd),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                    }
                 }
 
                 // Right Side: Action Buttons (Edit, Delete)
@@ -140,7 +160,8 @@ fun JournalEntryOverviewBox(
                     ActionIcon(
                         icon = Icons.Default.Delete,
                         contentDescription = stringResource(id = localR.string.delete_journal),
-                        onClick = { onDeleteClick(entry) }
+                        onClick = { onDeleteClick(entry) },
+                        tint = MaterialTheme.colorScheme.error
                     )
                 }
             }
@@ -298,6 +319,7 @@ private fun ActionIcon(
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
+    tint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     IconButton(
         onClick = onClick,
@@ -307,7 +329,7 @@ private fun ActionIcon(
             imageVector = icon,
             contentDescription = contentDescription,
             modifier = Modifier.size(20.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            tint = tint
         )
     }
 }
@@ -410,8 +432,8 @@ fun JournalEntryOverviewBoxPreview() {
         notes = "Felt strong today, but knees hurt on the descent.",
         startMileMarker = "42.1",
         endMileMarker = "54.5",
-        elevationStart = "",
-        elevationEnd = "",
+        elevationStart = "3500ft",
+        elevationEnd = "2800ft",
         netElevationChange = "+2400 ft", // Added for preview
         sleptInBed = true, // Added for preview
         tookShower = true, // Added for preview

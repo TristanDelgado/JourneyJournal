@@ -20,9 +20,8 @@ fun JournalsList(
     emptyState: @Composable (() -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
-        header?.invoke()
-
         if (journals.isNotEmpty()) {
+            header?.invoke()
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {

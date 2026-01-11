@@ -19,10 +19,10 @@ enum class HomeScreenDestinations(
         icon = Icons.Default.Home,
         contentDescriptionResId = R.string.active_journals_content_description
     ),
-    COMPLETED(
-        route = "completed",
-        labelResId = R.string.completed_journals_nav,
+    COMPLETE(
+        route = "complete",
+        labelResId = R.string.complete_journals_nav,
         icon = Icons.Default.CheckCircle,
-        contentDescriptionResId = R.string.completed_journals_content_description
+        contentDescriptionResId = R.string.complete_journals_content_description
     )
 }

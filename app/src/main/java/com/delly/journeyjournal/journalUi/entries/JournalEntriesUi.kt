@@ -18,8 +18,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -164,18 +166,36 @@ fun JourneyEntriesUi(
     }
 
     if (entryToDelete != null) {
+        // 1. State to track the countdown (Starts at 3 seconds)
+        var timeLeft by remember { mutableIntStateOf(3) }
+
+        // 2. Start the countdown when this dialog enters the composition
+        LaunchedEffect(Unit) {
+            while (timeLeft > 0) {
+                kotlinx.coroutines.delay(1000L)
+                timeLeft--
+            }
+        }
+
         AlertDialog(
             onDismissRequest = { entryToDelete = null },
             title = { Text(text = "Delete Entry") },
             text = { Text("Are you sure you want to delete this entry? This action cannot be undone.") },
             confirmButton = {
                 TextButton(
+                    enabled = timeLeft == 0,
+                    // Make the button red to indicate a destructive action
+                    colors = androidx.compose.material3.ButtonDefaults.textButtonColors( // Changed to textButtonColors since you are using TextButton
+                        containerColor = if (timeLeft == 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                        contentColor = if (timeLeft == 0) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                    ),
                     onClick = {
                         entryToDelete?.let { viewModel.deleteEntry(it) }
                         entryToDelete = null
-                    }
+                    },
                 ) {
-                    Text("Delete")
+                    // Update text to visually show the countdown
+                    Text(if (timeLeft > 0) "Delete ($timeLeft)" else "Delete")
                 }
             },
             dismissButton = {
